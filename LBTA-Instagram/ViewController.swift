@@ -54,7 +54,7 @@ class ViewController: UIViewController {
         button.setTitle("Sign Up", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.backgroundColor = UIColor(red: 149/255, green: 204/255, blue: 244/255, alpha: 1)
+        button.backgroundColor = UIColor.colorFrom(r: 149, g: 204, b: 244)
         button.layer.cornerRadius = 5
         return button
     }()
@@ -71,29 +71,30 @@ class ViewController: UIViewController {
     
     fileprivate func setupViews() {
         view.addSubview(addPhotoButton)
-        setupAddPhotoButton()
+        addPhotoButton.anchor(top: self.view.topAnchor, paddingTop: 40,
+                              right: nil, paddingRight: 0,
+                              bottom: nil, paddingBottom: 0,
+                              left: nil, paddingLeft: 0,
+                              width: 140, height: 140)
+        addPhotoButton.center(X: self.view.centerXAnchor, paddingCenterX: 0, Y: nil, paddingCenterY: 0)
+        
         setupInputFields()
     } // setupViews
-    
-    fileprivate func setupAddPhotoButton() {
-        addPhotoButton.heightAnchor.constraint(equalToConstant: 140).isActive = true
-        addPhotoButton.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        addPhotoButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        addPhotoButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40).isActive = true
-    } // setupAddPhotoButton
+
     
     fileprivate func setupInputFields() {
         let stackView = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, signUpButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.spacing = 10
         
         view.addSubview(stackView)
-        stackView.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 20).isActive = true
-        stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 40).isActive = true
-        stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -40).isActive = true
-        stackView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        stackView.anchor(top: addPhotoButton.bottomAnchor, paddingTop: 20,
+                         right: self.view.rightAnchor, paddingRight: -40,
+                         bottom: nil, paddingBottom: 0,
+                         left: self.view.leftAnchor, paddingLeft: 40,
+                         width: 0, height: 200)
+        
     } // setupInputFields
     
 }
