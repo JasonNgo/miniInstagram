@@ -54,6 +54,7 @@
 		7DB6AB5D2129FEE000583D91 /* LBTA-Instagram */ = {
 			isa = PBXGroup;
 			children = (
+				7DB6AB9E212A061200583D91 /* View */,
 				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
 				7DB6AB602129FEE000583D91 /* ViewController.swift */,
 				7DB6AB622129FEE000583D91 /* Main.storyboard */,
@@ -62,6 +63,13 @@
 				7DB6AB6A2129FEE200583D91 /* Info.plist */,
 			);
 			path = "LBTA-Instagram";
+			sourceTree = "<group>";
+		};
+		7DB6AB9E212A061200583D91 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
