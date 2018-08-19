@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ViewController: UIViewController {
     
     // MARK: Views
+    
     let addPhotoButton: UIButton = {
         var button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -24,7 +25,7 @@ class ViewController: UIViewController {
         tf.borderStyle = .roundedRect
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.font = UIFont.systemFont(ofSize: 14)
-        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return tf
     }()
     
@@ -34,7 +35,7 @@ class ViewController: UIViewController {
         tf.borderStyle = .roundedRect
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.font = UIFont.systemFont(ofSize: 14)
-        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return tf
     }()
     
@@ -45,7 +46,7 @@ class ViewController: UIViewController {
         tf.borderStyle = .roundedRect
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.font = UIFont.systemFont(ofSize: 14)
-        tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return tf
     }()
     
@@ -56,6 +57,8 @@ class ViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.backgroundColor = UIColor.colorFrom(r: 149, g: 204, b: 244)
         button.layer.cornerRadius = 5
+        button.isEnabled = false
+        button.addTarget(self, action: #selector(handleSignUpButtonPressed), for: .touchUpInside)
         return button
     }()
     
@@ -63,7 +66,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
     }
     
@@ -96,6 +98,39 @@ class ViewController: UIViewController {
                          width: 0, height: 200)
         
     } // setupInputFields
+    
+    // MARK: - Selector Functions
+    
+    @objc func handleTextInputChange() {
+        let isFormInvalid = (emailTextField.text?.isEmpty == false ) &&
+                            (usernameTextField.text?.isEmpty == false ) &&
+                            (passwordTextField.text?.isEmpty == false )
+        
+        if isFormInvalid {
+            signUpButton.isEnabled = false
+            signUpButton.backgroundColor = UIColor.colorFrom(r: 17, g: 154, b: 244)
+        } else {
+            signUpButton.isEnabled = true
+            signUpButton.backgroundColor = UIColor.colorFrom(r: 149, g: 204, b: 244)
+        }
+    }
+    
+    @objc func handleSignUpButtonPressed() {
+        guard let email = emailTextField.text else { return }
+        guard let username = usernameTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+            if let err = error {
+                print("There was an error attempting to create user with email: \(email) and username: \(username): \(err.localizedDescription)")
+                return
+            }
+            
+            guard let user = authResult?.user else { return }
+            
+        }
+    } // handleSignUpButtonPressed
+    
     
 }
 
