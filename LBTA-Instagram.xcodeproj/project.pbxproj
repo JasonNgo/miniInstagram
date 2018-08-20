@@ -16,6 +16,8 @@
 		7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA2212A0AF700583D91 /* UIColor.swift */; };
 		7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA4212A0C5700583D91 /* UIView.swift */; };
 		7DB6ABA7212A11C800583D91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */; };
+		7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */; };
+		7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB550212B6009009F68AB /* UserProfileController.swift */; };
 		D1FFD730A693A4B58C2208D4 /* Pods_LBTA_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +34,8 @@
 		7DB6ABA2212A0AF700583D91 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		7DB6ABA4212A0C5700583D91 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		7DCAB550212B6009009F68AB /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		A67840288BB3DAD7D1E5891D /* Pods-LBTA-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.release.xcconfig"; sourceTree = "<group>"; };
 		C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LBTA_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -69,6 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				7DB6AB602129FEE000583D91 /* SignUpViewController.swift */,
+				7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */,
+				7DCAB550212B6009009F68AB /* UserProfileController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -267,7 +273,9 @@
 			files = (
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
 				7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */,
+				7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */,
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,
+				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */,
 			);
