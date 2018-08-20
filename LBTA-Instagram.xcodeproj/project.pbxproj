@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
 		7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */; };
-		7DB6AB612129FEE000583D91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB602129FEE000583D91 /* ViewController.swift */; };
+		7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB602129FEE000583D91 /* SignUpViewController.swift */; };
 		7DB6AB642129FEE000583D91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6AB622129FEE000583D91 /* Main.storyboard */; };
 		7DB6AB662129FEE200583D91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6AB652129FEE200583D91 /* Assets.xcassets */; };
 		7DB6AB692129FEE200583D91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6AB672129FEE200583D91 /* LaunchScreen.storyboard */; };
@@ -20,9 +21,10 @@
 
 /* Begin PBXFileReference section */
 		35ECEE7F8499DA82DB62A688 /* Pods-LBTA-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
+		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
 		7DB6AB5B2129FEE000583D91 /* LBTA-Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LBTA-Instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7DB6AB602129FEE000583D91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7DB6AB602129FEE000583D91 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		7DB6AB632129FEE000583D91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7DB6AB652129FEE200583D91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7DB6AB682129FEE200583D91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,6 +57,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7D4B6309212A36DE00C4CB7E /* API */ = {
+			isa = PBXGroup;
+			children = (
+				7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		7D4B630A212A3F5000C4CB7E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7DB6AB602129FEE000583D91 /* SignUpViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		7DB6AB522129FEE000583D91 = {
 			isa = PBXGroup;
 			children = (
@@ -76,24 +94,25 @@
 		7DB6AB5D2129FEE000583D91 /* LBTA-Instagram */ = {
 			isa = PBXGroup;
 			children = (
-				7DB6ABA1212A0AE900583D91 /* Extensions */,
-				7DB6AB9E212A061200583D91 /* View */,
-				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
-				7DB6AB602129FEE000583D91 /* ViewController.swift */,
-				7DB6AB622129FEE000583D91 /* Main.storyboard */,
-				7DB6AB652129FEE200583D91 /* Assets.xcassets */,
-				7DB6AB672129FEE200583D91 /* LaunchScreen.storyboard */,
 				7DB6AB6A2129FEE200583D91 /* Info.plist */,
 				7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */,
+				7DB6AB622129FEE000583D91 /* Main.storyboard */,
+				7DB6AB672129FEE200583D91 /* LaunchScreen.storyboard */,
+				7DB6AB652129FEE200583D91 /* Assets.xcassets */,
+				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
+				7D4B6309212A36DE00C4CB7E /* API */,
+				7DB6ABA1212A0AE900583D91 /* Extensions */,
+				7D4B630A212A3F5000C4CB7E /* Controllers */,
+				7DB6AB9E212A061200583D91 /* Views */,
 			);
 			path = "LBTA-Instagram";
 			sourceTree = "<group>";
 		};
-		7DB6AB9E212A061200583D91 /* View */ = {
+		7DB6AB9E212A061200583D91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7DB6ABA1212A0AE900583D91 /* Extensions */ = {
@@ -125,6 +144,7 @@
 				7DB6AB582129FEE000583D91 /* Frameworks */,
 				7DB6AB592129FEE000583D91 /* Resources */,
 				278A72BF71C9EB0ACCA326E0 /* [CP] Embed Pods Frameworks */,
+				7DCAB54D212A66B3009F68AB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -225,6 +245,19 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7DCAB54D212A66B3009F68AB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -233,8 +266,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
-				7DB6AB612129FEE000583D91 /* ViewController.swift in Sources */,
+				7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */,
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,
+				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
