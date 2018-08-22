@@ -17,6 +17,8 @@ class FirebaseAPI {
     let storageRef = Storage.storage().reference()
     let auth = Auth.auth()
     
+    // MARK: - Auth Functions
+    
     func createUserWith(username: String, email: String, password: String, image: UIImage, completionHandler: @escaping () -> Void) {
         auth.createUser(withEmail: email, password: password) { (authResult, error) in
             if let err = error {
@@ -39,9 +41,37 @@ class FirebaseAPI {
                 
                 print("successfully saved user's username into the db")
                 self.uploadProfileImageToStorage(image: image)
-            }) // updateChildValues
-        } // createUser
-    } // createUserWith(username:email:password;image:)
+                completionHandler()
+            })
+        }
+    }
+    
+    func loginUserWith(email: String, password: String, completionHandler: @escaping (Bool) -> Void) {
+        auth.signIn(withEmail: email, password: password) { (dataResult, error) in
+            
+            if let err = error {
+                print("error attempting to login email: \(email): \(err)")
+                completionHandler(false)
+                return
+            }
+            
+            guard let _ = dataResult else { return }
+            completionHandler(true)
+        }
+    }
+    
+    func logoutUser(completionHandler: @escaping (Bool) -> Void) {
+        do {
+            try auth.signOut()
+            completionHandler(true)
+        } catch let error {
+            print("error attempting to logout: \(error)")
+            completionHandler(false)
+            return
+        }
+    }
+    
+    // MARK: - Database Functions
     
     func fetchUserWith(uid: String, completionHandler: @escaping (DataSnapshot) -> Void) {
         databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -49,7 +79,7 @@ class FirebaseAPI {
         }) { (error) in
             print("error attempting to fetch user with uid: \(uid)")
         }
-    } // fetchUserWith(uid:completionHandler:)
+    }
     
     // MARK: Helper Functions
     
@@ -68,8 +98,8 @@ class FirebaseAPI {
             print("successfully uploaded image to Storage")
         }).observe(.success, handler: { (snapshot) in
             self.saveDownloadURL(snapshot: snapshot)
-        }) // putData
-    } // uploadProfileImageToStorage(image:)
+        })
+    }
     
     fileprivate func saveDownloadURL(snapshot: StorageTaskSnapshot) {
         guard let uid = FirebaseAPI.shared.auth.currentUser?.uid else { return }
@@ -93,8 +123,8 @@ class FirebaseAPI {
                 }
                 
                 print("successfully saved user into the db")
-            }) // updateChildValues
-        }) // downloadURL
-    } // fetchDownloadURL(snapshot:)
+            })
+        })
+    }
     
 } // FirebaseAPI

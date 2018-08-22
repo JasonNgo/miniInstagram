@@ -1,3 +1,4 @@
+
 //
 //  MainTabBarController.swift
 //  LBTA-Instagram
@@ -15,18 +16,29 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // user not logged in
+        if FirebaseAPI.shared.auth.currentUser == nil {
+            DispatchQueue.main.async {
+                let loginController = LoginController()
+                let navController = UINavigationController(rootViewController: loginController)
+                self.present(navController, animated: true, completion: nil)
+            }
+            
+            return
+        }
+        
         setupTabBarStyling()
         setupViewControllers()
     }
     
     // MARK: - Setup Functions
     
-    fileprivate func setupTabBarStyling() {
+    func setupTabBarStyling() {
         view.backgroundColor = .white
         tabBar.tintColor = .black
     }
     
-    fileprivate func setupViewControllers() {
+    func setupViewControllers() {
         let layout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: layout)
         

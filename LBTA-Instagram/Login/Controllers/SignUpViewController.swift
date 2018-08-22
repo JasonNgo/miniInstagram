@@ -62,6 +62,27 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         button.addTarget(self, action: #selector(handleSignUpButtonPressed), for: .touchUpInside)
         return button
     }()
+    
+    let alreadyHaveAccountButton: UIButton = {
+        var button = UIButton(type: .system)
+        
+        let messageTextAttributes: [NSAttributedStringKey: Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.lightGray
+        ]
+        let loginTextAttributes: [NSAttributedStringKey: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 14),
+            .foregroundColor: UIColor.colorFrom(r: 17, g: 154, b: 244)
+        ]
+        
+        let attributedText = NSMutableAttributedString(string: "Already have an account? ", attributes: messageTextAttributes)
+        let loginText = NSAttributedString(string: "Login.", attributes: loginTextAttributes)
+        attributedText.append(loginText)
+        
+        button.setAttributedTitle(attributedText, for: .normal)
+        button.addTarget(self, action: #selector(handleAlreadyHaveAccountPressed), for: .touchUpInside)
+        return button
+    }()
 
     let imagePicker: UIImagePickerController = {
         var imagePicker = UIImagePickerController()
@@ -74,15 +95,18 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViews()
+        view.backgroundColor = .white
+        
+        setupAddPhotoButton()
         setupInputFields()
+        setupAlreadyHaveAccountButton()
         
         imagePicker.delegate = self
     } // viewDidLoad
 
     // MARK: - Setup Functions
 
-    fileprivate func setupViews() {
+    fileprivate func setupAddPhotoButton() {
         view.addSubview(addPhotoButton)
         addPhotoButton.anchor(top: view.topAnchor, paddingTop: 40, right: nil, paddingRight: 0,
                               bottom: nil, paddingBottom: 0, left: nil, paddingLeft: 0, width: 140, height: 140)
@@ -99,9 +123,21 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         stackView.spacing = 10
 
         view.addSubview(stackView)
-        stackView.anchor(top: addPhotoButton.bottomAnchor, paddingTop: 20, right: view.rightAnchor, paddingRight: -40,
-                         bottom: nil, paddingBottom: 0, left: view.leftAnchor, paddingLeft: 40, width: 0, height: 200)
-    } // setupInputFields
+        stackView.anchor(top: addPhotoButton.bottomAnchor, paddingTop: 20,
+                         right: view.rightAnchor, paddingRight: -40,
+                         bottom: nil, paddingBottom: 0,
+                         left: view.leftAnchor, paddingLeft: 40,
+                         width: 0, height: 200)
+    }
+    
+    fileprivate func setupAlreadyHaveAccountButton() {
+        self.view.addSubview(alreadyHaveAccountButton)
+        alreadyHaveAccountButton.anchor(top: nil, paddingTop: 0,
+                                        right: self.view.rightAnchor, paddingRight: 0,
+                                        bottom: self.view.bottomAnchor, paddingBottom: -8,
+                                        left: self.view.leftAnchor, paddingLeft: 0,
+                                        width: 0, height: 50)
+    }
 
     // MARK: - Selector Functions
 
@@ -117,24 +153,36 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
             } else {
                 signUpButton.isEnabled = false
                 signUpButton.backgroundColor = UIColor.colorFrom(r: 149, g: 204, b: 244)
-            } // if
-        } // if let
-    } // handleTextInputChanges
+            }
+        }
+    }
 
     @objc func handleSignUpButtonPressed() {
         guard let username = usernameTextField.text else { return }
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         guard let image = addPhotoButton.imageView?.image else { return }
-
+        
         FirebaseAPI.shared.createUserWith(username: username, email: email, password: password, image: image) {
             print("created user")
+
+            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {
+                return
+            }
+
+            mainTabBarController.setupTabBarStyling()
+            mainTabBarController.setupViewControllers()
+            self.dismiss(animated: true, completion: nil)
         }
-    } // handleSignUpButtonPressed
+    }
 
     @objc func handleAddPhotoButtonPressed() {
         present(imagePicker, animated: true)
-    } // handleAddPhotoButtonPressed
+    }
+    
+    @objc func handleAlreadyHaveAccountPressed() {
+        let _ = navigationController?.popViewController(animated: true)
+    }
 
     // MARK: UIImagePickerDelegate
 
@@ -152,6 +200,6 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         addPhotoButton.layer.borderWidth = 3
 
         dismiss(animated: true, completion: nil)
-    } // imagePickerController(didFinishPickingMediaWithInfo
+    }
     
 } // SignUpViewController
