@@ -43,7 +43,17 @@ class FirebaseAPI {
         } // createUser
     } // createUserWith(username:email:password;image:)
     
-    func uploadProfileImageToStorage(image: UIImage) {
+    func fetchUserWith(uid: String, completionHandler: @escaping (DataSnapshot) -> Void) {
+        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            completionHandler(snapshot)
+        }) { (error) in
+            print("error attempting to fetch user with uid: \(uid)")
+        }
+    } // fetchUserWith(uid:completionHandler:)
+    
+    // MARK: Helper Functions
+    
+    fileprivate func uploadProfileImageToStorage(image: UIImage) {
         let fileName = NSUUID().uuidString
         guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else { return }
         let profileImagesRef = FirebaseAPI.shared.storageRef.child("profile_images/\(fileName)")
@@ -61,7 +71,7 @@ class FirebaseAPI {
         }) // putData
     } // uploadProfileImageToStorage(image:)
     
-    func saveDownloadURL(snapshot: StorageTaskSnapshot) {
+    fileprivate func saveDownloadURL(snapshot: StorageTaskSnapshot) {
         guard let uid = FirebaseAPI.shared.auth.currentUser?.uid else { return }
         
         snapshot.reference.downloadURL(completion: { (url, error) in
@@ -86,13 +96,5 @@ class FirebaseAPI {
             }) // updateChildValues
         }) // downloadURL
     } // fetchDownloadURL(snapshot:)
-    
-    func fetchUserWith(uid: String, completionHandler: @escaping (DataSnapshot) -> Void) {
-        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            completionHandler(snapshot)
-        }) { (error) in
-            print("error attempting to fetch user with uid: \(uid)")
-        }
-    } // fetchUserWith(uid:completionHandler:)
     
 } // FirebaseAPI

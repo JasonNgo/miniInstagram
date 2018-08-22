@@ -31,10 +31,11 @@ class MainTabBarController: UITabBarController {
         let userProfileController = UserProfileController(collectionViewLayout: layout)
         
         viewControllers = [
-            SignUpViewController(),
-            createNavigationController(rootViewController: userProfileController, title: "User Profile", selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected")),
+            createNavigationController(rootViewController: userProfileController, title: "User Profile",
+                                       selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"))
+//            SignUpViewController()
         ]
-    } // setupViewControllers
+    }
  
     // MARK: - Helper Functions
     
@@ -48,6 +49,6 @@ class MainTabBarController: UITabBarController {
         navController.tabBarItem.selectedImage = selectedImage.withRenderingMode(.alwaysOriginal)
         
         return navController
-    } // createNavigationController
+    }
     
 } // MainTabBarController

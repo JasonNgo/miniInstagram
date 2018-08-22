@@ -18,6 +18,8 @@
 		7DB6ABA7212A11C800583D91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */; };
 		7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */; };
 		7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB550212B6009009F68AB /* UserProfileController.swift */; };
+		7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */; };
+		7DCAB558212DD0EC009F68AB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB557212DD0EC009F68AB /* User.swift */; };
 		D1FFD730A693A4B58C2208D4 /* Pods_LBTA_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +38,8 @@
 		7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		7DCAB550212B6009009F68AB /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
+		7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
+		7DCAB557212DD0EC009F68AB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		A67840288BB3DAD7D1E5891D /* Pods-LBTA-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.release.xcconfig"; sourceTree = "<group>"; };
 		C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LBTA_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -108,6 +112,7 @@
 				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
 				7D4B6309212A36DE00C4CB7E /* API */,
 				7DB6ABA1212A0AE900583D91 /* Extensions */,
+				7DCAB556212DD0DE009F68AB /* Model */,
 				7D4B630A212A3F5000C4CB7E /* Controllers */,
 				7DB6AB9E212A061200583D91 /* Views */,
 			);
@@ -117,6 +122,7 @@
 		7DB6AB9E212A061200583D91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -128,6 +134,14 @@
 				7DB6ABA4212A0C5700583D91 /* UIView.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7DCAB556212DD0DE009F68AB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7DCAB557212DD0EC009F68AB /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		B0AA5E8FCD1A95E83F01DD11 /* Frameworks */ = {
@@ -273,8 +287,10 @@
 			files = (
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
 				7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */,
+				7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */,
 				7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */,
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,
+				7DCAB558212DD0EC009F68AB /* User.swift in Sources */,
 				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */,

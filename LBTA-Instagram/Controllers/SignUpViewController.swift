@@ -74,9 +74,10 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imagePicker.delegate = self
-        
         setupViews()
+        setupInputFields()
+        
+        imagePicker.delegate = self
     } // viewDidLoad
 
     // MARK: - Setup Functions
@@ -86,8 +87,6 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         addPhotoButton.anchor(top: view.topAnchor, paddingTop: 40, right: nil, paddingRight: 0,
                               bottom: nil, paddingBottom: 0, left: nil, paddingLeft: 0, width: 140, height: 140)
         addPhotoButton.center(centerX: view.centerXAnchor, paddingCenterX: 0, centerY: nil, paddingCenterY: 0)
-
-        setupInputFields()
     } // setupViews
 
     fileprivate func setupInputFields() {

@@ -9,23 +9,55 @@
 import UIKit
 import Firebase
 
-class UserProfileController: UICollectionViewController {
+class UserProfileController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    let userRef = FirebaseAPI.shared.databaseRef.child("users")
+    fileprivate let headerID = "headerID"
+    
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUserProfileStyling()
+        // set up
+        setupCollectionView()
         
         fetchUser()
     }
     
     // MARK: Set Up Functions
     
-    fileprivate func setupUserProfileStyling() {
+    fileprivate func setupCollectionView() {
         collectionView?.backgroundColor = .white
-    } // setupUserProfileStyling
+        collectionView?.register(UserProfileHeaderView.self,
+                                 forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                 withReuseIdentifier: headerID)
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    override func collectionView(_ collectionView: UICollectionView,
+                                 viewForSupplementaryElementOfKind kind: String,
+                                 at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                     withReuseIdentifier: headerID,
+                                                                     for: indexPath) as! UserProfileHeaderView
+        header.user = self.user
+        
+        return header
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 200)
+    }
+    
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    // MARK: - Helper Functions
     
     fileprivate func fetchUser() {
         // Ensure we're able to fetch the current user's uid
@@ -33,10 +65,12 @@ class UserProfileController: UICollectionViewController {
         
         FirebaseAPI.shared.fetchUserWith(uid: uid) { (snapshot) in
             guard let valuesDict = snapshot.value as? [String: Any] else { return }
-            guard let username = valuesDict["username"] as? String else { return }
             
-            self.navigationItem.title = username
+            self.user = User(dictionary: valuesDict)
+            self.navigationItem.title = self.user?.username
+            
+            self.collectionView?.reloadData()
         }
-    } // fetchUser
+    }
     
 } // UserProfileController
