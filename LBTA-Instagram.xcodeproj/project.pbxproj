@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
+		7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */; };
 		7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */; };
 		7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB602129FEE000583D91 /* SignUpViewController.swift */; };
 		7DB6AB642129FEE000583D91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6AB622129FEE000583D91 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		35ECEE7F8499DA82DB62A688 /* Pods-LBTA-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
+		7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		7DB6AB5B2129FEE000583D91 /* LBTA-Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LBTA-Instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DB6AB602129FEE000583D91 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -79,8 +81,18 @@
 			isa = PBXGroup;
 			children = (
 				7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */,
+				7DA1D31F212E78D00048EB53 /* PhotoSelection */,
+				7DCAB55D212E06D7009F68AB /* UserProfile */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		7DA1D31F212E78D00048EB53 /* PhotoSelection */ = {
+			isa = PBXGroup;
+			children = (
+				7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */,
+			);
+			path = PhotoSelection;
 			sourceTree = "<group>";
 		};
 		7DB6AB522129FEE000583D91 = {
@@ -115,7 +127,6 @@
 				7DCAB556212DD0DE009F68AB /* Model */,
 				7DCAB55B212E069F009F68AB /* Login */,
 				7D4B630A212A3F5000C4CB7E /* Main */,
-				7DCAB55D212E06D7009F68AB /* UserProfile */,
 				7DB6AB9E212A061200583D91 /* Views */,
 			);
 			path = "LBTA-Instagram";
@@ -259,6 +270,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -266,6 +278,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -320,6 +333,7 @@
 				7DCAB558212DD0EC009F68AB /* User.swift in Sources */,
 				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
+				7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */,
 				7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */,
 				7DCAB55A212E04BC009F68AB /* LoginController.swift in Sources */,
 			);

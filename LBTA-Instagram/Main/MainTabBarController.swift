@@ -9,7 +9,7 @@
 
 import UIKit
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     // MARK: - Lifecycle Functions
     
@@ -29,6 +29,9 @@ class MainTabBarController: UITabBarController {
         
         setupTabBarStyling()
         setupViewControllers()
+        
+        // UITabBarControllerDelegate
+        self.delegate = self
     }
     
     // MARK: - Setup Functions
@@ -82,6 +85,19 @@ class MainTabBarController: UITabBarController {
         
         // test to see if commits will show
     }
+    
+    // MARK: - UITabBarControllerDelegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let index = viewControllers?.index(of: viewController)
+        
+        if index == 2 {
+            showPhotoSelectorController()
+            return false
+        }
+        
+        return true
+    }
  
     // MARK: - Helper Functions
     
@@ -96,6 +112,13 @@ class MainTabBarController: UITabBarController {
         navController.tabBarItem.selectedImage = selectedImage.withRenderingMode(.alwaysOriginal)
         
         return navController
+    }
+    
+    fileprivate func showPhotoSelectorController() {
+        let layout = UICollectionViewFlowLayout()
+        let photoSelectorController = PhotoSelectorController(collectionViewLayout: layout)
+        let navPhotoSelector = UINavigationController(rootViewController: photoSelectorController)
+        present(navPhotoSelector, animated: true)
     }
     
 } // MainTabBarController
