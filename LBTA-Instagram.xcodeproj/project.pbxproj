@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
 		7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */; };
+		7DA1D323212F481E0048EB53 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D322212F481E0048EB53 /* PhotoSelectorCell.swift */; };
+		7DA1D325212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D324212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift */; };
+		7DA1D32C212F55740048EB53 /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D32B212F55740048EB53 /* SharePhotoController.swift */; };
 		7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */; };
 		7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6AB602129FEE000583D91 /* SignUpViewController.swift */; };
 		7DB6AB642129FEE000583D91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6AB622129FEE000583D91 /* Main.storyboard */; };
@@ -29,6 +32,9 @@
 		35ECEE7F8499DA82DB62A688 /* Pods-LBTA-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
 		7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
+		7DA1D322212F481E0048EB53 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
+		7DA1D324212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorHeaderView.swift; sourceTree = "<group>"; };
+		7DA1D32B212F55740048EB53 /* SharePhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		7DB6AB5B2129FEE000583D91 /* LBTA-Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LBTA-Instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DB6AB602129FEE000583D91 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -90,9 +96,44 @@
 		7DA1D31F212E78D00048EB53 /* PhotoSelection */ = {
 			isa = PBXGroup;
 			children = (
-				7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */,
+				7DA1D327212F55220048EB53 /* Views */,
+				7DA1D326212F551D0048EB53 /* Controllers */,
 			);
 			path = PhotoSelection;
+			sourceTree = "<group>";
+		};
+		7DA1D326212F551D0048EB53 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */,
+				7DA1D32B212F55740048EB53 /* SharePhotoController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7DA1D327212F55220048EB53 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7DA1D324212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift */,
+				7DA1D322212F481E0048EB53 /* PhotoSelectorCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7DA1D329212F554F0048EB53 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7DA1D32A212F55540048EB53 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7DCAB550212B6009009F68AB /* UserProfileController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		7DB6AB522129FEE000583D91 = {
@@ -127,16 +168,8 @@
 				7DCAB556212DD0DE009F68AB /* Model */,
 				7DCAB55B212E069F009F68AB /* Login */,
 				7D4B630A212A3F5000C4CB7E /* Main */,
-				7DB6AB9E212A061200583D91 /* Views */,
 			);
 			path = "LBTA-Instagram";
-			sourceTree = "<group>";
-		};
-		7DB6AB9E212A061200583D91 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		7DB6ABA1212A0AE900583D91 /* Extensions */ = {
@@ -167,8 +200,8 @@
 		7DCAB55C212E06AF009F68AB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7DCAB559212E04BC009F68AB /* LoginController.swift */,
 				7DB6AB602129FEE000583D91 /* SignUpViewController.swift */,
+				7DCAB559212E04BC009F68AB /* LoginController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -176,8 +209,8 @@
 		7DCAB55D212E06D7009F68AB /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
-				7DCAB550212B6009009F68AB /* UserProfileController.swift */,
-				7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */,
+				7DA1D329212F554F0048EB53 /* Views */,
+				7DA1D32A212F55540048EB53 /* Controllers */,
 			);
 			path = UserProfile;
 			sourceTree = "<group>";
@@ -326,11 +359,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
+				7DA1D323212F481E0048EB53 /* PhotoSelectorCell.swift in Sources */,
 				7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */,
 				7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */,
+				7DA1D32C212F55740048EB53 /* SharePhotoController.swift in Sources */,
 				7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */,
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,
 				7DCAB558212DD0EC009F68AB /* User.swift in Sources */,
+				7DA1D325212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift in Sources */,
 				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */,
