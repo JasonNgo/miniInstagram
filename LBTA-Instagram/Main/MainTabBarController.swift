@@ -79,6 +79,8 @@ class MainTabBarController: UITabBarController {
         items.forEach { (item) in
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
+        
+        // test to see if commits will show
     }
  
     // MARK: - Helper Functions
