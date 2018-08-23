@@ -21,6 +21,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     
     let profileImageView: UIImageView = {
         var imageView = UIImageView()
+        imageView.clipsToBounds = true 
         return imageView
     }()
     

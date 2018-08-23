@@ -100,6 +100,12 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     
     @objc func handleNextButtonPressed() {
         print("next pressed")
+        
+        guard let selectedPhoto = selectedPhoto else { return }
+        
+        let sharePhotoController = SharePhotoController()
+        sharePhotoController.photoImage = selectedPhoto
+        navigationController?.pushViewController(sharePhotoController, animated: true)
     }
     
     // MARK: - UICollectionView Functions
@@ -107,8 +113,11 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoSelectorCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID,
+                                                      for: indexPath) as! PhotoSelectorCell
+        
         cell.photoImageView.image = photos[indexPath.item]
+        
         return cell
     }
     
