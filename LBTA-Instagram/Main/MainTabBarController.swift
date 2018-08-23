@@ -39,20 +39,53 @@ class MainTabBarController: UITabBarController {
     }
     
     func setupViewControllers() {
+        
+        // home
+        let homeController = UIViewController()
+        let homeNavController = createNavigationController(rootViewController: homeController,
+                                                           title: "Home",
+                                                           selectedImage: #imageLiteral(resourceName: "home_selected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
+        // search
+        let searchController = UIViewController()
+        let searchNavController = createNavigationController(rootViewController: searchController,
+                                                             title: "Search",
+                                                             selectedImage: #imageLiteral(resourceName: "search_selected"), unselectedImage: #imageLiteral(resourceName: "search_unselected"))
+        // photo picker
+        let photoPickerController = UIViewController()
+        let photoNavController = createNavigationController(rootViewController: photoPickerController,
+                                                            title: "Photo",
+                                                            selectedImage: #imageLiteral(resourceName: "plus_unselected"), unselectedImage: #imageLiteral(resourceName: "plus_unselected"))
+        // like
+        let likeController = UIViewController()
+        let likeNavController = createNavigationController(rootViewController: likeController,
+                                                           title: "Likes",
+                                                           selectedImage: #imageLiteral(resourceName: "like_selected"), unselectedImage: #imageLiteral(resourceName: "like_unselected"))
+        // profile
         let layout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: layout)
+        let userProfileNavController = createNavigationController(rootViewController: userProfileController,
+                                                                  title: "User Profile",
+                                                                  selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"))
         
         viewControllers = [
-            createNavigationController(rootViewController: userProfileController, title: "User Profile",
-                                       selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"))
-//            SignUpViewController()
+            homeNavController,
+            searchNavController,
+            photoNavController,
+            likeNavController,
+            userProfileNavController
         ]
+        
+        guard let items = tabBar.items else { return }
+        items.forEach { (item) in
+            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        }
     }
  
     // MARK: - Helper Functions
     
     fileprivate func createNavigationController(rootViewController: UIViewController, title: String,
                                                 selectedImage: UIImage, unselectedImage: UIImage) -> UIViewController {
+        
         let navController = UINavigationController(rootViewController: rootViewController)
         
         rootViewController.navigationItem.title = title
