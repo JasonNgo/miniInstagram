@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum SharePhotoResult {
+    case success
+    case failure(Error)
+}
+
 class SharePhotoController: UIViewController {
     
     var photoImage: UIImage? {
@@ -92,6 +97,29 @@ class SharePhotoController: UIViewController {
     
     @objc func handleShareButtonPressed() {
         print("share pressed")
+        
+        guard let photoImage = photoImage else { return }
+        guard let caption = descriptionTextView.text, !descriptionTextView.text.isEmpty else { return }
+        
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        let values = [
+            "image_width": photoImage.size.width,
+            "image_height": photoImage.size.height,
+            "creation_date": Date().timeIntervalSince1970,
+            "caption": caption
+        ] as [String : Any]
+        
+        FirebaseAPI.shared.savePostToFirebase(postImage: photoImage, values: values) { (sharePhotoResult) in
+            switch sharePhotoResult {
+            case .success:
+                print("sucessfully saved post")
+                self.dismiss(animated: true, completion: nil)
+            case let .failure(error):
+                print(error)
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+            }
+        }
     }
 
 } // SharePhotoController

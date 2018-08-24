@@ -27,8 +27,17 @@ enum LogoutError: Error {
     case unableToLogout
 }
 
-enum DatabaseError: Error {
+enum ProfileError: Error {
+    case unableToFetchUserUID
     case unableToFetchUserData
+}
+
+enum PostError: Error {
+    case unableToFetchUserUID
+    case unableToSavePostImage
+    case unableToFetchImageDownloadURL
+    case unableToSavePostInformation
+    case dataError
 }
 
 class FirebaseAPI {
@@ -176,23 +185,94 @@ class FirebaseAPI {
     
     // MARK: - Database Functions
     
-    func fetchUserWith(uid: String, completion: @escaping (DataSnapshot?, DatabaseError?) -> Void) {
+    func fetchUserWith(uid: String, completion: @escaping (DataSnapshot?, ProfileError?) -> Void) {
+        
         let usersRef = databaseRef.child("users")
+        
         usersRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             completion(snapshot, nil)
         }) { (error) in
             print("error attempting to fetch user with uid: \(uid), error: \(error)")
-            completion(nil, DatabaseError.unableToFetchUserData)
+            completion(nil, ProfileError.unableToFetchUserData)
         }
         
     }
-//    
-//    func fetchUserWith(uid: String, completionHandler: @escaping (DataSnapshot) -> Void) {
-//        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-//            completionHandler(snapshot)
-//        }) { (error) in
-//            print("error attempting to fetch user with uid: \(uid)")
-//        }
-//    }
     
+    // MARK: - Post Functions
+    
+    func savePostToFirebase(postImage: UIImage, values: [String: Any], completion: @escaping (SharePhotoResult) -> Void) {
+        
+        self.savePostImageToStorage(image: postImage) { (downloadURL, error) in
+            if let error = error {
+                print(error)
+                completion(.failure(error))
+                return
+            }
+            
+            // attempt to save user info
+            guard let downloadURL = downloadURL else {
+                completion(.failure(PostError.dataError))
+                return
+            }
+            
+            guard let uid = FirebaseAPI.shared.getCurrentUserUID() else {
+                completion(.failure(PostError.unableToFetchUserUID))
+                return
+            }
+            
+            var valuesDict = values
+            valuesDict["post_image_url"] = downloadURL
+            
+            self.databaseRef.child("posts").child(uid).childByAutoId().updateChildValues(valuesDict) { (error, reference) in
+                if let error = error {
+                    print("error attempting to save post info to user: \(error)")
+                    completion(.failure(PostError.unableToSavePostInformation))
+                    return
+                }
+                
+                print("successfully saved post information to user")
+                completion(.success)
+            }
+        } // savePostImageToStorage
+        
+    } // savePostToFirebase
+    
+    // MARK: Posts Helper
+    
+    fileprivate func savePostImageToStorage(image: UIImage, completion: @escaping (String?, PostError?) -> Void) {
+        
+        let fileName = NSUUID().uuidString
+        guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else {
+            completion(nil, PostError.dataError)
+            return
+        }
+        
+        let postsRef = storageRef.child("post_images/\(fileName)")
+        postsRef.putData(uploadData, metadata: nil) { (metadata, error) in
+            if let error = error {
+                print("error attempting to upload post image to storage: \(error)")
+                completion(nil, PostError.unableToSavePostImage)
+                return
+            }
+            
+            postsRef.downloadURL(completion: { (downloadURL, error) in
+                if let error = error {
+                    print("error attempting to fetch post image download URL: \(error)")
+                    completion(nil, PostError.unableToFetchImageDownloadURL)
+                    return
+                }
+                
+                guard let downloadURL = downloadURL else {
+                    print("Unable to unwrap downloadURL")
+                    completion(nil, PostError.dataError)
+                    return
+                }
+                
+                print("successfully fetched download URL: \(downloadURL.absoluteString)")
+                completion(downloadURL.absoluteString, nil)
+            }) // downloadURL
+        } // putData
+        
+    } // savePostImageToStorage
+
 } // FirebaseAPI
