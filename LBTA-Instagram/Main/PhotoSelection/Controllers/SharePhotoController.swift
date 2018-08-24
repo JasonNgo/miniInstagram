@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SharePhotoController: UIViewController, UITextViewDelegate {
+class SharePhotoController: UIViewController {
     
     var photoImage: UIImage? {
         didSet {
@@ -94,7 +94,6 @@ class SharePhotoController: UIViewController, UITextViewDelegate {
     
     @objc func handleShareButtonPressed() {
         print("share pressed")
-        
     }
-    
+
 } // SharePhotoController

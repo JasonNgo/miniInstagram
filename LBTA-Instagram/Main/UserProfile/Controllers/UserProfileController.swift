@@ -136,7 +136,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     fileprivate func fetchUser() {
         // Ensure we're able to fetch the current user's uid
-        guard let uid = FirebaseAPI.shared.auth.currentUser?.uid else { return }
+        guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
         
         FirebaseAPI.shared.fetchUserWith(uid: uid) { (snapshot) in
             guard let valuesDict = snapshot.value as? [String: Any] else { return }

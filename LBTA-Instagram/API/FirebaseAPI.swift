@@ -9,6 +9,15 @@
 import Firebase
 import UIKit
 
+enum UserCreationError: Error {
+    case unableToCreateUID
+    case unableToUploadProfileImage
+    case unableToFetchDownloadURL
+    case unableToFetchCurrentUserUID
+    case unableToSaveProfileInformationToDatabase
+    case dataError
+}
+
 class FirebaseAPI {
     
     static let shared = FirebaseAPI()
@@ -17,34 +26,111 @@ class FirebaseAPI {
     let storageRef = Storage.storage().reference()
     let auth = Auth.auth()
     
-    // MARK: - Auth Functions
+    func getCurrentUserUID() -> String? {
+        guard let currentUserUID = auth.currentUser?.uid else { return nil }
+        return currentUserUID
+    }
     
-    func createUserWith(username: String, email: String, password: String, image: UIImage, completionHandler: @escaping () -> Void) {
+    // MARK: - User Creation
+    
+    func createUserWith(email: String, username: String, password: String, profileImage: UIImage, completion: @escaping (UserCreationResult) -> Void) {
+        
+        // attempt to create a new user
         auth.createUser(withEmail: email, password: password) { (authResult, error) in
-            if let err = error {
-                print("error attempting to create user with username: \(username), email: \(email): \(err.localizedDescription)")
+            if let error = error {
+                print(error)
+                completion(.failure(UserCreationError.unableToCreateUID))
                 return
             }
             
-            guard let user = authResult?.user else { return }
-            print("successfully created new user with uid: \(user.uid)")
-            
-            // attempt to save username to uid node
-            let valuesDictionary = ["username": username]
-            let values = [user.uid: valuesDictionary]
-            
-            self.databaseRef.child("users").updateChildValues(values, withCompletionBlock: { error, user in
-                if let err = error {
-                    print("error attempting to save the user uid to the database: \(err)")
+            // attempt to upload user profile picture
+            self.uploadProfileImage(profileImage, completion: { (error, downloadURL) in
+                if let error = error {
+                    completion(.failure(error))
                     return
                 }
                 
-                print("successfully saved user's username into the db")
-                self.uploadProfileImageToStorage(image: image)
-                completionHandler()
-            })
+                // attempt to save user profile information to database
+                guard let downloadURL = downloadURL else {
+                    completion(.failure(UserCreationError.dataError))
+                    return
+                }
+                
+                let values = ["username": username, "profile_image_url": downloadURL]
+                self.saveUserProfileInfoToDatabase(values: values, completion: { (error) in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    completion(.success)
+                }) // saveUserProfileInfoToDatabase
+            }) // uploadProfileImage()
+        } // createUser(withEmail:password:)
+        
+    } // createUserWith(email:username:password:profileImage:)
+    
+    // MARK: User Creation Helpers
+    
+    /// Attempts to upload an Image to Firebase Storage. returns an error if failed and success otherwise into completion
+    /// - parameter image: Image that is being saved to Firebase Storage
+    /// - parameter completion: Closure that gets executed. Contains an error on failure and nil otherwise
+    
+    fileprivate func uploadProfileImage(_ image: UIImage, completion: @escaping (UserCreationError?, String?) -> Void) {
+        
+        let fileName = NSUUID().uuidString
+        guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else {
+            completion(UserCreationError.dataError, nil)
+            return
         }
-    }
+        
+        let profileImagesRef = storageRef.child("profile_images/\(fileName)")
+        profileImagesRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+            if let error = error {
+                print("error attempting to upload image to Storage: \(error)")
+                completion(UserCreationError.unableToUploadProfileImage, nil)
+                return
+            }
+            
+            profileImagesRef.downloadURL(completion: { (downloadURL, error) in
+                if let error = error {
+                    print("error fetching downloadURL: \(error)")
+                    completion(UserCreationError.unableToFetchDownloadURL, nil)
+                    return
+                }
+                
+                guard let downloadURL = downloadURL else {
+                    print("Unable to unwrap download URL:")
+                    completion(UserCreationError.dataError, nil)
+                    return
+                }
+                
+                print("successfully fetched download URL: \(downloadURL.absoluteString)")
+                completion(nil, downloadURL.absoluteString)
+            }) // downloadURL
+        }) // putData
+        
+    } // uploadProfileImage
+    
+    fileprivate func saveUserProfileInfoToDatabase(values: [String: Any], completion: @escaping (UserCreationError?) -> Void) {
+        
+        guard let uid = FirebaseAPI.shared.getCurrentUserUID() else {
+            completion(UserCreationError.unableToFetchCurrentUserUID)
+            return
+        }
+        
+        databaseRef.child("users").child(uid).updateChildValues(values) { (error, reference) in
+            if let error = error {
+                print("error attempting to save user profile information to Database: \(error)")
+                completion(UserCreationError.unableToSaveProfileInformationToDatabase)
+                return
+            }
+            
+            print("successfully saved user info to Database")
+            completion(nil)
+        } // updateChildValues
+        
+    } // saveUserProfileInfoToDatabase
     
     func loginUserWith(email: String, password: String, completionHandler: @escaping (Bool) -> Void) {
         auth.signIn(withEmail: email, password: password) { (dataResult, error) in
@@ -79,52 +165,6 @@ class FirebaseAPI {
         }) { (error) in
             print("error attempting to fetch user with uid: \(uid)")
         }
-    }
-    
-    // MARK: Helper Functions
-    
-    fileprivate func uploadProfileImageToStorage(image: UIImage) {
-        let fileName = NSUUID().uuidString
-        guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else { return }
-        let profileImagesRef = FirebaseAPI.shared.storageRef.child("profile_images/\(fileName)")
-
-        let _ = profileImagesRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-            if let err = error {
-                print("error attempting to upload image to Storage: \(err)")
-                return
-            }
-
-            guard metadata != nil else { return }
-            print("successfully uploaded image to Storage")
-        }).observe(.success, handler: { (snapshot) in
-            self.saveDownloadURL(snapshot: snapshot)
-        })
-    }
-    
-    fileprivate func saveDownloadURL(snapshot: StorageTaskSnapshot) {
-        guard let uid = FirebaseAPI.shared.auth.currentUser?.uid else { return }
-        
-        snapshot.reference.downloadURL(completion: { (url, error) in
-            if let err = error {
-                print("error attempting to fetch downloadURL: \(err)")
-                return
-            }
-            
-            guard let url = url else { return }
-            print("successfully saved profile image to Storage with url: \(url.absoluteString)")
-            
-            // attempt to add newly created user to the database
-            let values = ["profile_image_url": url.absoluteString]
-            
-            self.databaseRef.child("users").child(uid).updateChildValues(values, withCompletionBlock: { error, user in
-                if let err = error {
-                    print("error attempting to save the user uid to the database: \(err)")
-                    return
-                }
-                
-                print("successfully saved user into the db")
-            })
-        })
     }
     
 } // FirebaseAPI
