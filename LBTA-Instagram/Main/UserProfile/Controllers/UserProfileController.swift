@@ -9,6 +9,11 @@
 import UIKit
 import Firebase
 
+enum LogoutResult {
+    case success
+    case failure(Error)
+}
+
 class UserProfileController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     fileprivate let headerID = "headerID"
@@ -104,6 +109,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     // MARK: - Selector Functions
     
     @objc func handleGearButtonPressed() {
+        
         let alertController = UIAlertController(title: "Logout?",
                                                 message: "Are you sure you would like to logout?",
                                                 preferredStyle: .actionSheet)
@@ -111,15 +117,18 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         let logoutAction = UIAlertAction(title: "Logout", style: .default) { (action) in
             print("logout pressed")
             
-            FirebaseAPI.shared.logoutUser(completionHandler: { (result) in
-                if result {
-                    // logout was successful
+            FirebaseAPI.shared.logoutUser(completion: { (logoutResult) in
+                
+                switch logoutResult {
+                case .success:
+                    print("Successfully logged out")
+                    
                     let loginController = LoginController()
                     let navController = UINavigationController(rootViewController: loginController)
                     self.present(navController, animated: true, completion: nil)
-                } else {
-                    // not successfull
-                    print("not successful")
+                    
+                case let .failure(error):
+                    print(error)
                 }
             })
         }
@@ -130,15 +139,22 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
+        
     }
     
     // MARK: - Helper Functions
     
     fileprivate func fetchUser() {
-        // Ensure we're able to fetch the current user's uid
+        
         guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
         
-        FirebaseAPI.shared.fetchUserWith(uid: uid) { (snapshot) in
+        FirebaseAPI.shared.fetchUserWith(uid: uid) { (snapshot, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let snapshot = snapshot else { return }
             guard let valuesDict = snapshot.value as? [String: Any] else { return }
             
             self.user = User(dictionary: valuesDict)
@@ -146,6 +162,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             
             self.collectionView?.reloadData()
         }
-    }
+        
+    } // fetchUser
     
 } // UserProfileController

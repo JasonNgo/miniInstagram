@@ -18,6 +18,19 @@ enum UserCreationError: Error {
     case dataError
 }
 
+enum LoginError: Error {
+    case unableToLogin
+    case unableToLogout
+}
+
+enum LogoutError: Error {
+    case unableToLogout
+}
+
+enum DatabaseError: Error {
+    case unableToFetchUserData
+}
+
 class FirebaseAPI {
     
     static let shared = FirebaseAPI()
@@ -132,39 +145,54 @@ class FirebaseAPI {
         
     } // saveUserProfileInfoToDatabase
     
-    func loginUserWith(email: String, password: String, completionHandler: @escaping (Bool) -> Void) {
+    // MARK: - Login Functions
+    
+    func loginUserWith(email: String, password: String, completion: @escaping (LoginResult) -> Void) {
+        
         auth.signIn(withEmail: email, password: password) { (dataResult, error) in
-            
             if let err = error {
                 print("error attempting to login email: \(email): \(err)")
-                completionHandler(false)
+                completion(.failure(LoginError.unableToLogin))
                 return
             }
             
             guard let _ = dataResult else { return }
-            completionHandler(true)
+            completion(.success)
         }
-    }
+        
+    } // loginUserWith
     
-    func logoutUser(completionHandler: @escaping (Bool) -> Void) {
+    // MARK: - Logout Functions
+    
+    func logoutUser(completion: @escaping (LogoutResult) -> Void) {
         do {
             try auth.signOut()
-            completionHandler(true)
+            completion(.success)
         } catch let error {
             print("error attempting to logout: \(error)")
-            completionHandler(false)
-            return
+            completion(.failure(LogoutError.unableToLogout))
         }
-    }
+    } // logoutUser
     
     // MARK: - Database Functions
     
-    func fetchUserWith(uid: String, completionHandler: @escaping (DataSnapshot) -> Void) {
-        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            completionHandler(snapshot)
+    func fetchUserWith(uid: String, completion: @escaping (DataSnapshot?, DatabaseError?) -> Void) {
+        let usersRef = databaseRef.child("users")
+        usersRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            completion(snapshot, nil)
         }) { (error) in
-            print("error attempting to fetch user with uid: \(uid)")
+            print("error attempting to fetch user with uid: \(uid), error: \(error)")
+            completion(nil, DatabaseError.unableToFetchUserData)
         }
+        
     }
+//    
+//    func fetchUserWith(uid: String, completionHandler: @escaping (DataSnapshot) -> Void) {
+//        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//            completionHandler(snapshot)
+//        }) { (error) in
+//            print("error attempting to fetch user with uid: \(uid)")
+//        }
+//    }
     
 } // FirebaseAPI

@@ -193,62 +193,6 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
                 print("Error: \(error)")
             }
         }
-        
-        
-//        FirebaseAPI.shared.createUserWith(email: email, password: password) { (userCreationResult) in
-//
-//            switch userCreationResult {
-//            case .success:
-//                print("successfully created user in Firebase")
-//
-//                // attempt to upload profile image to Storage
-//                FirebaseAPI.shared.uploadProfileImage(image, completionHandler: { (profileImageResult, downloadURLString) in
-//
-//                    switch profileImageResult {
-//                    case .success:
-//                        print("success")
-//
-//                        // attempt to save download url and username to Firebase Database
-//                        guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
-//                        guard let downloadURLString = downloadURLString else { return }
-//
-//                        let values = [
-//                            "username": username,
-//                            "profile_image_url": downloadURLString
-//                        ]
-//
-//                        FirebaseAPI.shared.saveUserProfileInfoToDatabase(uid: uid, values: values, completionHandler: { (databaseSaveResult) in
-//
-//                            switch databaseSaveResult {
-//                            case .success:
-//                                print("created user and saved information")
-//
-//                                guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {
-//                                    return
-//                                }
-//
-//                                mainTabBarController.setupTabBarStyling()
-//                                mainTabBarController.setupViewControllers()
-//                                self.dismiss(animated: true, completion: nil)
-//
-//                            case let .failure(error):
-//                                print(error)
-//                            }
-//
-//                        })
-//
-//                    case let .failure(error):
-//                        print(error)
-//                    }
-//
-//                })
-//
-//            case let .failure(error):
-//                print("error attempting to create user: \(error)")
-//            }
-//
-//        }
-        
     }
 
     @objc func handleAddPhotoButtonPressed() {

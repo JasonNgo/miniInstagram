@@ -42,8 +42,6 @@ class SharePhotoController: UIViewController {
         // setup
         setupNavigationBarButtons()
         setupViews()
-        
-        descriptionTextView.delegate = self
     }
     
     // MARK: Set Up Functions

@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum LoginResult {
+    case success
+    case failure(Error)
+}
+
 class LoginController: UIViewController {
     
     // MARK: - Views
@@ -153,8 +158,12 @@ class LoginController: UIViewController {
     @objc func handleLoginButtonPressed() {
         print("login pressed")
         
-        FirebaseAPI.shared.loginUserWith(email: emailTextField.text!, password: passwordTextField.text!) { (result) in
-            if result {
+        guard let emailText = emailTextField.text else { return }
+        guard let passwordText = passwordTextField.text else { return }
+        
+        FirebaseAPI.shared.loginUserWith(email: emailText, password: passwordText) { (loginResult) in
+            switch loginResult {
+            case .success:
                 print("login successful")
                 
                 guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {
@@ -165,6 +174,9 @@ class LoginController: UIViewController {
                 mainTabBarController.setupViewControllers()
                 
                 self.dismiss(animated: true, completion: nil)
+                
+            case let .failure(error):
+                print("failure: \(error)")
             }
         }
     }
