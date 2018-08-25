@@ -198,7 +198,7 @@ class FirebaseAPI {
         
     }
     
-    func fetchUserPosts(completion: @escaping ([Post]?, FetchUserInfoError?) -> Void) {
+    func fetchUserPosts(completion: @escaping (Post?, FetchUserInfoError?) -> Void) {
         
         guard let uid = getCurrentUserUID() else {
             print("unable to fetch current user uid")
@@ -207,31 +207,20 @@ class FirebaseAPI {
         }
         
         let userPostsRef = databaseRef.child("posts").child(uid)
-        var posts = [Post]()
-        
-        userPostsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+    
+        userPostsRef.queryOrdered(byChild: "creation_date").observe(.childAdded, with: { (snapshot) in
             guard let values = snapshot.value else {
                 completion(nil, FetchUserInfoError.dataError)
                 return
             }
             
-            guard let dictionaries = values as? [String: Any] else {
+            guard let dictionary = values as? [String: Any] else {
                 completion(nil, FetchUserInfoError.dataError)
                 return
             }
             
-            dictionaries.forEach({ (key, value) in
-                print(value)
-                guard let dictionary = value as? [String: Any] else {
-                    completion(nil, FetchUserInfoError.dataError)
-                    return
-                }
-                
-                let post = Post(valuesDict: dictionary)
-                posts.append(post)
-            })
-            
-            completion(posts, nil)
+            let post = Post(valuesDict: dictionary)
+            completion(post, nil)
             
         }) { (error) in
             print(error)

@@ -27,6 +27,7 @@
 		7DCAB55A212E04BC009F68AB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB559212E04BC009F68AB /* LoginController.swift */; };
 		7DE700622130DE7F00CA9EA1 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE700612130DE7F00CA9EA1 /* Post.swift */; };
 		7DE700642130E56900CA9EA1 /* UserProfilePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE700632130E56900CA9EA1 /* UserProfilePostCell.swift */; };
+		7DE700672130EB5E00CA9EA1 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE700662130EB5E00CA9EA1 /* CustomImageView.swift */; };
 		D1FFD730A693A4B58C2208D4 /* Pods_LBTA_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		7DCAB559212E04BC009F68AB /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		7DE700612130DE7F00CA9EA1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7DE700632130E56900CA9EA1 /* UserProfilePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePostCell.swift; sourceTree = "<group>"; };
+		7DE700662130EB5E00CA9EA1 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		A67840288BB3DAD7D1E5891D /* Pods-LBTA-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.release.xcconfig"; sourceTree = "<group>"; };
 		C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LBTA_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -170,6 +172,7 @@
 				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
 				7D4B6309212A36DE00C4CB7E /* API */,
 				7DB6ABA1212A0AE900583D91 /* Extensions */,
+				7DE700682130EE2700CA9EA1 /* Util */,
 				7DCAB556212DD0DE009F68AB /* Model */,
 				7DCAB55B212E069F009F68AB /* Login */,
 				7D4B630A212A3F5000C4CB7E /* Main */,
@@ -219,6 +222,14 @@
 				7DA1D32A212F55540048EB53 /* Controllers */,
 			);
 			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		7DE700682130EE2700CA9EA1 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				7DE700662130EB5E00CA9EA1 /* CustomImageView.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		B0AA5E8FCD1A95E83F01DD11 /* Frameworks */ = {
@@ -379,6 +390,7 @@
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */,
 				7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */,
+				7DE700672130EB5E00CA9EA1 /* CustomImageView.swift in Sources */,
 				7DCAB55A212E04BC009F68AB /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,16 +12,19 @@ class UserProfileHeaderView: UICollectionViewCell {
     
     var user: User? {
         didSet {
-            fetchProfileImage()
+            guard let profileImageUrl = user?.profileImageUrl else { return }
+            profileImageView.loadImageFromUrl(profileImageUrl)
             usernameLabel.text = self.user?.username
         }
     }
     
     // MARK: - Views
     
-    let profileImageView: UIImageView = {
-        var imageView = UIImageView()
-        imageView.clipsToBounds = true 
+    let profileImageView: CustomImageView = {
+        var imageView = CustomImageView()
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .lightGray
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -220,32 +223,5 @@ class UserProfileHeaderView: UICollectionViewCell {
                                  width: 0, height: 34)
     }
     
-    // MARK: - Helper Functions
-    
-    fileprivate func fetchProfileImage() {
-        guard let profileImageUrl = user?.profileImageUrl else { return }
-        guard let url = URL(string: profileImageUrl) else { return }
-        
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            // check for errors
-            if let err = error {
-                print("error attempting to fetch profile image: \(err)")
-                return
-            }
-            
-            // check the response
-            guard let response = response else { return }
-            guard let responseHTTP = response as? HTTPURLResponse else { return }
-            print("status code: \(responseHTTP.statusCode)")
-            
-            guard let data = data else { return }
-            let image = UIImage(data: data)
-            
-            DispatchQueue.main.async {
-                self.profileImageView.image = image
-            }
-        }.resume()
-    }
-
 } // UserProfileHeaderView
 

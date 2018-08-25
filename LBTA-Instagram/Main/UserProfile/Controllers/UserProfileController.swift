@@ -172,15 +172,15 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     fileprivate func fetchUserPosts() {
         
-        FirebaseAPI.shared.fetchUserPosts { (posts, error) in
+        FirebaseAPI.shared.fetchUserPosts { (post, error) in
             if let error = error {
                 print(error)
                 return
             }
             
-            guard let posts = posts else { return }
+            guard let post = post else { return }
             
-            self.posts = posts
+            self.posts.append(post)
             self.collectionView?.reloadData()
         }
         
