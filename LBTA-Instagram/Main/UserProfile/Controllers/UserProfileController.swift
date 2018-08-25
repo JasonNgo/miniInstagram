@@ -21,6 +21,8 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     var user: User?
     
+    var posts = [Post]()
+    
     // MARK: - Lifecycle Functions
     
     override func viewDidLoad() {
@@ -30,6 +32,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         setupCollectionView()
         
         fetchUser()
+        fetchUserPosts()
     }
     
     // MARK: - Set Up Functions
@@ -42,7 +45,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
                                  forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                                  withReuseIdentifier: headerID)
         
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView?.register(UserProfilePostCell.self, forCellWithReuseIdentifier: cellID)
     }
     
     fileprivate func setupGearButton() {
@@ -56,8 +59,10 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
-        cell.backgroundColor = .red
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
+        
+        cell.post = posts[indexPath.item]
+        
         return cell
     }
 
@@ -70,7 +75,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
 
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -164,5 +169,21 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         }
         
     } // fetchUser
+    
+    fileprivate func fetchUserPosts() {
+        
+        FirebaseAPI.shared.fetchUserPosts { (posts, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let posts = posts else { return }
+            
+            self.posts = posts
+            self.collectionView?.reloadData()
+        }
+        
+    } // fetchUserPosts
     
 } // UserProfileController

@@ -20,19 +20,20 @@ enum UserCreationError: Error {
 
 enum LoginError: Error {
     case unableToLogin
-    case unableToLogout
 }
 
 enum LogoutError: Error {
     case unableToLogout
 }
 
-enum ProfileError: Error {
+enum FetchUserInfoError: Error {
     case unableToFetchUserUID
     case unableToFetchUserData
+    case unableToFetchUserPosts
+    case dataError
 }
 
-enum PostError: Error {
+enum SavePostError: Error {
     case unableToFetchUserUID
     case unableToSavePostImage
     case unableToFetchImageDownloadURL
@@ -49,8 +50,7 @@ class FirebaseAPI {
     let auth = Auth.auth()
     
     func getCurrentUserUID() -> String? {
-        guard let currentUserUID = auth.currentUser?.uid else { return nil }
-        return currentUserUID
+        return auth.currentUser?.uid
     }
     
     // MARK: - User Creation
@@ -183,9 +183,9 @@ class FirebaseAPI {
         }
     } // logoutUser
     
-    // MARK: - Database Functions
+    // MARK: - Fetch Profile Functions
     
-    func fetchUserWith(uid: String, completion: @escaping (DataSnapshot?, ProfileError?) -> Void) {
+    func fetchUserWith(uid: String, completion: @escaping (DataSnapshot?, FetchUserInfoError?) -> Void) {
         
         let usersRef = databaseRef.child("users")
         
@@ -193,12 +193,54 @@ class FirebaseAPI {
             completion(snapshot, nil)
         }) { (error) in
             print("error attempting to fetch user with uid: \(uid), error: \(error)")
-            completion(nil, ProfileError.unableToFetchUserData)
+            completion(nil, FetchUserInfoError.unableToFetchUserData)
         }
         
     }
     
-    // MARK: - Post Functions
+    func fetchUserPosts(completion: @escaping ([Post]?, FetchUserInfoError?) -> Void) {
+        
+        guard let uid = getCurrentUserUID() else {
+            print("unable to fetch current user uid")
+            completion(nil, FetchUserInfoError.unableToFetchUserUID)
+            return
+        }
+        
+        let userPostsRef = databaseRef.child("posts").child(uid)
+        var posts = [Post]()
+        
+        userPostsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let values = snapshot.value else {
+                completion(nil, FetchUserInfoError.dataError)
+                return
+            }
+            
+            guard let dictionaries = values as? [String: Any] else {
+                completion(nil, FetchUserInfoError.dataError)
+                return
+            }
+            
+            dictionaries.forEach({ (key, value) in
+                print(value)
+                guard let dictionary = value as? [String: Any] else {
+                    completion(nil, FetchUserInfoError.dataError)
+                    return
+                }
+                
+                let post = Post(valuesDict: dictionary)
+                posts.append(post)
+            })
+            
+            completion(posts, nil)
+            
+        }) { (error) in
+            print(error)
+            completion(nil, FetchUserInfoError.unableToFetchUserPosts)
+        }
+        
+    } // fetchUserPosts
+    
+    // MARK: - Save Post Functions
     
     func savePostToFirebase(postImage: UIImage, values: [String: Any], completion: @escaping (SharePhotoResult) -> Void) {
         
@@ -211,12 +253,12 @@ class FirebaseAPI {
             
             // attempt to save user info
             guard let downloadURL = downloadURL else {
-                completion(.failure(PostError.dataError))
+                completion(.failure(SavePostError.dataError))
                 return
             }
             
             guard let uid = FirebaseAPI.shared.getCurrentUserUID() else {
-                completion(.failure(PostError.unableToFetchUserUID))
+                completion(.failure(SavePostError.unableToFetchUserUID))
                 return
             }
             
@@ -226,7 +268,7 @@ class FirebaseAPI {
             self.databaseRef.child("posts").child(uid).childByAutoId().updateChildValues(valuesDict) { (error, reference) in
                 if let error = error {
                     print("error attempting to save post info to user: \(error)")
-                    completion(.failure(PostError.unableToSavePostInformation))
+                    completion(.failure(SavePostError.unableToSavePostInformation))
                     return
                 }
                 
@@ -237,13 +279,13 @@ class FirebaseAPI {
         
     } // savePostToFirebase
     
-    // MARK: Posts Helper
+    // MARK: Save Posts Helper
     
-    fileprivate func savePostImageToStorage(image: UIImage, completion: @escaping (String?, PostError?) -> Void) {
+    fileprivate func savePostImageToStorage(image: UIImage, completion: @escaping (String?, SavePostError?) -> Void) {
         
         let fileName = NSUUID().uuidString
         guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else {
-            completion(nil, PostError.dataError)
+            completion(nil, SavePostError.dataError)
             return
         }
         
@@ -251,20 +293,20 @@ class FirebaseAPI {
         postsRef.putData(uploadData, metadata: nil) { (metadata, error) in
             if let error = error {
                 print("error attempting to upload post image to storage: \(error)")
-                completion(nil, PostError.unableToSavePostImage)
+                completion(nil, SavePostError.unableToSavePostImage)
                 return
             }
             
             postsRef.downloadURL(completion: { (downloadURL, error) in
                 if let error = error {
                     print("error attempting to fetch post image download URL: \(error)")
-                    completion(nil, PostError.unableToFetchImageDownloadURL)
+                    completion(nil, SavePostError.unableToFetchImageDownloadURL)
                     return
                 }
                 
                 guard let downloadURL = downloadURL else {
                     print("Unable to unwrap downloadURL")
-                    completion(nil, PostError.dataError)
+                    completion(nil, SavePostError.dataError)
                     return
                 }
                 

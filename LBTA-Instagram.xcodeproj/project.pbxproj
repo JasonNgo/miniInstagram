@@ -25,6 +25,8 @@
 		7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */; };
 		7DCAB558212DD0EC009F68AB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB557212DD0EC009F68AB /* User.swift */; };
 		7DCAB55A212E04BC009F68AB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCAB559212E04BC009F68AB /* LoginController.swift */; };
+		7DE700622130DE7F00CA9EA1 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE700612130DE7F00CA9EA1 /* Post.swift */; };
+		7DE700642130E56900CA9EA1 /* UserProfilePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE700632130E56900CA9EA1 /* UserProfilePostCell.swift */; };
 		D1FFD730A693A4B58C2208D4 /* Pods_LBTA_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,8 @@
 		7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
 		7DCAB557212DD0EC009F68AB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7DCAB559212E04BC009F68AB /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		7DE700612130DE7F00CA9EA1 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		7DE700632130E56900CA9EA1 /* UserProfilePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfilePostCell.swift; sourceTree = "<group>"; };
 		A67840288BB3DAD7D1E5891D /* Pods-LBTA-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.release.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.release.xcconfig"; sourceTree = "<group>"; };
 		C4CE37A6213099F9191B6BE5 /* Pods_LBTA_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LBTA_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -124,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				7DCAB552212B80D3009F68AB /* UserProfileHeaderView.swift */,
+				7DE700632130E56900CA9EA1 /* UserProfilePostCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				7DCAB557212DD0EC009F68AB /* User.swift */,
+				7DE700612130DE7F00CA9EA1 /* Post.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -367,6 +373,8 @@
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,
 				7DCAB558212DD0EC009F68AB /* User.swift in Sources */,
 				7DA1D325212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift in Sources */,
+				7DE700622130DE7F00CA9EA1 /* Post.swift in Sources */,
+				7DE700642130E56900CA9EA1 /* UserProfilePostCell.swift in Sources */,
 				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */,
