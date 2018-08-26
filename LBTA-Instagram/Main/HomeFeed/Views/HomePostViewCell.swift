@@ -180,7 +180,7 @@ class HomePostViewCell: UICollectionViewCell {
         
         let attributedText = NSMutableAttributedString(string: "\(post.user.username) ", attributes: usernameTextAttributes)
         let captionText = NSAttributedString(string: post.caption, attributes: captionTextAttributes)
-        let spaceText = NSAttributedString(string: "\n", attributes: spaceTextAttributes)
+        let spaceText = NSAttributedString(string: "\n\n", attributes: spaceTextAttributes)
         let dateText = NSAttributedString(string: "March 21, 2018", attributes: dateTextAttributes)
         
         attributedText.append(captionText)

@@ -19,7 +19,12 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     fileprivate let headerID = "headerID"
     fileprivate let cellID = "cellID"
     
-    var user: User?
+//    var userId: String?
+    var user: User? {
+        didSet {
+            fetchUserPosts()
+        }
+    }
     
     var posts = [Post]()
     
@@ -32,7 +37,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         setupCollectionView()
         
         fetchUser()
-        fetchUserPosts()
     }
     
     // MARK: - Set Up Functions

@@ -149,7 +149,6 @@ class UserProfileHeaderView: UICollectionViewCell {
                                 bottom: nil, paddingBottom: 0, left: self.leftAnchor, paddingLeft: 12,
                                 width: 80, height: 80)
         profileImageView.layer.cornerRadius = 80 / 2
-        profileImageView.clipsToBounds = true
     }
     
     fileprivate func setupBottomToolbar() {

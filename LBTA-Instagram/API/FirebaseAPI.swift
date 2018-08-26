@@ -41,6 +41,11 @@ enum SavePostError: Error {
     case dataError
 }
 
+enum UserSearchError: Error {
+    case unableToFetchListOfUsers
+    case dataError
+}
+
 class FirebaseAPI {
     
     static let shared = FirebaseAPI()
@@ -78,7 +83,12 @@ class FirebaseAPI {
                     return
                 }
                 
-                let values = ["username": username, "profile_image_url": downloadURL]
+                let values = [
+                    "uuid": authResult?.user.uid ?? "",
+                    "username": username,
+                    "profile_image_url": downloadURL
+                ] as [String: Any]
+                
                 self.saveUserProfileInfoToDatabase(values: values, completion: { (error) in
                     if let error = error {
                         completion(.failure(error))
@@ -183,7 +193,8 @@ class FirebaseAPI {
         }
     } // logoutUser
     
-    // MARK: - Fetch Profile Functions
+    // MARK: - Fetching Functions
+    // MARK: Fetch Profile Functions
     
     func fetchUserWith(uid: String, completion: @escaping (DataSnapshot?, FetchUserInfoError?) -> Void) {
         
@@ -228,6 +239,48 @@ class FirebaseAPI {
         }
         
     } // fetchUserPosts
+    
+    // MARK: Fetching Users
+    
+    func fetchUsersWithSearch(_ search: String, completion: @escaping ([User]?, UserSearchError?) -> Void) {
+        let usersRef = databaseRef.child("users")
+        
+        var users = [User]()
+        
+        usersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let values = snapshot.value else {
+                completion(nil, UserSearchError.dataError)
+                return
+            }
+            guard let dictionaries = values as? [String: Any] else {
+                completion(nil, UserSearchError.dataError)
+                return
+            }
+            
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String: Any] else {
+                    completion(nil, UserSearchError.dataError)
+                    return
+                }
+                
+                if key == self.auth.currentUser?.uid { return }
+                
+                let user = User(dictionary: dictionary)
+                users.append(user)
+            })
+            
+            users.sort(by: { (u1, u2) -> Bool in
+                return u1.username.compare(u2.username) == .orderedAscending
+            })
+            
+            completion(users, nil)
+            
+        }) { (error) in
+            print("error attempting to fetch list of users with search: \(search). Error: \(error)")
+            completion(nil, UserSearchError.unableToFetchListOfUsers)
+        }
+    }
     
     // MARK: - Save Post Functions
     

@@ -53,7 +53,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         // search
         let searchController = UIViewController()
         let searchNavController = createNavigationController(rootViewController: searchController,
-                                                             title: "Search",
+                                                             title: "",
                                                              selectedImage: #imageLiteral(resourceName: "search_selected"), unselectedImage: #imageLiteral(resourceName: "search_unselected"))
         // photo picker
         let photoPickerController = UIViewController()
