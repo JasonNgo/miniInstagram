@@ -16,7 +16,12 @@ struct Post {
     let postImageUrl: String
     let creationDate: Date
     
-    init(valuesDict: [String: Any]) {
+    let user: User
+    
+    init(user: User, valuesDict: [String: Any]) {
+        
+        self.user = user
+        
         self.caption = valuesDict["caption"] as? String ?? ""
         self.imageWidth = valuesDict["image_width"] as? Int ?? 0
         self.imageHeight = valuesDict["image_height"] as? Int ?? 0

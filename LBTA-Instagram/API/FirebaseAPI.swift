@@ -198,7 +198,7 @@ class FirebaseAPI {
         
     }
     
-    func fetchUserPosts(completion: @escaping (Post?, FetchUserInfoError?) -> Void) {
+    func fetchUserPosts(user: User, completion: @escaping (Post?, FetchUserInfoError?) -> Void) {
         
         guard let uid = getCurrentUserUID() else {
             print("unable to fetch current user uid")
@@ -219,7 +219,7 @@ class FirebaseAPI {
                 return
             }
             
-            let post = Post(valuesDict: dictionary)
+            let post = Post(user: user, valuesDict: dictionary)
             completion(post, nil)
             
         }) { (error) in

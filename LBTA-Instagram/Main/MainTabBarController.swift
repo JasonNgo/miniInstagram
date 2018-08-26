@@ -43,8 +43,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     func setupViewControllers() {
         
+        let layout = UICollectionViewFlowLayout()
+        
         // home
-        let homeController = UIViewController()
+        let homeController = HomeFeedController(collectionViewLayout: layout)
         let homeNavController = createNavigationController(rootViewController: homeController,
                                                            title: "Home",
                                                            selectedImage: #imageLiteral(resourceName: "home_selected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
@@ -64,7 +66,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
                                                            title: "Likes",
                                                            selectedImage: #imageLiteral(resourceName: "like_selected"), unselectedImage: #imageLiteral(resourceName: "like_unselected"))
         // profile
-        let layout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: layout)
         let userProfileNavController = createNavigationController(rootViewController: userProfileController,
                                                                   title: "User Profile",
