@@ -361,7 +361,7 @@ class FirebaseAPI {
     
     // MARK: Following/Unfollowing Functions
     
-    func fetchListOfFollowers(completion: @escaping ([String]) -> Void) {
+    func fetchListOfFollowersForCurrentUser(completion: @escaping ([String]?) -> Void) {
         
         guard let currentUUID = getCurrentUserUID() else { return }
         
@@ -381,6 +381,7 @@ class FirebaseAPI {
             
         }) { (error) in
             print(error)
+            completion(nil)
         }
     }
     

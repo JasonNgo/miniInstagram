@@ -27,11 +27,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             return
         }
         
-        setupTabBarStyling()
-        setupViewControllers()
-        
         // UITabBarControllerDelegate
         self.delegate = self
+        
+        setupTabBarStyling()
+        setupViewControllers()
     }
     
     // MARK: - Setup Functions

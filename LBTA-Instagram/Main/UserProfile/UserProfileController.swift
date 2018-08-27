@@ -27,11 +27,17 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             if currentUUID == user?.uuid {
                 followButton.makeHidden()
             } else {
-                
-                
-                
-                
-                followButton.makeVisible()
+                FirebaseAPI.shared.fetchListOfFollowersForCurrentUser { (followers) in
+                    
+                    guard let followers = followers else { return }
+                    if let _ = followers.index(of: self.user?.uuid ?? "") {
+                        self.followButton.title = "Unfollow"
+                    } else {
+                        self.followButton.title = "Follow"
+                    }
+                    
+                    self.followButton.makeVisible()
+                }
             }
         }
     }
@@ -161,7 +167,30 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     @objc func handleFollowPressed() {
-        print("follow pressed")
+        print("follow/unfollow pressed")
+        
+        if followButton.title?.compare("Follow") == .orderedSame {
+            guard let uidToFollow = user?.uuid else { return }
+            FirebaseAPI.shared.followUserWithUID(uidToFollow) { (result) in
+                switch result {
+                case .success:
+                    self.followButton.title = "Unfollow"
+                case .failure:
+                    self.followButton.title = "Follow"
+                }
+            }
+        } else {
+            guard let uidToUnfollow = user?.uuid else { return }
+            FirebaseAPI.shared.unfollowUserWithUID(uidToUnfollow) { (result) in
+                switch result {
+                case .success:
+                    self.followButton.title = "Follow"
+                case .failure:
+                    self.followButton.title = "Unfollow"
+                }
+            }
+            
+        }
     }
     
     // MARK: - Helper Functions
