@@ -358,5 +358,66 @@ class FirebaseAPI {
         } // putData
         
     } // savePostImageToStorage
+    
+    // MARK: Following/Unfollowing Functions
+    
+    func fetchListOfFollowers(completion: @escaping ([String]) -> Void) {
+        
+        guard let currentUUID = getCurrentUserUID() else { return }
+        
+        let followingRef = databaseRef.child("following").child(currentUUID)
+        var strings = [String]()
+        
+        followingRef.observe(.value, with: { (snapshot) in
+            
+            guard let values = snapshot.value else { return }
+            guard let valuesDict = values as? [String: Any] else { return }
+            
+            valuesDict.forEach({ (key, value) in
+                strings.append(key)
+            })
+            
+            completion(strings)
+            
+        }) { (error) in
+            print(error)
+        }
+    }
+    
+    func followUserWithUID(_ uidToFollow: String, completion: @escaping (FollowUserResult) -> Void) {
+        
+        guard let currentUUID = getCurrentUserUID() else { return }
+        
+        let followingRef = databaseRef.child("following").child(currentUUID)
+        
+        let values = [uidToFollow: true] as [String: Any]
+        
+        followingRef.updateChildValues(values) { (error, database) in
+            if let error = error {
+                print("there was an error following user with uid: \(uidToFollow), error: \(error)")
+                completion(.failure(error))
+                return
+            }
+            
+            completion(.success)
+        }   
+    }
+    
+    func unfollowUserWithUID(_ uidToUnfollow: String, completion: @escaping (UnfollowUserResult) -> Void) {
+        
+        guard let currentUUID = getCurrentUserUID() else { return }
+        
+        let followingRef = databaseRef.child("following").child(currentUUID)
+        
+        followingRef.child(uidToUnfollow).removeValue { (error, database) in
+            if let error = error {
+                print("there was an error unfollowing user with uid: \(uidToUnfollow), error: \(error)")
+                completion(.failure(error))
+                return
+            }
+            
+            completion(.success)
+        }   
+    }
 
 } // FirebaseAPI

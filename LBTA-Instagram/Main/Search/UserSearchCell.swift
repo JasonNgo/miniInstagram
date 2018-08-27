@@ -36,6 +36,12 @@ class UserSearchCell: UICollectionViewCell {
         return label
     }()
     
+    lazy var followButton: UIButton = {
+        var button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(handleFollowButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -46,11 +52,45 @@ class UserSearchCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setupFollowButton() {
+        
+        
+        
+        
+    }
+    
+    @objc func handleFollowButtonPressed() {
+        
+        guard let user = user else { return }
+        
+        if followButton.titleLabel?.text?.compare("Follow") == .orderedSame {
+            FirebaseAPI.shared.followUserWithUID(user.uuid) { (result) in
+                switch result {
+                case .success:
+                    self.followButton.setTitle("Unfollow", for: .normal)
+                case .failure:
+                    self.followButton.setTitle("Follow", for: .normal)
+                }
+            }
+        } else {
+            FirebaseAPI.shared.unfollowUserWithUID(user.uuid) { (result) in
+                switch result {
+                case .success:
+                    self.followButton.setTitle("Follow", for: .normal)
+                case .failure:
+                    self.followButton.setTitle("Unfollow", for: .normal)
+                }
+            }
+        }
+
+    }
+    
     // MARK: - Set Up Functions
     
     fileprivate func setupViews() {
         addSubview(userProfileImage)
         addSubview(usernameLabel)
+        addSubview(followButton)
         
         userProfileImage.anchor(top: nil, paddingTop: 0,
                                 right: nil, paddingRight: 0,
@@ -61,8 +101,14 @@ class UserSearchCell: UICollectionViewCell {
         userProfileImage.center(centerX: nil, paddingCenterX: 0,
                                 centerY: centerYAnchor, paddingCenterY: 0)
         
+        followButton.anchor(top: nil, paddingTop: 0,
+                            right: rightAnchor, paddingRight: -8,
+                            bottom: nil, paddingBottom: 0,
+                            left: nil, paddingLeft: 0, width: 80, height: 40)
+        followButton.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)
+        
         usernameLabel.anchor(top: nil, paddingTop: 8,
-                             right: rightAnchor, paddingRight: 8,
+                             right: followButton.leftAnchor, paddingRight: 8,
                              bottom: nil, paddingBottom: 0,
                              left: userProfileImage.rightAnchor, paddingLeft: 8,
                              width: 0, height: 0)

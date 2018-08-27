@@ -51,7 +51,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
                                                            title: "Home",
                                                            selectedImage: #imageLiteral(resourceName: "home_selected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
         // search
-        let searchController = UIViewController()
+        let searchController = UserSearchController(collectionViewLayout: layout)
         let searchNavController = createNavigationController(rootViewController: searchController,
                                                              title: "",
                                                              selectedImage: #imageLiteral(resourceName: "search_selected"), unselectedImage: #imageLiteral(resourceName: "search_unselected"))

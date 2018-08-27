@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 enum LogoutResult {
     case success
@@ -19,43 +18,54 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     fileprivate let headerID = "headerID"
     fileprivate let cellID = "cellID"
     
-//    var userId: String?
+    var userId: String?
     var user: User? {
         didSet {
-            fetchUserPosts()
+            navigationItem.title = user?.username
+            
+            guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+            if currentUUID == user?.uuid {
+                followButton.makeHidden()
+            } else {
+                
+                
+                
+                
+                followButton.makeVisible()
+            }
         }
     }
-    
     var posts = [Post]()
+    
+    lazy var followButton: UIBarButtonItem = {
+        var button = UIBarButtonItem(title: "Follow", style: .plain, target: self, action: #selector(handleFollowPressed))
+        button.makeHidden()
+        return button
+    }()
     
     // MARK: - Lifecycle Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // set up
-        setupCollectionView()
+        collectionView?.backgroundColor = .white
+        collectionView?.register(UserProfilePostCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView?.register(UserProfileHeaderView.self,
+                                 forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                 withReuseIdentifier: headerID)
+        
+        // setup logout
+        setupLogoutButton()
         
         fetchUser()
     }
     
     // MARK: - Set Up Functions
     
-    fileprivate func setupCollectionView() {
-        collectionView?.backgroundColor = .white
-        setupGearButton()
-        
-        collectionView?.register(UserProfileHeaderView.self,
-                                 forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-                                 withReuseIdentifier: headerID)
-        
-        collectionView?.register(UserProfilePostCell.self, forCellWithReuseIdentifier: cellID)
-    }
-    
-    fileprivate func setupGearButton() {
+    fileprivate func setupLogoutButton() {
         let gearButton = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain,
                                          target: self, action: #selector(handleGearButtonPressed))
-        navigationItem.rightBarButtonItem = gearButton
+        navigationItem.rightBarButtonItems = [gearButton, followButton]
     }
     
     // MARK: - UICollectionViewDelegate
@@ -64,7 +74,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
-        
         cell.post = posts[indexPath.item]
         
         return cell
@@ -100,10 +109,11 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: headerID,
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID,
                                                                      for: indexPath) as! UserProfileHeaderView
-        header.user = self.user
+        if let user = self.user {
+            header.user = user
+        }
         
         return header
     }
@@ -127,7 +137,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             print("logout pressed")
             
             FirebaseAPI.shared.logoutUser(completion: { (logoutResult) in
-                
                 switch logoutResult {
                 case .success:
                     print("Successfully logged out")
@@ -151,11 +160,15 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         
     }
     
+    @objc func handleFollowPressed() {
+        print("follow pressed")
+    }
+    
     // MARK: - Helper Functions
     
     fileprivate func fetchUser() {
         
-        guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
+        let uid = userId ?? (FirebaseAPI.shared.getCurrentUserUID() ?? "")
         
         FirebaseAPI.shared.fetchUserWith(uid: uid) { (snapshot, error) in
             if let error = error {
@@ -167,9 +180,9 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             guard let valuesDict = snapshot.value as? [String: Any] else { return }
             
             self.user = User(dictionary: valuesDict)
-            self.navigationItem.title = self.user?.username
-            
             self.collectionView?.reloadData()
+            
+            self.fetchUserPosts()
         }
         
     } // fetchUser
@@ -180,6 +193,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         
         FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
             if let error = error {
+                self.collectionView?.reloadData() // reload user details
                 print(error)
                 return
             }
@@ -191,5 +205,9 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         }
         
     } // fetchUserPosts
+    
+    fileprivate func checkFollowStatus() {
+        
+    }
     
 } // UserProfileController

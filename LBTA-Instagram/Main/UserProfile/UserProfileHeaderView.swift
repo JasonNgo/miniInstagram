@@ -12,9 +12,10 @@ class UserProfileHeaderView: UICollectionViewCell {
     
     var user: User? {
         didSet {
+            usernameLabel.text = self.user?.username
+            
             guard let profileImageUrl = user?.profileImageUrl else { return }
             profileImageView.loadImageFromUrl(profileImageUrl)
-            usernameLabel.text = self.user?.username
         }
     }
     

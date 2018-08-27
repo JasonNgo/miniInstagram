@@ -13,6 +13,16 @@ enum UserSearchResult {
     case failure(Error)
 }
 
+enum FollowUserResult {
+    case success
+    case failure(Error)
+}
+
+enum UnfollowUserResult {
+    case success
+    case failure(Error)
+}
+
 class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     
     fileprivate let cellId = "cellId"
@@ -89,8 +99,9 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
         searchBar.isHidden = true
         searchBar.resignFirstResponder()
         
-        let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewLayout())
-        userProfileController.userId = user.uid
+        let layout = UICollectionViewLayout()
+        let userProfileController = UserProfileController(collectionViewLayout: layout)
+        userProfileController.userId = user.uuid
         navigationController?.pushViewController(userProfileController, animated: true)
     }
     
