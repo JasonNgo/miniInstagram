@@ -17,58 +17,50 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         
         // user not logged in
-        if FirebaseAPI.shared.auth.currentUser == nil {
+        if FirebaseAPI.shared.isUserLoggedIn() {
             DispatchQueue.main.async {
                 let loginController = LoginController()
                 let navController = UINavigationController(rootViewController: loginController)
-                self.present(navController, animated: true, completion: nil)
+                self.present(navController, animated: true)
             }
             
             return
         }
         
-        // UITabBarControllerDelegate
-        self.delegate = self
-        
-        setupTabBarStyling()
+        setupTabBarController()
         setupViewControllers()
     }
     
-    // MARK: - Setup Functions
+    // MARK: - Set Up Functions
     
-    func setupTabBarStyling() {
+    func setupTabBarController() {
         view.backgroundColor = .white
         tabBar.tintColor = .black
+        self.delegate = self
     }
     
     func setupViewControllers() {
-        
         let layout = UICollectionViewFlowLayout()
         
         // home
         let homeController = HomeFeedController(collectionViewLayout: layout)
-        let homeNavController = createNavigationController(rootViewController: homeController,
-                                                           title: "Home",
+        let homeNavController = createNavigationController(rootViewController: homeController, title: "Home",
                                                            selectedImage: #imageLiteral(resourceName: "home_selected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
         // search
         let searchController = UserSearchController(collectionViewLayout: layout)
-        let searchNavController = createNavigationController(rootViewController: searchController,
-                                                             title: "",
+        let searchNavController = createNavigationController(rootViewController: searchController, title: "Search",
                                                              selectedImage: #imageLiteral(resourceName: "search_selected"), unselectedImage: #imageLiteral(resourceName: "search_unselected"))
         // photo picker
         let photoPickerController = UIViewController()
-        let photoNavController = createNavigationController(rootViewController: photoPickerController,
-                                                            title: "Photo",
+        let photoNavController = createNavigationController(rootViewController: photoPickerController, title: "Photo",
                                                             selectedImage: #imageLiteral(resourceName: "plus_unselected"), unselectedImage: #imageLiteral(resourceName: "plus_unselected"))
         // like
         let likeController = UIViewController()
-        let likeNavController = createNavigationController(rootViewController: likeController,
-                                                           title: "Likes",
+        let likeNavController = createNavigationController(rootViewController: likeController, title: "Likes",
                                                            selectedImage: #imageLiteral(resourceName: "like_selected"), unselectedImage: #imageLiteral(resourceName: "like_unselected"))
         // profile
         let userProfileController = UserProfileController(collectionViewLayout: layout)
-        let userProfileNavController = createNavigationController(rootViewController: userProfileController,
-                                                                  title: "User Profile",
+        let userProfileNavController = createNavigationController(rootViewController: userProfileController, title: "User",
                                                                   selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"))
         
         viewControllers = [
@@ -83,8 +75,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         items.forEach { (item) in
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
-        
-        // test to see if commits will show
     }
     
     // MARK: - UITabBarControllerDelegate
@@ -105,10 +95,9 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     fileprivate func createNavigationController(rootViewController: UIViewController, title: String,
                                                 selectedImage: UIImage, unselectedImage: UIImage) -> UIViewController {
         
-        let navController = UINavigationController(rootViewController: rootViewController)
-        
         rootViewController.navigationItem.title = title
         
+        let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage.withRenderingMode(.alwaysOriginal)
         navController.tabBarItem.selectedImage = selectedImage.withRenderingMode(.alwaysOriginal)
         

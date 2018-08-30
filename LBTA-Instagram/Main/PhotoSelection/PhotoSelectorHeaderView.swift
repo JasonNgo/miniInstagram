@@ -29,10 +29,8 @@ class PhotoSelectorHeaderView: UICollectionViewCell {
         super.init(frame: frame)
         
         self.addSubview(selectedPhotoImageView)
-        selectedPhotoImageView.anchor(top: self.topAnchor, paddingTop: 0,
-                                      right: self.rightAnchor, paddingRight: 0,
-                                      bottom: self.bottomAnchor, paddingBottom: 0,
-                                      left: self.leftAnchor, paddingLeft: 0,
+        selectedPhotoImageView.anchor(top: self.topAnchor, paddingTop: 0, right: self.rightAnchor, paddingRight: 0,
+                                      bottom: self.bottomAnchor, paddingBottom: 0, left: self.leftAnchor, paddingLeft: 0,
                                       width: 0, height: 0)
     }
     

@@ -12,8 +12,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     
     var user: User? {
         didSet {
-            usernameLabel.text = self.user?.username
-            
+            usernameLabel.text = user?.username
             guard let profileImageUrl = user?.profileImageUrl else { return }
             profileImageView.loadImageFromUrl(profileImageUrl)
         }
@@ -173,31 +172,23 @@ class UserProfileHeaderView: UICollectionViewCell {
         self.addSubview(topDividerView)
         self.addSubview(bottomDividerView)
         
-        stackView.anchor(top: nil, paddingTop: 0,
-                         right: self.rightAnchor, paddingRight: 0,
-                         bottom: self.bottomAnchor, paddingBottom: 0,
-                         left: self.leftAnchor, paddingLeft: 0,
+        stackView.anchor(top: nil, paddingTop: 0, right: self.rightAnchor, paddingRight: 0,
+                         bottom: self.bottomAnchor, paddingBottom: 0, left: self.leftAnchor, paddingLeft: 0,
                          width: 0, height: 50)
         
-        topDividerView.anchor(top: stackView.topAnchor, paddingTop: 0,
-                              right: self.rightAnchor, paddingRight: 0,
-                              bottom: nil, paddingBottom: 0,
-                              left: self.leftAnchor, paddingLeft: 0,
+        topDividerView.anchor(top: stackView.topAnchor, paddingTop: 0, right: self.rightAnchor, paddingRight: 0,
+                              bottom: nil, paddingBottom: 0, left: self.leftAnchor, paddingLeft: 0,
                               width: 0, height: 0.5)
         
-        bottomDividerView.anchor(top: nil, paddingTop: 0,
-                                 right: self.rightAnchor, paddingRight: 0,
-                                 bottom: self.bottomAnchor, paddingBottom: 0,
-                                 left: self.leftAnchor, paddingLeft: 0,
+        bottomDividerView.anchor(top: nil, paddingTop: 0, right: self.rightAnchor, paddingRight: 0,
+                                 bottom: self.bottomAnchor, paddingBottom: 0, left: self.leftAnchor, paddingLeft: 0,
                                  width: 0, height: 0.5)
     }
     
     fileprivate func setupUsernameLabel() {
         self.addSubview(usernameLabel)
-        usernameLabel.anchor(top: profileImageView.bottomAnchor, paddingTop: 4,
-                             right: self.rightAnchor, paddingRight: 12,
-                             bottom: gridButton.topAnchor, paddingBottom: 0,
-                             left: self.leftAnchor, paddingLeft: 12,
+        usernameLabel.anchor(top: profileImageView.bottomAnchor, paddingTop: 4, right: self.rightAnchor, paddingRight: 12,
+                             bottom: gridButton.topAnchor, paddingBottom: 0, left: self.leftAnchor, paddingLeft: 12,
                              width: 0, height: 0)
     }
     
@@ -207,19 +198,15 @@ class UserProfileHeaderView: UICollectionViewCell {
         stackView.distribution = .fillEqually
         
         self.addSubview(stackView)
-        stackView.anchor(top: self.topAnchor, paddingTop: 8,
-                         right: self.rightAnchor, paddingRight: -12,
-                         bottom: nil, paddingBottom: 0,
-                         left: profileImageView.rightAnchor, paddingLeft: 12,
+        stackView.anchor(top: self.topAnchor, paddingTop: 8, right: self.rightAnchor, paddingRight: -12,
+                         bottom: nil, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 12,
                          width: 0, height: 50)
     }
     
     fileprivate func setupEditProfileButton() {
         self.addSubview(editProfileButton)
-        editProfileButton.anchor(top: postsLabel.bottomAnchor, paddingTop: 0,
-                                 right: self.rightAnchor, paddingRight: -12,
-                                 bottom: nil, paddingBottom: 0,
-                                 left: profileImageView.rightAnchor, paddingLeft: 12,
+        editProfileButton.anchor(top: postsLabel.bottomAnchor, paddingTop: 0, right: self.rightAnchor, paddingRight: -12,
+                                 bottom: nil, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 12,
                                  width: 0, height: 34)
     }
     

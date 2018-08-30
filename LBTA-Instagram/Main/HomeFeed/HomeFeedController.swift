@@ -12,12 +12,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     fileprivate let cellId = "cellId"
     
-    var user: User? {
-        didSet {
-            fetchPosts()
-        }
-    }
-    
+    var user: User?
     var posts = [Post]()
     
     override func viewDidLoad() {
@@ -40,16 +35,11 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomePostViewCell
-        
         cell.post = posts[indexPath.item]
-        
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 40 + 8 + 8
         height += view.frame.width
         height += 50
@@ -65,35 +55,36 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     fileprivate func fetchUserInfo() {
-        guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
+        let uid = FirebaseAPI.shared.getCurrentUserUID()
         
-        FirebaseAPI.shared.fetchUserWith(uid: uid) { (snapshot, error) in
+        FirebaseAPI.shared.fetchUserWith(uid: uid) { (user, error) in
             if let error = error {
                 print(error)
                 return
             }
             
-            guard let snapshot = snapshot else { return }
-            guard let valuesDict = snapshot.value as? [String: Any] else { return }
-            
-            self.user = User(dictionary: valuesDict)
+            guard let user = user else { return }
+            self.user = user
         }
     }
 
-    fileprivate func fetchPosts() {
-        guard let user = self.user else { return }
-        
-        FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            guard let post = post else { return }
-            
-            self.posts.append(post)
-            self.collectionView?.reloadData()
-        }
-    }
+//    fileprivate func fetchPosts() {
+//        guard let user = self.user else { return }
+//
+//        FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
+//            if let error = error {
+//                print(error)
+//                return
+//            }
+//
+//            guard let post = post else { return }
+//
+//            self.posts.append(post)
+//
+//            DispatchQueue.main.async {
+//                self.collectionView?.reloadData()
+//            }
+//        }
+//    }
     
 }

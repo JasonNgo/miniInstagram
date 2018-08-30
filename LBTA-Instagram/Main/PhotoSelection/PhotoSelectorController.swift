@@ -28,11 +28,8 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
         setupNavigationButtons()
         
         // register cells and header view
-        collectionView?.register(PhotoSelectorHeaderView.self,
-                                 forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-                                 withReuseIdentifier: headerID)
-        
         collectionView?.register(PhotoSelectorCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView?.register(PhotoSelectorHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
         
         // fetch photos
         fetchPhotos()
@@ -46,10 +43,8 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     }
     
     fileprivate func setupNavigationButtons() {
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain,
-                                           target: self, action: #selector(handleCancelButtonPressed))
-        let nextButton = UIBarButtonItem(title: "Next", style: .plain,
-                                         target: self, action: #selector(handleNextButtonPressed))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButtonPressed))
+        let nextButton = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNextButtonPressed))
         
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = nextButton
@@ -69,9 +64,7 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
                 let options = PHImageRequestOptions()
                 options.isSynchronous = true
                 
-                imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit,
-                                          options: options, resultHandler: { (image, info) in
-                                            
+                imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: options, resultHandler: { (image, info) in
                     if let image = image {
                         self.photos.append(image)
                         self.assets.append(asset)
@@ -100,7 +93,6 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     
     @objc func handleNextButtonPressed() {
         print("next pressed")
-        
         guard let selectedPhoto = selectedPhoto else { return }
         
         let sharePhotoController = SharePhotoController()
@@ -110,39 +102,26 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     
     // MARK: - UICollectionView Functions
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID,
-                                                      for: indexPath) as! PhotoSelectorCell
-        
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoSelectorCell
         cell.photoImageView.image = photos[indexPath.item]
-        
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (view.frame.width - 3) / 4
         return CGSize(width: width, height: width)
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
     
@@ -156,14 +135,8 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     
     // MARK: Header Functions
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 viewForSupplementaryElementOfKind kind: String,
-                                 at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                     withReuseIdentifier: headerID,
-                                                                     for: indexPath) as! PhotoSelectorHeaderView
-
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! PhotoSelectorHeaderView
         header.image = selectedPhoto
         
         if let selectedPhoto = self.selectedPhoto {
@@ -173,9 +146,7 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
                 let imageManager = PHImageManager.default()
                 let targetSize = CGSize(width: 600, height: 600)
                 
-                imageManager.requestImage(for: selectedAsset, targetSize: targetSize,
-                                          contentMode: .default, options: nil) { (image, info) in
-                    
+                imageManager.requestImage(for: selectedAsset, targetSize: targetSize, contentMode: .default, options: nil) { (image, info) in
                     if let image = image {
                         header.image = image
                     }
@@ -186,19 +157,15 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
         return header
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.width)
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
     }
+    
+    // MARK: - Helper Functions
     
     fileprivate func assetsFetchOptions() -> PHFetchOptions {
         let options = PHFetchOptions()

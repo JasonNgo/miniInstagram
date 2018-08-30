@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum SharePhotoResult {
-    case success
-    case failure(Error)
-}
-
 class SharePhotoController: UIViewController {
     
     var photoImage: UIImage? {
@@ -52,11 +47,8 @@ class SharePhotoController: UIViewController {
     // MARK: Set Up Functions
     
     fileprivate func setupNavigationBarButtons() {
-        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: .plain,
-                                              target: self, action: #selector(handleCancelButtonPressed))
-        
-        let shareBarButton = UIBarButtonItem(title: "Share", style: .plain,
-                                             target: self, action: #selector(handleShareButtonPressed))
+        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButtonPressed))
+        let shareBarButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShareButtonPressed))
         
         navigationItem.leftBarButtonItem = cancelBarButton
         navigationItem.rightBarButtonItem = shareBarButton
@@ -67,24 +59,18 @@ class SharePhotoController: UIViewController {
         containerView.backgroundColor = .white
         
         view.addSubview(containerView)
-        containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 0,
-                             right: view.safeAreaLayoutGuide.rightAnchor, paddingRight: 0,
-                             bottom: nil, paddingBottom: 0,
-                             left: view.safeAreaLayoutGuide.leftAnchor, paddingLeft: 0,
+        containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 0, right: view.safeAreaLayoutGuide.rightAnchor, paddingRight: 0,
+                             bottom: nil, paddingBottom: 0, left: view.safeAreaLayoutGuide.leftAnchor, paddingLeft: 0,
                              width: 0, height: 100)
 
         containerView.addSubview(photoImageView)
-        photoImageView.anchor(top: containerView.topAnchor, paddingTop: 8,
-                              right: nil, paddingRight: 0,
-                              bottom: containerView.bottomAnchor, paddingBottom: -8,
-                              left: containerView.leftAnchor, paddingLeft: 8,
+        photoImageView.anchor(top: containerView.topAnchor, paddingTop: 8, right: nil, paddingRight: 0,
+                              bottom: containerView.bottomAnchor, paddingBottom: -8, left: containerView.leftAnchor, paddingLeft: 8,
                               width: 84, height: 0)
 
         containerView.addSubview(descriptionTextView)
-        descriptionTextView.anchor(top: containerView.topAnchor, paddingTop: 8,
-                                    right: containerView.rightAnchor, paddingRight: -8,
-                                    bottom: containerView.bottomAnchor, paddingBottom: -8,
-                                    left: photoImageView.rightAnchor, paddingLeft: 8,
+        descriptionTextView.anchor(top: containerView.topAnchor, paddingTop: 8, right: containerView.rightAnchor, paddingRight: -8,
+                                    bottom: containerView.bottomAnchor, paddingBottom: -8, left: photoImageView.rightAnchor, paddingLeft: 8,
                                     width: 0, height: 0)
     }
     
@@ -110,15 +96,14 @@ class SharePhotoController: UIViewController {
             "caption": caption
         ] as [String : Any]
         
-        FirebaseAPI.shared.savePostToFirebase(postImage: photoImage, values: values) { (sharePhotoResult) in
-            switch sharePhotoResult {
-            case .success:
-                print("sucessfully saved post")
-                self.dismiss(animated: true, completion: nil)
-            case let .failure(error):
+        FirebaseAPI.shared.savePostToFirebase(postImage: photoImage, values: values) { (error) in
+            if let error = error {
                 print(error)
-                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                return
             }
+
+            print("sucessfully saved post")
+            self.dismiss(animated: true, completion: nil)
         }
     }
 

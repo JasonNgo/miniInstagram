@@ -161,24 +161,18 @@ class LoginController: UIViewController {
         guard let emailText = emailTextField.text else { return }
         guard let passwordText = passwordTextField.text else { return }
         
-        FirebaseAPI.shared.loginUserWith(email: emailText, password: passwordText) { (loginResult) in
-            switch loginResult {
-            case .success:
-                print("login successful")
-                
-                guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {
-                    return
-                }
-                
-                mainTabBarController.setupTabBarStyling()
-                mainTabBarController.setupViewControllers()
-                
-                self.dismiss(animated: true, completion: nil)
-                
-            case let .failure(error):
-                print("failure: \(error)")
+        FirebaseAPI.shared.loginUserWith(email: emailText, password: passwordText) { (error) in
+            if let error = error {
+                print(error)
+                return
             }
-        }
+            
+            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
+            
+            mainTabBarController.setupTabBarController()
+            mainTabBarController.setupViewControllers()
+            self.dismiss(animated: true, completion: nil)
+        } // loginUserWith
     }
     
     @objc func handleSignUpButtonPressed() {

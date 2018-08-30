@@ -13,7 +13,6 @@ class UserSearchCell: UICollectionViewCell {
     var user: User? {
         didSet {
             usernameLabel.text = user?.username
-            
             guard let userProfileImageUrl = user?.profileImageUrl else { return }
             userProfileImage.loadImageFromUrl(userProfileImageUrl)
         }
@@ -55,33 +54,31 @@ class UserSearchCell: UICollectionViewCell {
     func setupFollowButton() {
         
         
-        
-        
     }
     
     @objc func handleFollowButtonPressed() {
-        
-        guard let user = user else { return }
-        
-        if followButton.titleLabel?.text?.compare("Follow") == .orderedSame {
-            FirebaseAPI.shared.followUserWithUID(user.uuid) { (result) in
-                switch result {
-                case .success:
-                    self.followButton.setTitle("Unfollow", for: .normal)
-                case .failure:
-                    self.followButton.setTitle("Follow", for: .normal)
-                }
-            }
-        } else {
-            FirebaseAPI.shared.unfollowUserWithUID(user.uuid) { (result) in
-                switch result {
-                case .success:
-                    self.followButton.setTitle("Follow", for: .normal)
-                case .failure:
-                    self.followButton.setTitle("Unfollow", for: .normal)
-                }
-            }
-        }
+//
+//        guard let user = user else { return }
+//
+//        if followButton.titleLabel?.text?.compare("Follow") == .orderedSame {
+//            FirebaseAPI.shared.followUserWithUID(user.uuid) { (result) in
+//                switch result {
+//                case .success:
+//                    self.followButton.setTitle("Unfollow", for: .normal)
+//                case .failure:
+//                    self.followButton.setTitle("Follow", for: .normal)
+//                }
+//            }
+//        } else {
+//            FirebaseAPI.shared.unfollowUserWithUID(user.uuid) { (result) in
+//                switch result {
+//                case .success:
+//                    self.followButton.setTitle("Follow", for: .normal)
+//                case .failure:
+//                    self.followButton.setTitle("Unfollow", for: .normal)
+//                }
+//            }
+//        }
 
     }
     
@@ -92,37 +89,27 @@ class UserSearchCell: UICollectionViewCell {
         addSubview(usernameLabel)
         addSubview(followButton)
         
-        userProfileImage.anchor(top: nil, paddingTop: 0,
-                                right: nil, paddingRight: 0,
-                                bottom: nil, paddingBottom: 0,
-                                left: leftAnchor, paddingLeft: 8,
+        userProfileImage.anchor(top: nil, paddingTop: 0, right: nil, paddingRight: 0,
+                                bottom: nil, paddingBottom: 0, left: leftAnchor, paddingLeft: 8,
                                 width: 40, height: 40)
         userProfileImage.layer.cornerRadius = 40 / 2
-        userProfileImage.center(centerX: nil, paddingCenterX: 0,
-                                centerY: centerYAnchor, paddingCenterY: 0)
+        userProfileImage.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)
         
-        followButton.anchor(top: nil, paddingTop: 0,
-                            right: rightAnchor, paddingRight: -8,
-                            bottom: nil, paddingBottom: 0,
-                            left: nil, paddingLeft: 0, width: 80, height: 40)
+        followButton.anchor(top: nil, paddingTop: 0, right: rightAnchor, paddingRight: -8,
+                            bottom: nil, paddingBottom: 0, left: nil, paddingLeft: 0, width: 80, height: 40)
         followButton.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)
         
-        usernameLabel.anchor(top: nil, paddingTop: 8,
-                             right: followButton.leftAnchor, paddingRight: 8,
-                             bottom: nil, paddingBottom: 0,
-                             left: userProfileImage.rightAnchor, paddingLeft: 8,
+        usernameLabel.anchor(top: nil, paddingTop: 8, right: followButton.leftAnchor, paddingRight: 8,
+                             bottom: nil, paddingBottom: 0, left: userProfileImage.rightAnchor, paddingLeft: 8,
                              width: 0, height: 0)
-        usernameLabel.center(centerX: nil, paddingCenterX: 0,
-                             centerY: centerYAnchor, paddingCenterY: 0)
+        usernameLabel.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)
         
         let separatorView = UIView()
         separatorView.backgroundColor = UIColor(white: 0, alpha: 0.5)
         addSubview(separatorView)
-        separatorView.anchor(top: nil, paddingTop: 0,
-                             right: rightAnchor, paddingRight: 0,
-                             bottom: bottomAnchor, paddingBottom: 0,
-                             left: leftAnchor, paddingLeft: 0,
+        separatorView.anchor(top: nil, paddingTop: 0, right: rightAnchor, paddingRight: 0,
+                             bottom: bottomAnchor, paddingBottom: 0, left: leftAnchor, paddingLeft: 0,
                              width: 0, height: 0.5)
-    }
+    } 
     
 } // UserSearchCell

@@ -8,21 +8,6 @@
 
 import UIKit
 
-enum UserSearchResult {
-    case success
-    case failure(Error)
-}
-
-enum FollowUserResult {
-    case success
-    case failure(Error)
-}
-
-enum UnfollowUserResult {
-    case success
-    case failure(Error)
-}
-
 class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     
     fileprivate let cellId = "cellId"
@@ -30,18 +15,11 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     var users = [User]()
     var filteredUsers = [User]()
     
-    lazy var searchBar: UISearchBar = {
-        var searchBar = UISearchBar()
-        searchBar.placeholder = "enter username"
-        searchBar.tintColor = .gray
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.colorFrom(r: 240, g: 240, b: 240)
-        searchBar.delegate = self
-        return searchBar
-    }()
-    
+    let searchController = UISearchController(searchResultsController: nil)
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        searchBar.isHidden = false
+//        searchBar.isHidden = false
     }
     
     override func viewDidLoad() {
@@ -57,13 +35,11 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     // MARK: - Setup functions
     
     fileprivate func setupSearchBar() {
-        guard let navBar = navigationController?.navigationBar else { return }
-        navBar.addSubview(searchBar)
-        searchBar.anchor(top: navBar.topAnchor, paddingTop: 0,
-                         right: navBar.rightAnchor, paddingRight: -8,
-                         bottom: navBar.bottomAnchor, paddingBottom: 0,
-                         left: navBar.leftAnchor, paddingLeft: 8,
-                         width: 0, height: 0)
+        self.definesPresentationContext = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
     }
     
     fileprivate func setupCollectionView() {
@@ -95,11 +71,8 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let user = users[indexPath.item]
         print(user.username)
-        
-        searchBar.isHidden = true
-        searchBar.resignFirstResponder()
-        
-        let layout = UICollectionViewLayout()
+    
+        let layout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: layout)
         userProfileController.userId = user.uuid
         navigationController?.pushViewController(userProfileController, animated: true)
@@ -122,7 +95,7 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     // MARK: - Fetching Functions
     
     fileprivate func fetchListOfUsers() {
-        FirebaseAPI.shared.fetchUsersWithSearch("Dummy") { (users, error) in
+        FirebaseAPI.shared.fetchListOfUsers { (users, error) in
             if let error = error {
                 print(error)
                 return
@@ -132,8 +105,10 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
             self.users = users
             self.filteredUsers = users
             
-            self.collectionView?.reloadData()
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
         }
     }
     
-}
+} // UserSearchController

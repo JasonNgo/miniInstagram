@@ -178,21 +178,21 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         guard let password = passwordTextField.text else { return }
         guard let image = addPhotoButton.imageView?.image else { return }
         
-        FirebaseAPI.shared.createUserWith(email: email, username: username, password: password, profileImage: image) { (userCreationResult) in
-            switch userCreationResult {
-            case .success:
-                print("created user")
-
-                guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
-
-                mainTabBarController.setupTabBarStyling()
-                mainTabBarController.setupViewControllers()
-                self.dismiss(animated: true, completion: nil)
-                
-            case let .failure(error):
-                print("Error: \(error)")
+        let values = ["username": username, "email": email, "password": password, "profile_image": image] as [String: Any]
+        
+        FirebaseAPI.shared.createUserWithValues(values) { (error) in
+            if let error = error {
+                print(error)
+                return
             }
+            
+            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
+            
+            mainTabBarController.setupTabBarController()
+            mainTabBarController.setupViewControllers()
+            self.dismiss(animated: true, completion: nil)
         }
+        
     }
 
     @objc func handleAddPhotoButtonPressed() {
