@@ -6,23 +6,7 @@
 //  Copyright © 2018 Jason Ngo. All rights reserved.
 //
 
-import FirebaseAuth
 import UIKit
-
-enum UserCreationResult {
-    case success
-    case failure(Error)
-}
-
-enum UserProfileImageResult {
-    case success
-    case failure(Error)
-}
-
-enum UserProfileSaveToDatabaseResult {
-    case success
-    case failure(Error)
-}
 
 class SignUpViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -138,19 +122,15 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
         stackView.spacing = 10
 
         view.addSubview(stackView)
-        stackView.anchor(top: addPhotoButton.bottomAnchor, paddingTop: 20,
-                         right: view.rightAnchor, paddingRight: -40,
-                         bottom: nil, paddingBottom: 0,
-                         left: view.leftAnchor, paddingLeft: 40,
+        stackView.anchor(top: addPhotoButton.bottomAnchor, paddingTop: 20, right: view.rightAnchor, paddingRight: -40,
+                         bottom: nil, paddingBottom: 0, left: view.leftAnchor, paddingLeft: 40,
                          width: 0, height: 200)
     }
     
     fileprivate func setupAlreadyHaveAccountButton() {
         self.view.addSubview(alreadyHaveAccountButton)
-        alreadyHaveAccountButton.anchor(top: nil, paddingTop: 0,
-                                        right: self.view.rightAnchor, paddingRight: 0,
-                                        bottom: self.view.bottomAnchor, paddingBottom: -8,
-                                        left: self.view.leftAnchor, paddingLeft: 0,
+        alreadyHaveAccountButton.anchor(top: nil, paddingTop: 0, right: self.view.rightAnchor, paddingRight: 0,
+                                        bottom: self.view.bottomAnchor, paddingBottom: -8, left: self.view.leftAnchor, paddingLeft: 0,
                                         width: 0, height: 50)
     }
 

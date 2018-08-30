@@ -38,12 +38,9 @@ extension UIView {
         if height != 0 {
             heightAnchor.constraint(equalToConstant: height).isActive = true
         }
-        
     } // anchor()
 
-    func center(centerX: NSLayoutXAxisAnchor?, paddingCenterX: CGFloat,
-                centerY: NSLayoutYAxisAnchor?, paddingCenterY: CGFloat) {
-        
+    func center(centerX: NSLayoutXAxisAnchor?, paddingCenterX: CGFloat, centerY: NSLayoutYAxisAnchor?, paddingCenterY: CGFloat) {
         translatesAutoresizingMaskIntoConstraints = false
 
         if let centerX = centerX {
@@ -53,7 +50,6 @@ extension UIView {
         if let centerY = centerY {
             centerYAnchor.constraint(equalTo: centerY, constant: paddingCenterY).isActive = true
         }
-        
     } // center()
     
 } // UIView+Extension

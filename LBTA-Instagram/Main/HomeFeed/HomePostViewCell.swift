@@ -12,7 +12,6 @@ class HomePostViewCell: UICollectionViewCell {
     
     var post: Post? {
         didSet {
-            
             usernameLabel.text = post?.user.username
             
             guard let profileImageUrl = post?.user.profileImageUrl else { return }
@@ -107,32 +106,24 @@ class HomePostViewCell: UICollectionViewCell {
         addSubview(usernameLabel)
         addSubview(optionsButton)
 
-        profileImageView.anchor(top: topAnchor, paddingTop: 8,
-                                right: nil, paddingRight: 0,
-                                bottom: nil, paddingBottom: 0,
-                                left: leftAnchor, paddingLeft: 8,
+        profileImageView.anchor(top: topAnchor, paddingTop: 8, right: nil, paddingRight: 0,
+                                bottom: nil, paddingBottom: 0, left: leftAnchor, paddingLeft: 8,
                                 width: 40, height: 40)
         profileImageView.layer.cornerRadius = 40 / 2
         
-        usernameLabel.anchor(top: topAnchor, paddingTop: 8,
-                             right: optionsButton.leftAnchor, paddingRight: 8,
-                             bottom: nil, paddingBottom: 0,
-                             left: profileImageView.rightAnchor, paddingLeft: 8,
+        usernameLabel.anchor(top: topAnchor, paddingTop: 8, right: optionsButton.leftAnchor, paddingRight: 8,
+                             bottom: nil, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 8,
                              width: 0, height: 40)
     
-        optionsButton.anchor(top: topAnchor, paddingTop: 8,
-                             right: rightAnchor, paddingRight: -8,
-                             bottom: nil, paddingBottom: 0,
-                             left: usernameLabel.rightAnchor, paddingLeft: 8,
+        optionsButton.anchor(top: topAnchor, paddingTop: 8, right: rightAnchor, paddingRight: -8,
+                             bottom: nil, paddingBottom: 0, left: usernameLabel.rightAnchor, paddingLeft: 8,
                              width: 40, height: 40)
     }
 
     fileprivate func setupPostImageView() {
         addSubview(postImageView)
-        postImageView.anchor(top: profileImageView.bottomAnchor, paddingTop: 8,
-                             right: rightAnchor, paddingRight: 0,
-                             bottom: nil, paddingBottom: 0,
-                             left: leftAnchor, paddingLeft: 0,
+        postImageView.anchor(top: profileImageView.bottomAnchor, paddingTop: 8, right: rightAnchor, paddingRight: 0,
+                             bottom: nil, paddingBottom: 0, left: leftAnchor, paddingLeft: 0,
                              width: 0, height: 0)
         postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1).isActive = true
     }
@@ -143,26 +134,20 @@ class HomePostViewCell: UICollectionViewCell {
         stackView.distribution = .fillEqually
         
         addSubview(stackView)
-        stackView.anchor(top: postImageView.bottomAnchor, paddingTop: 0,
-                           right: nil, paddingRight: 0,
-                           bottom: nil, paddingBottom: 0,
-                           left: leftAnchor, paddingLeft: 4,
-                           width: 120, height: 50)
+        stackView.anchor(top: postImageView.bottomAnchor, paddingTop: 0, right: nil, paddingRight: 0,
+                         bottom: nil, paddingBottom: 0, left: leftAnchor, paddingLeft: 4,
+                         width: 120, height: 50)
         
         addSubview(ribbonButton)
-        ribbonButton.anchor(top: postImageView.bottomAnchor, paddingTop: 4,
-                            right: rightAnchor, paddingRight: -8,
-                            bottom: nil, paddingBottom: 0,
-                            left: nil, paddingLeft: 0,
+        ribbonButton.anchor(top: postImageView.bottomAnchor, paddingTop: 4, right: rightAnchor, paddingRight: -8,
+                            bottom: nil, paddingBottom: 0, left: nil, paddingLeft: 0,
                             width: 40, height: 40)
     }
     
     fileprivate func setupPostDetails() {
         addSubview(captionLabel)
-        captionLabel.anchor(top: heartButton.bottomAnchor, paddingTop: 0,
-                            right: rightAnchor, paddingRight: -8,
-                            bottom: bottomAnchor, paddingBottom: 0,
-                            left: leftAnchor, paddingLeft: 8,
+        captionLabel.anchor(top: heartButton.bottomAnchor, paddingTop: 0, right: rightAnchor, paddingRight: -8,
+                            bottom: bottomAnchor, paddingBottom: 0, left: leftAnchor, paddingLeft: 8,
                             width: 0, height: 0)
     }
     

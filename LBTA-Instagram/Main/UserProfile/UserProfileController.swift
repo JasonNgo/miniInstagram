@@ -109,9 +109,14 @@ class UserProfileController: UICollectionViewController {
             
             guard let user = user else { return }
             self.user = user
+            self.navigationItem.title = self.user?.username
+            
+            if self.user?.uuid.compare(FirebaseAPI.shared.getCurrentUserUID()) != .orderedSame {
+                self.navigationItem.rightBarButtonItem = nil
+                self.navigationItem.title = nil
+            }
             
             DispatchQueue.main.async {
-                self.navigationItem.title = self.user?.username
                 self.collectionView?.reloadData()
             }
             
@@ -130,38 +135,13 @@ class UserProfileController: UICollectionViewController {
             }
 
             guard let post = post else { return }
-            self.posts.append(post)
+            self.posts.insert(post, at: 0)
 
             DispatchQueue.main.async {
                 self.collectionView?.reloadData()
             }
         }
     } // fetchUserPosts
-    
-    fileprivate func checkFollowStatus() {
-//        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
-//        if currentUUID == user?.uuid {
-//            followButton.makeHidden()
-//        } else {
-//            navigationItem.rightBarButtonItems = [followButton]
-//
-//            FirebaseAPI.shared.fetchListOfFollowersForCurrentUser { (followers) in
-//                guard let followers = followers else {
-//                    self.followButton.makeVisible()
-//                    self.followButton.title = "Follow"
-//                    return
-//                }
-//
-//                if let _ = followers.index(of: self.user?.uuid ?? "") {
-//                    self.followButton.title = "Unfollow"
-//                } else {
-//                    self.followButton.title = "Follow"
-//                }
-//
-//                self.followButton.makeVisible()
-//            }
-//        }
-    }
     
 } // UserProfileController
 

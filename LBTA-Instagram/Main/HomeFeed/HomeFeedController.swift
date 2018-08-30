@@ -65,26 +65,53 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             
             guard let user = user else { return }
             self.user = user
+            
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
+            
+            self.fetchPosts()
         }
     }
 
-//    fileprivate func fetchPosts() {
-//        guard let user = self.user else { return }
-//
-//        FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
+    fileprivate func fetchPosts() {
+        guard let user = self.user else { return }
+
+        FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+
+            guard let post = post else { return }
+            self.posts.insert(post, at: 0)
+
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
+            
+//            self.fetchFollowingPosts()
+        }
+    }
+    
+    fileprivate func fetchFollowingPosts() {
+//        FirebaseAPI.shared.fetchPostsFromListOfFollowers { (postsToAdd, error) in
 //            if let error = error {
 //                print(error)
 //                return
 //            }
 //
-//            guard let post = post else { return }
+//            guard let postsToAdd = postsToAdd else { return }
 //
-//            self.posts.append(post)
+//            self.posts.append(contentsOf: postsToAdd)
+//            self.posts.sort(by: { (p1, p2) -> Bool in
+//                return p1.creationDate.compare(p2.creationDate) == .orderedAscending
+//            })
 //
 //            DispatchQueue.main.async {
 //                self.collectionView?.reloadData()
 //            }
 //        }
-//    }
+    }
     
-}
+} // HomeFeedController

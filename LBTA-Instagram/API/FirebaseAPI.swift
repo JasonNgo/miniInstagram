@@ -22,6 +22,8 @@ enum FirebaseDatabaseError: Error {
     case errorFetchingListOfUsers(String)
     case errorFetchingUserPosts(String)
     case errorSavingUserPostDetails(String)
+    case errorFollowingUser(String)
+    case errorUnfollowingUser(String)
 }
 
 enum FirebaseStorageError: Error {
@@ -34,6 +36,7 @@ enum DataError: Error {
     case errorConvertingImage(String)
     case errorUnwrappingDownloadURL(String)
     case errorUnwrappingDictionary(String)
+    case errorUnwrappingUsers(String)
 }
 
 class FirebaseAPI {
@@ -323,67 +326,91 @@ class FirebaseAPI {
         } // putData
 
     } // savePostImageToStorage
+
+    // MARK: Following/Unfollowing Functions
 //
-//    // MARK: Following/Unfollowing Functions
+//    func fetchPostsFromListOfFollowers(completion: @escaping ([Post]?, Error?) -> Void) {
+//        var posts = [Post]()
 //
-//    func fetchListOfFollowersForCurrentUser(completion: @escaping ([String]?) -> Void) {
+//        FirebaseAPI.shared.fetchListOfFollowersForCurrentUser { (users, error) in
+//            if let error = error {
+//                print(error)
+//                completion(nil, error)
+//                return
+//            }
 //
-//        guard let currentUUID = getCurrentUserUID() else { return }
+//            guard let users = users else {
+//                completion(nil, DataError.errorUnwrappingUsers(""))
+//                return
+//            }
 //
-//        let followingRef = databaseRef.child("following").child(currentUUID)
-//        var strings = [String]()
+//            users.forEach({ (user) in
+//                FirebaseAPI.shared.fetchUserPosts(user: user, completion: { (post, error) in
+//                    if let error = error {
+//                        print(error)
+//                        return
+//                    }
 //
-//        followingRef.observe(.value, with: { (snapshot) in
-//
-//            guard let values = snapshot.value else { return }
-//            guard let valuesDict = values as? [String: Any] else { return }
-//
-//            valuesDict.forEach({ (key, value) in
-//                strings.append(key)
+//                    guard let post = post else { return }
+//                    posts.append(post)
+//                })
 //            })
 //
-//            completion(strings)
-//
-//        }) { (error) in
-//            print(error)
-//            completion(nil)
+//            completion(posts, nil)
 //        }
 //    }
-//
-//    func followUserWithUID(_ uidToFollow: String, completion: @escaping (FollowUserResult) -> Void) {
-//
-//        guard let currentUUID = getCurrentUserUID() else { return }
-//
-//        let followingRef = databaseRef.child("following").child(currentUUID)
-//
-//        let values = [uidToFollow: true] as [String: Any]
-//
-//        followingRef.updateChildValues(values) { (error, database) in
-//            if let error = error {
-//                print("there was an error following user with uid: \(uidToFollow), error: \(error)")
-//                completion(.failure(error))
-//                return
-//            }
-//
-//            completion(.success)
-//        }
-//    }
-//
-//    func unfollowUserWithUID(_ uidToUnfollow: String, completion: @escaping (UnfollowUserResult) -> Void) {
-//
-//        guard let currentUUID = getCurrentUserUID() else { return }
-//
-//        let followingRef = databaseRef.child("following").child(currentUUID)
-//
-//        followingRef.child(uidToUnfollow).removeValue { (error, database) in
-//            if let error = error {
-//                print("there was an error unfollowing user with uid: \(uidToUnfollow), error: \(error)")
-//                completion(.failure(error))
-//                return
-//            }
-//
-//            completion(.success)
-//        }
-//    }
+
+    func fetchListOfFollowersForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
+        let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+        let followingRef = Database.database().reference().child("following").child(currentUUID)
+        var followers = [String]()
+
+        followingRef.observe(.value, with: { (snapshot) in
+            guard let values = snapshot.value, let valuesDict = values as? [String: Any] else {
+                completion(nil, DataError.errorUnwrappingDictionary(""))
+                return
+            }
+
+            valuesDict.forEach({ (key, value) in
+                followers.append(key)
+            })
+
+            completion(followers, nil)
+        }) { (error) in
+            print(error)
+            completion(nil, FirebaseDatabaseError.errorFetchingListOfUsers(""))
+        }
+    }
+
+    func followUserWithUID(_ uidToFollow: String, completion: @escaping (Error?) -> Void) {
+        let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+        let followingRef = Database.database().reference().child("following").child(currentUUID)
+        let values = [uidToFollow: true] as [String: Any]
+
+        followingRef.updateChildValues(values) { (error, database) in
+            if let error = error {
+                print("DEBUG ERROR: /// \(error)")
+                completion(FirebaseDatabaseError.errorFollowingUser("uidToFollow: \(uidToFollow)"))
+                return
+            }
+
+            completion(nil)
+        }
+    }
+
+    func unfollowUserWithUID(_ uidToUnfollow: String, completion: @escaping (Error?) -> Void) {
+        let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+        let followingRef = Database.database().reference().child("following").child(currentUUID)
+
+        followingRef.child(uidToUnfollow).removeValue { (error, database) in
+            if let error = error {
+                print("DEBUG ERROR: /// \(error)")
+                completion(FirebaseDatabaseError.errorUnfollowingUser("uidToUnfollow: \(uidToUnfollow)"))
+                return
+            }
+
+            completion(nil)
+        }
+    }
 
 } // FirebaseAPI

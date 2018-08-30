@@ -17,7 +17,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         
         // user not logged in
-        if FirebaseAPI.shared.isUserLoggedIn() {
+        if !FirebaseAPI.shared.isUserLoggedIn() {
             DispatchQueue.main.async {
                 let loginController = LoginController()
                 let navController = UINavigationController(rootViewController: loginController)
@@ -44,24 +44,23 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         // home
         let homeController = HomeFeedController(collectionViewLayout: layout)
-        let homeNavController = createNavigationController(rootViewController: homeController, title: "Home",
-                                                           selectedImage: #imageLiteral(resourceName: "home_selected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
+        let homeNavController = createNavigationController(rootViewController: homeController, title: "Home", selectedImage: #imageLiteral(resourceName: "home_selected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
+        
         // search
         let searchController = UserSearchController(collectionViewLayout: layout)
-        let searchNavController = createNavigationController(rootViewController: searchController, title: "Search",
-                                                             selectedImage: #imageLiteral(resourceName: "search_selected"), unselectedImage: #imageLiteral(resourceName: "search_unselected"))
+        let searchNavController = createNavigationController(rootViewController: searchController, title: "Search", selectedImage: #imageLiteral(resourceName: "search_selected"), unselectedImage: #imageLiteral(resourceName: "search_unselected"))
+        
         // photo picker
         let photoPickerController = UIViewController()
-        let photoNavController = createNavigationController(rootViewController: photoPickerController, title: "Photo",
-                                                            selectedImage: #imageLiteral(resourceName: "plus_unselected"), unselectedImage: #imageLiteral(resourceName: "plus_unselected"))
+        let photoNavController = createNavigationController(rootViewController: photoPickerController, title: "Photo", selectedImage: #imageLiteral(resourceName: "plus_unselected"), unselectedImage: #imageLiteral(resourceName: "plus_unselected"))
+        
         // like
         let likeController = UIViewController()
-        let likeNavController = createNavigationController(rootViewController: likeController, title: "Likes",
-                                                           selectedImage: #imageLiteral(resourceName: "like_selected"), unselectedImage: #imageLiteral(resourceName: "like_unselected"))
+        let likeNavController = createNavigationController(rootViewController: likeController, title: "Likes", selectedImage: #imageLiteral(resourceName: "like_selected"), unselectedImage: #imageLiteral(resourceName: "like_unselected"))
+        
         // profile
         let userProfileController = UserProfileController(collectionViewLayout: layout)
-        let userProfileNavController = createNavigationController(rootViewController: userProfileController, title: "User",
-                                                                  selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"))
+        let userProfileNavController = createNavigationController(rootViewController: userProfileController, title: "User", selectedImage: #imageLiteral(resourceName: "profile_selected"), unselectedImage: #imageLiteral(resourceName: "profile_unselected"))
         
         viewControllers = [
             homeNavController,
@@ -92,11 +91,9 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
  
     // MARK: - Helper Functions
     
-    fileprivate func createNavigationController(rootViewController: UIViewController, title: String,
-                                                selectedImage: UIImage, unselectedImage: UIImage) -> UIViewController {
-        
+    fileprivate func createNavigationController(rootViewController: UIViewController, title: String, selectedImage: UIImage, unselectedImage: UIImage) -> UIViewController {
         rootViewController.navigationItem.title = title
-        
+
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.image = unselectedImage.withRenderingMode(.alwaysOriginal)
         navController.tabBarItem.selectedImage = selectedImage.withRenderingMode(.alwaysOriginal)

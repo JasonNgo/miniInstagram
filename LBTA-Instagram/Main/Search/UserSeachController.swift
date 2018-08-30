@@ -44,7 +44,7 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     
     fileprivate func setupCollectionView() {
         collectionView?.backgroundColor = .white
-        collectionView?.alwaysBounceVertical = true
+        collectionView?.keyboardDismissMode = .onDrag
         collectionView?.register(UserSearchCell.self, forCellWithReuseIdentifier: cellId)
     }
     

@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum LoginResult {
-    case success
-    case failure(Error)
-}
-
 class LoginController: UIViewController {
     
     // MARK: - Views
@@ -108,19 +103,15 @@ class LoginController: UIViewController {
     
     fileprivate func setupHeaderView() {
         self.view.addSubview(logoHeaderView)
-        logoHeaderView.anchor(top: self.view.topAnchor, paddingTop: 0,
-                              right: self.view.rightAnchor, paddingRight: 0,
-                              bottom: nil, paddingBottom: 0,
-                              left: self.view.leftAnchor, paddingLeft: 0,
+        logoHeaderView.anchor(top: self.view.topAnchor, paddingTop: 0, right: self.view.rightAnchor, paddingRight: 0,
+                              bottom: nil, paddingBottom: 0, left: self.view.leftAnchor, paddingLeft: 0,
                               width: 0, height: 150)
     }
     
     fileprivate func setupSignUpButton() {
         self.view.addSubview(signUpButton)
-        signUpButton.anchor(top: nil, paddingTop: 0,
-                            right: self.view.rightAnchor, paddingRight: 0,
-                            bottom: self.view.bottomAnchor, paddingBottom: -8,
-                            left: self.view.leftAnchor, paddingLeft: 0,
+        signUpButton.anchor(top: nil, paddingTop: 0, right: self.view.rightAnchor, paddingRight: 0,
+                            bottom: self.view.bottomAnchor, paddingBottom: -8, left: self.view.leftAnchor, paddingLeft: 0,
                             width: 0, height: 50)
     }
     
@@ -132,10 +123,8 @@ class LoginController: UIViewController {
         
         self.view.addSubview(stackView)
     
-        stackView.anchor(top: logoHeaderView.bottomAnchor, paddingTop: 40,
-                         right: self.view.rightAnchor, paddingRight: -40,
-                         bottom: nil, paddingBottom: 0,
-                         left: self.view.leftAnchor, paddingLeft: 40,
+        stackView.anchor(top: logoHeaderView.bottomAnchor, paddingTop: 40, right: self.view.rightAnchor, paddingRight: -40,
+                         bottom: nil, paddingBottom: 0, left: self.view.leftAnchor, paddingLeft: 40,
                          width: 0, height: 140)
     }
     
