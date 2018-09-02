@@ -9,7 +9,11 @@
 import UIKit
 import AVFoundation
 
-class CameraController: UIViewController {
+class CameraController: UIViewController, AVCapturePhotoCaptureDelegate {
+    
+    let output = AVCapturePhotoOutput()
+    
+    // MARK: - Views and Selectors
     
     let dismissButton: UIButton = {
         var button = UIButton(type: .system)
@@ -31,7 +35,33 @@ class CameraController: UIViewController {
     
     @objc func handleCapturePhoto() {
         print("capture photo pressed")
+        
+        let settings = AVCapturePhotoSettings()
+        guard let previewFormatType = settings.availablePreviewPhotoPixelFormatTypes.first else { return }
+        settings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewFormatType]
+        output.capturePhoto(with: settings, delegate: self)
     }
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        guard error == nil else {
+            print("failed to capture photo: \(String(describing: error))")
+            return
+        }
+        
+        guard let imageData = photo.fileDataRepresentation() else { return }
+        guard let image = UIImage.init(data: imageData, scale: 1.0) else { return }
+        
+        let previewImage = UIImageView(image: image)
+        view.addSubview(previewImage)
+        previewImage.anchor(top: view.topAnchor, paddingTop: 0, right: view.rightAnchor, paddingRight: 0,
+                            bottom: view.bottomAnchor, paddingBottom: 0, left: view.leftAnchor, paddingLeft: 0,
+                            width: 0, height: 0)
+    }
+    
+    func photoOutput(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?, previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+        
+    }
+    
     
     let cancelPhotoButton: UIButton = {
         var button = UIButton(type: .system)
@@ -81,7 +111,6 @@ class CameraController: UIViewController {
         }
         
         // setup output
-        let output = AVCapturePhotoOutput()
         if captureSession.canAddOutput(output) {
             captureSession.addOutput(output)
         }
@@ -112,5 +141,4 @@ class CameraController: UIViewController {
                                  width: 50, height: 50)
     }
 
-    
 } // CameraController
