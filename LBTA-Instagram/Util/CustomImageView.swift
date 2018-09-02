@@ -14,6 +14,7 @@ class CustomImageView: UIImageView {
     var lastUrlUsedToLoadImage: String?
     
     func loadImageFromUrl(_ urlString: String) {
+        self.image = nil
         guard let url = URL(string: urlString) else { return }
         lastUrlUsedToLoadImage = urlString
         self.sd_setImage(with: url, completed: nil)

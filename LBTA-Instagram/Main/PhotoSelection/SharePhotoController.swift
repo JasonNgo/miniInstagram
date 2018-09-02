@@ -103,6 +103,7 @@ class SharePhotoController: UIViewController {
             }
 
             print("sucessfully saved post")
+            NotificationCenter.default.post(name: HomeFeedController.updateFeedNotificationName, object: nil)
             self.dismiss(animated: true, completion: nil)
         }
     }

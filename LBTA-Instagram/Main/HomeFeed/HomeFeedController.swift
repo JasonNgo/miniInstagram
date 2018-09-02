@@ -12,6 +12,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     fileprivate let cellId = "cellId"
     
+    static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateFeed")
+    
     var user: User?
     var posts = [Post]()
     
@@ -21,6 +23,9 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         // setup
         setupNavigationBar()
         setupCollectionView()
+        
+        // Notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeFeedController.updateFeedNotificationName, object: nil)
         
         fetchUserInfo()
     }
@@ -34,6 +39,10 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     fileprivate func setupCollectionView() {
         collectionView?.backgroundColor = .white
         collectionView?.register(HomePostViewCell.self, forCellWithReuseIdentifier: cellId)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView?.refreshControl = refreshControl
     }
     
     // MARK: UICollectionViewDelegate
@@ -55,6 +64,20 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         height += 60
         
         return CGSize(width: view.frame.width, height: height)
+    }
+    
+    // MARK: - Selector Functions
+    
+    @objc func handleRefresh() {
+        print("handling refresh")
+        posts.removeAll()
+        guard let user = self.user else { return }
+        fetchPostsFor(user: user)
+        fetchFollowingPosts()
+    }
+    
+    @objc func handleUpdateFeed() {
+        handleRefresh()
     }
     
     // MARK: - Helper Functions
@@ -108,6 +131,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                 print(error)
                 return
             }
+            
+            self.collectionView?.refreshControl?.endRefreshing()
             
             guard let post = post else { return }
             self.posts.insert(post, at: 0)
