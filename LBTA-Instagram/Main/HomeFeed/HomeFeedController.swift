@@ -34,6 +34,9 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     fileprivate func setupNavigationBar() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
+        
+        let cameraBarItem = UIBarButtonItem(image: #imageLiteral(resourceName: "camera3").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleCameraPressed))
+        navigationItem.leftBarButtonItem = cameraBarItem
     }
     
     fileprivate func setupCollectionView() {
@@ -78,6 +81,11 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     @objc func handleUpdateFeed() {
         handleRefresh()
+    }
+    
+    @objc func handleCameraPressed() {
+        let cameraController = CameraController()
+        present(cameraController, animated: true, completion: nil)
     }
     
     // MARK: - Helper Functions
