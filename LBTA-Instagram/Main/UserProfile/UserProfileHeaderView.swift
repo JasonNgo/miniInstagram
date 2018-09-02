@@ -211,7 +211,6 @@ class UserProfileHeaderView: UICollectionViewCell {
                                        bottom: nil, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 12,
                                        width: 0, height: 34)
     }
-    
 
     // MARK: - Selector Functions
     
@@ -251,14 +250,14 @@ class UserProfileHeaderView: UICollectionViewCell {
         
         // user is not the current logged user
         if currentUUID != uid {
-            FirebaseAPI.shared.fetchListOfFollowersForCurrentUser { (followers, error) in
+            FirebaseAPI.shared.fetchFollowingListForCurrentUser { (following, error) in
                 if let error = error {
                     print(error)
                     return
                 }
                 
-                guard let followers = followers else { return }
-                if let _ = followers.index(of: uid) {
+                guard let following = following else { return }
+                if let _ = following.index(of: uid) {
                     self.setupUnfollowButton()
                 } else {
                     self.setupFollowButton()

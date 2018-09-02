@@ -19,14 +19,15 @@ struct Post {
     let user: User
     
     init(user: User, valuesDict: [String: Any]) {
-        
         self.user = user
         
         self.caption = valuesDict["caption"] as? String ?? ""
         self.imageWidth = valuesDict["image_width"] as? Int ?? 0
         self.imageHeight = valuesDict["image_height"] as? Int ?? 0
         self.postImageUrl = valuesDict["post_image_url"] as? String ?? ""
-        self.creationDate = valuesDict["creation_date"] as? Date ?? Date()
+        
+        let secondsFrom1970 = valuesDict["creation_date"] as? Double ?? 0
+        self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
     
 } // Post

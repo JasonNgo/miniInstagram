@@ -20,11 +20,20 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         
         // setup
         setupNavigationBar()
-        
-        collectionView?.backgroundColor = .white
-        collectionView?.register(HomePostViewCell.self, forCellWithReuseIdentifier: cellId)
+        setupCollectionView()
         
         fetchUserInfo()
+    }
+    
+    // MARK: - Setup Functions
+    
+    fileprivate func setupNavigationBar() {
+        navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
+    }
+    
+    fileprivate func setupCollectionView() {
+        collectionView?.backgroundColor = .white
+        collectionView?.register(HomePostViewCell.self, forCellWithReuseIdentifier: cellId)
     }
     
     // MARK: UICollectionViewDelegate
@@ -50,13 +59,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     // MARK: - Helper Functions
     
-    fileprivate func setupNavigationBar() {
-        navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
-    }
-    
     fileprivate func fetchUserInfo() {
         let uid = FirebaseAPI.shared.getCurrentUserUID()
-        
         FirebaseAPI.shared.fetchUserWith(uid: uid) { (user, error) in
             if let error = error {
                 print(error)
@@ -70,48 +74,52 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
                 self.collectionView?.reloadData()
             }
             
-            self.fetchPosts()
+            self.fetchPostsFor(user: self.user!)
+            self.fetchFollowingPosts()
         }
     }
-
-    fileprivate func fetchPosts() {
-        guard let user = self.user else { return }
-
+    
+    fileprivate func fetchFollowingPosts() {
+        FirebaseAPI.shared.fetchFollowingListForCurrentUser { (following, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let following = following else { return }
+            
+            following.forEach({ (followingUserID) in
+                FirebaseAPI.shared.fetchUserWith(uid: followingUserID, completion: { (user, error) in
+                    if let error = error {
+                        print(error)
+                        return
+                    }
+                    
+                    guard let user = user else { return }
+                    self.fetchPostsFor(user: user)
+                })
+            })
+        }
+    }
+    
+    fileprivate func fetchPostsFor(user: User) {
         FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
             if let error = error {
                 print(error)
                 return
             }
-
+            
             guard let post = post else { return }
             self.posts.insert(post, at: 0)
-
+            
+            self.posts.sort(by: { (p1, p2) -> Bool in
+                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+            })
+            
             DispatchQueue.main.async {
                 self.collectionView?.reloadData()
             }
-            
-//            self.fetchFollowingPosts()
         }
-    }
-    
-    fileprivate func fetchFollowingPosts() {
-//        FirebaseAPI.shared.fetchPostsFromListOfFollowers { (postsToAdd, error) in
-//            if let error = error {
-//                print(error)
-//                return
-//            }
-//
-//            guard let postsToAdd = postsToAdd else { return }
-//
-//            self.posts.append(contentsOf: postsToAdd)
-//            self.posts.sort(by: { (p1, p2) -> Bool in
-//                return p1.creationDate.compare(p2.creationDate) == .orderedAscending
-//            })
-//
-//            DispatchQueue.main.async {
-//                self.collectionView?.reloadData()
-//            }
-//        }
     }
     
 } // HomeFeedController

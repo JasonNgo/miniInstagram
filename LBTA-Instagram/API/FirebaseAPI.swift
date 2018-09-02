@@ -328,7 +328,7 @@ class FirebaseAPI {
     } // savePostImageToStorage
 
     // MARK: Following/Unfollowing Functions
-//
+
 //    func fetchPostsFromListOfFollowers(completion: @escaping ([Post]?, Error?) -> Void) {
 //        var posts = [Post]()
 //
@@ -344,15 +344,23 @@ class FirebaseAPI {
 //                return
 //            }
 //
-//            users.forEach({ (user) in
-//                FirebaseAPI.shared.fetchUserPosts(user: user, completion: { (post, error) in
+//            users.forEach({ (userID) in
+//                FirebaseAPI.shared.fetchUserWith(uid: userID, completion: { (user, error) in
 //                    if let error = error {
 //                        print(error)
 //                        return
 //                    }
 //
-//                    guard let post = post else { return }
-//                    posts.append(post)
+//                    guard let user = user else { return }
+//                    FirebaseAPI.shared.fetchUserPosts(user: user, completion: { (post, error) in
+//                        if let error = error {
+//                            print(error)
+//                            return
+//                        }
+//
+//                        posts.append(post)
+//                    })
+//
 //                })
 //            })
 //
@@ -360,10 +368,10 @@ class FirebaseAPI {
 //        }
 //    }
 
-    func fetchListOfFollowersForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
+    func fetchFollowingListForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
         let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
         let followingRef = Database.database().reference().child("following").child(currentUUID)
-        var followers = [String]()
+        var following = [String]()
 
         followingRef.observe(.value, with: { (snapshot) in
             guard let values = snapshot.value, let valuesDict = values as? [String: Any] else {
@@ -372,10 +380,10 @@ class FirebaseAPI {
             }
 
             valuesDict.forEach({ (key, value) in
-                followers.append(key)
+                following.append(key)
             })
 
-            completion(followers, nil)
+            completion(following, nil)
         }) { (error) in
             print(error)
             completion(nil, FirebaseDatabaseError.errorFetchingListOfUsers(""))

@@ -10,6 +10,7 @@
 		7D4376F72133030300CC794E /* UserSeachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F62133030300CC794E /* UserSeachController.swift */; };
 		7D4376F9213308ED00CC794E /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F8213308ED00CC794E /* UserSearchCell.swift */; };
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
+		7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFC213C5CE9005432F4 /* Date.swift */; };
 		7D837A142131DC8200124E6A /* HomeFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D837A132131DC8200124E6A /* HomeFeedController.swift */; };
 		7D837A162131F3F300124E6A /* HomePostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D837A152131F3F300124E6A /* HomePostViewCell.swift */; };
 		7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */; };
@@ -40,6 +41,7 @@
 		7D4376F62133030300CC794E /* UserSeachController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeachController.swift; sourceTree = "<group>"; };
 		7D4376F8213308ED00CC794E /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
+		7D5CEBFC213C5CE9005432F4 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7D837A132131DC8200124E6A /* HomeFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedController.swift; sourceTree = "<group>"; };
 		7D837A152131F3F300124E6A /* HomePostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostViewCell.swift; sourceTree = "<group>"; };
 		7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				7DB6ABA2212A0AF700583D91 /* UIColor.swift */,
 				7DB6ABA4212A0C5700583D91 /* UIView.swift */,
 				7DBEA01B21339549003F12AD /* UIBarButtonItem.swift */,
+				7D5CEBFC213C5CE9005432F4 /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */,
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
 				7DA1D323212F481E0048EB53 /* PhotoSelectorCell.swift in Sources */,
 				7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */,
