@@ -211,6 +211,8 @@ class FirebaseAPI {
             }
             
             let post = Post(user: user, valuesDict: dictionary)
+            
+            
             completion(post, nil)
             
         }) { (error) in
@@ -328,45 +330,6 @@ class FirebaseAPI {
     } // savePostImageToStorage
 
     // MARK: Following/Unfollowing Functions
-
-//    func fetchPostsFromListOfFollowers(completion: @escaping ([Post]?, Error?) -> Void) {
-//        var posts = [Post]()
-//
-//        FirebaseAPI.shared.fetchListOfFollowersForCurrentUser { (users, error) in
-//            if let error = error {
-//                print(error)
-//                completion(nil, error)
-//                return
-//            }
-//
-//            guard let users = users else {
-//                completion(nil, DataError.errorUnwrappingUsers(""))
-//                return
-//            }
-//
-//            users.forEach({ (userID) in
-//                FirebaseAPI.shared.fetchUserWith(uid: userID, completion: { (user, error) in
-//                    if let error = error {
-//                        print(error)
-//                        return
-//                    }
-//
-//                    guard let user = user else { return }
-//                    FirebaseAPI.shared.fetchUserPosts(user: user, completion: { (post, error) in
-//                        if let error = error {
-//                            print(error)
-//                            return
-//                        }
-//
-//                        posts.append(post)
-//                    })
-//
-//                })
-//            })
-//
-//            completion(posts, nil)
-//        }
-//    }
 
     func fetchFollowingListForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
         let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
