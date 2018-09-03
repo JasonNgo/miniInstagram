@@ -200,26 +200,36 @@ class FirebaseAPI {
         } // observeSingleEvent
     } // fetchUserWith
     
-    func fetchUserPosts(user: User, completion: @escaping (Post?, Error?) -> Void) {
+    func fetchUserPosts(user: User, completion: @escaping ([Post]?, Error?) -> Void) {
         let uid = user.uuid
         let userPostsRef = Database.database().reference().child("posts").child(uid)
         
-        userPostsRef.queryOrdered(byChild: "creation_date").observe(.childAdded, with: { (snapshot) in
-            guard let values = snapshot.value, let dictionary = values as? [String: Any] else {
+        var posts = [Post]()
+        userPostsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let values = snapshot.value, let dictionaries = values as? [String: Any] else {
+                // data error
                 completion(nil, DataError.errorUnwrappingDictionary(""))
                 return
             }
             
-            let post = Post(user: user, valuesDict: dictionary)
+            dictionaries.forEach({ (key, value) in
+                guard let valuesDict = value as? [String: Any] else {
+                    completion(nil, DataError.errorUnwrappingDictionary(""))
+                    return
+                }
+                
+                var post = Post(user: user, valuesDict: valuesDict)
+                post.postId = key
+                posts.append(post)
+            })
             
-            
-            completion(post, nil)
-            
+            completion(posts, nil)
         }) { (error) in
             print(error)
             completion(nil, FirebaseDatabaseError.errorFetchingUserPosts(""))
         }
-    } // fetchUserPosts
+    }
+    
     
     func fetchListOfUsers(completion: @escaping ([User]?, Error?) -> Void) {
         let usersRef = Database.database().reference().child("users")

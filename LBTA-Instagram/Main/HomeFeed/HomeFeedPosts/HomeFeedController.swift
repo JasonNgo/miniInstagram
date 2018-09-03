@@ -145,7 +145,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     fileprivate func fetchPostsFor(user: User) {
-        FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
+        FirebaseAPI.shared.fetchUserPosts(user: user) { (posts, error) in
             if let error = error {
                 print(error)
                 return
@@ -153,8 +153,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             
             self.collectionView?.refreshControl?.endRefreshing()
             
-            guard let post = post else { return }
-            self.posts.insert(post, at: 0)
+            guard let posts = posts else { return }
+            self.posts.append(contentsOf: posts)
             
             self.posts.sort(by: { (p1, p2) -> Bool in
                 return p1.creationDate.compare(p2.creationDate) == .orderedDescending

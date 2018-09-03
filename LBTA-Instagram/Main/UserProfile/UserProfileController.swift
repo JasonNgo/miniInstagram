@@ -128,14 +128,19 @@ class UserProfileController: UICollectionViewController {
     fileprivate func fetchUserPosts() {
         guard let user = self.user else { return }
         
-        FirebaseAPI.shared.fetchUserPosts(user: user) { (post, error) in
+        FirebaseAPI.shared.fetchUserPosts(user: user) { (posts, error) in
             if let error = error {
                 print(error)
                 return
             }
 
-            guard let post = post else { return }
-            self.posts.insert(post, at: 0)
+            guard var posts = posts else { return }
+            
+            posts.sort(by: { (p1, p2) -> Bool in
+                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+            })
+            
+            self.posts = posts
 
             DispatchQueue.main.async {
                 self.collectionView?.reloadData()

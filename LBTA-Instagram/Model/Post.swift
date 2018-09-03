@@ -10,6 +10,7 @@ import Foundation
 
 struct Post {
     
+    var postId: String?
     let caption: String
     let imageWidth: Int
     let imageHeight: Int
