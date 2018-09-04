@@ -99,8 +99,8 @@ class UserProfileController: UICollectionViewController {
     // MARK: - Helper Functions
     
     fileprivate func fetchUser() {
-        
-        let uid = userId ?? FirebaseAPI.shared.getCurrentUserUID()
+        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+        let uid = userId ?? currentUUID
         FirebaseAPI.shared.fetchUserWith(uid: uid) { (user, error) in
             if let error = error {
                 print(error)
@@ -111,7 +111,7 @@ class UserProfileController: UICollectionViewController {
             self.user = user
             self.navigationItem.title = self.user?.username
             
-            if self.user?.uuid.compare(FirebaseAPI.shared.getCurrentUserUID()) != .orderedSame {
+            if self.user?.uuid.compare(currentUUID) != .orderedSame {
                 self.navigationItem.rightBarButtonItem = nil
                 self.navigationItem.title = nil
             }

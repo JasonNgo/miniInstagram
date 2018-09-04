@@ -64,6 +64,17 @@ class CommentCell: UICollectionViewCell {
         captionTextView.anchor(top: topAnchor, paddingTop: 4, right: rightAnchor, paddingRight: -4,
                                bottom: bottomAnchor, paddingBottom: -4, left: profileImageView.rightAnchor, paddingLeft: 4,
                                width: 0, height: 0)
+        
+        let dividerView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .lightGray
+            return view
+        }()
+        
+        addSubview(dividerView)
+        dividerView.anchor(top: nil, paddingTop: 0, right: rightAnchor, paddingRight: 0,
+                           bottom: bottomAnchor, paddingBottom: 0, left: leftAnchor, paddingLeft: 0,
+                           width: 0, height: 0.5)
     }
     
     // MARK: - Helper Functions

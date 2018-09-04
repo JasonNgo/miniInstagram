@@ -47,8 +47,8 @@ class FirebaseAPI {
         return Auth.auth().currentUser != nil
     }
     
-    func getCurrentUserUID() -> String {
-        return Auth.auth().currentUser?.uid ?? ""
+    func getCurrentUserUID() -> String? {
+        return Auth.auth().currentUser?.uid
     }
     
     // MARK: - User Creation Functions
@@ -220,16 +220,33 @@ class FirebaseAPI {
                 
                 var post = Post(user: user, valuesDict: valuesDict)
                 post.postId = key
-                posts.append(post)
+                
+                guard let postId = post.postId else { return }
+                guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+                
+                let likesRef = Database.database().reference().child("likes").child(postId).child(currentUUID)
+                likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let value = snapshot.value as? Bool, value == true {
+                        post.isLiked = true
+                    } else {
+                        post.isLiked = false
+                    }
+                    
+                    posts.append(post)
+                    if dictionaries.count == posts.count {
+                        completion(posts, nil)
+                    }
+                    
+                }, withCancel: { (error) in
+                    completion(nil, error)
+                })
             })
-            
-            completion(posts, nil)
+        
         }) { (error) in
             print(error)
             completion(nil, FirebaseDatabaseError.errorFetchingUserPosts(""))
         }
     }
-    
     
     func fetchListOfUsers(completion: @escaping ([User]?, Error?) -> Void) {
         let usersRef = Database.database().reference().child("users")
@@ -283,7 +300,7 @@ class FirebaseAPI {
                 return
             }
 
-            let uid = FirebaseAPI.shared.getCurrentUserUID()
+            guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
             
             var valuesDict = values
             valuesDict["post_image_url"] = downloadURL
@@ -342,7 +359,7 @@ class FirebaseAPI {
     // MARK: Following/Unfollowing Functions
 
     func fetchFollowingListForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
-        let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
         let followingRef = Database.database().reference().child("following").child(currentUUID)
         var following = [String]()
 
@@ -364,7 +381,7 @@ class FirebaseAPI {
     }
 
     func followUserWithUID(_ uidToFollow: String, completion: @escaping (Error?) -> Void) {
-        let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
         let followingRef = Database.database().reference().child("following").child(currentUUID)
         let values = [uidToFollow: true] as [String: Any]
 
@@ -380,7 +397,7 @@ class FirebaseAPI {
     }
 
     func unfollowUserWithUID(_ uidToUnfollow: String, completion: @escaping (Error?) -> Void) {
-        let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
         let followingRef = Database.database().reference().child("following").child(currentUUID)
 
         followingRef.child(uidToUnfollow).removeValue { (error, database) in
@@ -408,6 +425,22 @@ class FirebaseAPI {
             }
             
             print("saved comment")
+            completion(nil)
+        }
+    }
+    
+    func updateLikesForPost(_ post: Post, values: [String: Any], completion: @escaping (Error?) -> Void) {
+        guard let postId = post.postId else { return }
+        let likesRef = Database.database().reference().child("likes").child(postId)
+        
+        likesRef.updateChildValues(values) { (error, reference) in
+            if let error = error {
+                print(error)
+                completion(error)
+                return
+            }
+            
+            print("updated likes")
             completion(nil)
         }
     }
@@ -443,5 +476,37 @@ class FirebaseAPI {
             completion(nil, error)
         }
     }
-
+    
+    func fetchPostLikeInformationFor(_ posts: [Post], completion: @escaping ([Post]?, Error?) -> Void) {
+        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else {
+            // TODO: return error
+            return
+        }
+        
+        var editedPosts = [Post]()
+        
+        for (idx, post) in posts.enumerated() {
+            guard let postId = post.postId else { return }
+            
+            var editedPost = post
+            
+            let likesRef = Database.database().reference().child("likes").child(postId).child(currentUUID)
+            likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let value = snapshot.value as? Bool, value == true {
+                    editedPost.isLiked = true
+                } else {
+                    editedPost.isLiked = false
+                }
+                
+                editedPosts.append(editedPost)
+                
+                if idx == posts.endIndex {
+                    completion(editedPosts, nil)
+                }
+            }, withCancel: { (error) in
+                completion(nil, error)
+            })
+        }
+    }
+    
 } // FirebaseAPI

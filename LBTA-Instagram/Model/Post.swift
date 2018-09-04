@@ -17,6 +17,8 @@ struct Post {
     let postImageUrl: String
     let creationDate: Date
     
+    var isLiked = false
+    
     let user: User
     
     init(user: User, valuesDict: [String: Any]) {

@@ -84,6 +84,26 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
         navigationController?.pushViewController(commentsController, animated: true)
     }
     
+    func didTapLikeButton(forCell: HomePostViewCell) {
+        print("didTapLikeButton(forCell:)")
+        guard let indexPath = collectionView?.indexPath(for: forCell) else { return }
+        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+        
+        var post = self.posts[indexPath.item]
+        let values = [currentUUID: !post.isLiked]
+        
+        FirebaseAPI.shared.updateLikesForPost(post, values: values) { (error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            post.isLiked = !post.isLiked
+            self.posts[indexPath.item] = post
+            self.collectionView?.reloadItems(at: [indexPath])
+        }
+    }
+    
     // MARK: - Selector Functions
     
     @objc func handleRefresh() {
@@ -106,7 +126,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     // MARK: - Helper Functions
     
     fileprivate func fetchUserInfo() {
-        let uid = FirebaseAPI.shared.getCurrentUserUID()
+        guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
         FirebaseAPI.shared.fetchUserWith(uid: uid) { (user, error) in
             if let error = error {
                 print(error)
