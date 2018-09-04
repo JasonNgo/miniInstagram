@@ -338,23 +338,6 @@ class FirebaseAPI {
         } // putData
 
     } // savePostImageToStorage
-    
-    func saveCommentToDatabaseForPost(_ post: Post, values: [String: Any], completion: @escaping (Error?) -> Void) {
-        guard let postId = post.postId else { return }
-        let commentRef = Database.database().reference().child("comments").child(postId).childByAutoId()
-        let commentKey = commentRef.key
-        
-        commentRef.updateChildValues(values) { (error, reference) in
-            if let error = error {
-                print(error)
-                completion(error)
-                return
-            }
-            
-            print("saved comment")
-            completion(nil)
-        }
-    }
 
     // MARK: Following/Unfollowing Functions
 
@@ -408,6 +391,52 @@ class FirebaseAPI {
             }
 
             completion(nil)
+        }
+    }
+    
+    // TODO: Order these functions
+    
+    func saveCommentToDatabaseForPost(_ post: Post, values: [String: Any], completion: @escaping (Error?) -> Void) {
+        guard let postId = post.postId else { return }
+        let commentRef = Database.database().reference().child("comments").child(postId).childByAutoId()
+        
+        commentRef.updateChildValues(values) { (error, reference) in
+            if let error = error {
+                print(error)
+                completion(error)
+                return
+            }
+            
+            print("saved comment")
+            completion(nil)
+        }
+    }
+    
+    func fetchCommentsForPost(_ post: Post, completion: @escaping ([Comment]?, Error?) -> Void) {
+        guard let postId = post.postId else { return }
+        
+        var comments = [Comment]()
+        
+        let commentsRef = Database.database().reference().child("comments").child(postId)
+        commentsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let values = snapshot.value, let commentDictionaries = values as? [String: Any] else {
+                completion(nil, DataError.errorUnwrappingDictionary(""))
+                return
+            }
+            
+            commentDictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String: Any] else {
+                    completion(nil, DataError.errorUnwrappingDictionary(""))
+                    return
+                }
+                
+                let comment = Comment(dictionary: dictionary)
+                comments.append(comment)
+            })
+            
+            completion(comments, nil)
+        }) { (error) in
+            completion(nil, error)
         }
     }
 

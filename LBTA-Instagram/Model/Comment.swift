@@ -11,13 +11,15 @@ import Foundation
 struct Comment {
     
     let userId: String
-    let userProfileImageUrl: String
     let caption: String
+    let creationDate: Date
     
     init(dictionary: [String: Any]) {
-        userId = dictionary["comment_user_id"] as? String ?? ""
-        userProfileImageUrl = dictionary["comment_user_profile_image_url"] as? String ?? ""
-        caption = dictionary["comment_caption"] as? String ?? ""
+        self.userId = dictionary["comment_user_id"] as? String ?? ""
+        self.caption = dictionary["comment_caption"] as? String ?? ""
+        
+        let secondsFrom1970 = dictionary["creation_date"] as? Double ?? 0
+        self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
     
 } // Comment

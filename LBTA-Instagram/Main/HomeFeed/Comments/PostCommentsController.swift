@@ -26,6 +26,8 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
 
     var post: Post?
     var user: User?
+    
+    var comments = [Comment]()
 
     // MARK: - Views and Selectors
     
@@ -93,6 +95,8 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         super.viewDidLoad()
 
         setupCollectionController()
+
+        fetchComments()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,15 +117,36 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: cellId)
     }
     
+    // MARK: - Helper Functions
+    
+    fileprivate func fetchComments() {
+        FirebaseAPI.shared.fetchCommentsForPost(post!) { (comments, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let comments = comments else { return }
+            self.comments = comments
+            
+            DispatchQueue.main.async {
+                self.collectionView?.reloadData()
+            }
+        }
+    }
+    
     // MARK: UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentCell
+        let comment = comments[indexPath.item]
+        cell.comment = comment
+        cell.post = post
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return comments.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
