@@ -68,6 +68,7 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
             }
             
             //
+            self.fetchComments()
         }
     }
     

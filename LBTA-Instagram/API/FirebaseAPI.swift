@@ -434,6 +434,10 @@ class FirebaseAPI {
                 comments.append(comment)
             })
             
+            comments.sort(by: { (c1, c2) -> Bool in
+                return c1.creationDate.compare(c2.creationDate) == .orderedAscending
+            })
+            
             completion(comments, nil)
         }) { (error) in
             completion(nil, error)
