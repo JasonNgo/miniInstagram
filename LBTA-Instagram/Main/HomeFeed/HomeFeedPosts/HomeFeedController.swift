@@ -74,9 +74,13 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     func didTapCommentButton(post: Post) {
         print("didTapCommentButton")
-        print(post.caption)
+        
+        guard let user = self.user else { return }
+        
         let layout = UICollectionViewFlowLayout()
         let commentsController = PostCommentsController(collectionViewLayout: layout)
+        commentsController.post = post
+        commentsController.user = user
         navigationController?.pushViewController(commentsController, animated: true)
     }
     

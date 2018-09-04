@@ -338,6 +338,23 @@ class FirebaseAPI {
         } // putData
 
     } // savePostImageToStorage
+    
+    func saveCommentToDatabaseForPost(_ post: Post, values: [String: Any], completion: @escaping (Error?) -> Void) {
+        guard let postId = post.postId else { return }
+        let commentRef = Database.database().reference().child("comments").child(postId).childByAutoId()
+        let commentKey = commentRef.key
+        
+        commentRef.updateChildValues(values) { (error, reference) in
+            if let error = error {
+                print(error)
+                completion(error)
+                return
+            }
+            
+            print("saved comment")
+            completion(nil)
+        }
+    }
 
     // MARK: Following/Unfollowing Functions
 

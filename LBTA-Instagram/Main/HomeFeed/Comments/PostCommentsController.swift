@@ -14,12 +14,6 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     
     // MARK: - Properties
     
-    var comment: Comment? {
-        didSet {
-            
-        }
-    }
-    
     override var inputAccessoryView: UIView? {
         get {
             return containerView
@@ -29,7 +23,10 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     override var canBecomeFirstResponder: Bool {
         return true
     }
-    
+
+    var post: Post?
+    var user: User?
+
     // MARK: - Views and Selectors
     
     let commentTextField: UITextField = {
@@ -46,6 +43,31 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         button.addTarget(self, action: #selector(handleSubmitPressed), for: .touchUpInside)
         return button
     }()
+    
+    @objc func handleSubmitPressed() {
+        print("submit pressed")
+        resignFirstResponder()
+        
+        guard let user = self.user else { return }
+        guard let post = self.post else { return }
+        guard let caption = commentTextField.text else { return }
+        
+        let values = [
+            "comment_user_id": user.uuid,
+            "comment_caption": caption,
+            "creation_date": Date().timeIntervalSince1970
+        ] as [String: Any]
+    
+        FirebaseAPI.shared.saveCommentToDatabaseForPost(post, values: values) { (error) in
+            if let error = error {
+                // comment wasn't saved successfully
+                print(error)
+                return
+            }
+            
+            //
+        }
+    }
     
     lazy var containerView: UIView = {
         let containerView = UIView()
@@ -64,11 +86,6 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         
         return containerView
     }()
-    
-    @objc func handleSubmitPressed() {
-        print("submit pressed")
-        resignFirstResponder()
-    }
     
     // MARK: - Lifecycle Functions
     

@@ -10,6 +10,14 @@ import UIKit
 
 class CommentCell: UICollectionViewCell {
     
+    var post: Post?
+    
+    var comment: Comment? {
+        didSet {
+            
+        }
+    }
+    
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .red
