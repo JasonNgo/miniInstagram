@@ -14,6 +14,7 @@ class CommentCell: UICollectionViewCell {
     
     var comment: Comment? {
         didSet {
+            captionTextView.text = comment?.caption
             fetchUserWithId(comment?.userId ?? "")
         }
     }
@@ -29,14 +30,16 @@ class CommentCell: UICollectionViewCell {
     
     let profileImageView: CustomImageView = {
         let imageView = CustomImageView()
-        imageView.backgroundColor = .red
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
-    let captionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Username Caption"
-        return label
+    let captionTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.isScrollEnabled = false
+        return textView
     }()
     
     override init(frame: CGRect) {
@@ -53,15 +56,14 @@ class CommentCell: UICollectionViewCell {
     
     fileprivate func setupViews() {
         addSubview(profileImageView)
-        profileImageView.anchor(top: nil, paddingTop: 0, right: nil, paddingRight: 0,
+        profileImageView.anchor(top: topAnchor, paddingTop: 8, right: nil, paddingRight: 0,
                                 bottom: nil, paddingBottom: 0, left: leftAnchor, paddingLeft: 8, width: 40, height: 40)
-        profileImageView.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)
         profileImageView.layer.cornerRadius = 40 / 2
         
-        addSubview(captionLabel)
-        captionLabel.anchor(top: topAnchor, paddingTop: 0, right: rightAnchor, paddingRight: -8,
-                             bottom: bottomAnchor, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 4,
-                             width: 0, height: 0)
+        addSubview(captionTextView)
+        captionTextView.anchor(top: topAnchor, paddingTop: 4, right: rightAnchor, paddingRight: -4,
+                               bottom: bottomAnchor, paddingBottom: -4, left: profileImageView.rightAnchor, paddingLeft: 4,
+                               width: 0, height: 0)
     }
     
     // MARK: - Helper Functions
@@ -89,8 +91,7 @@ class CommentCell: UICollectionViewCell {
         let captionText = NSAttributedString(string: comment.caption, attributes: captionTextAttributes)
     
         attributedText.append(captionText)
-        
-        captionLabel.attributedText = attributedText
+        captionTextView.attributedText = attributedText
     }
     
 } // CommentCell

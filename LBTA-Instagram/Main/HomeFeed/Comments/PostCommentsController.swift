@@ -48,11 +48,11 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     
     @objc func handleSubmitPressed() {
         print("submit pressed")
-        resignFirstResponder()
         
+        guard let caption = commentTextField.text, commentTextField.text?.isEmpty == false else { return }
         guard let user = self.user else { return }
         guard let post = self.post else { return }
-        guard let caption = commentTextField.text else { return }
+        
         
         let values = [
             "comment_user_id": user.uuid,
@@ -67,7 +67,7 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
                 return
             }
             
-            //
+            self.resignFirstResponder()
             self.fetchComments()
         }
     }
@@ -116,6 +116,10 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         navigationItem.title = "Comments"
         collectionView?.backgroundColor = .white
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.contentInset = UIEdgeInsetsMake(0, 0, -50, 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, -50, 0)
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.keyboardDismissMode = .interactive
     }
     
     // MARK: - Helper Functions
@@ -140,8 +144,7 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentCell
-        let comment = comments[indexPath.item]
-        cell.comment = comment
+        cell.comment = comments[indexPath.item]
         cell.post = post
         return cell
     }
@@ -152,7 +155,17 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = view.frame.width
-        return CGSize(width: width, height: 50)
+        
+        let frame = CGRect(x: 0, y: 0, width: width, height: 50)
+        let dummyCell = CommentCell(frame: frame)
+        dummyCell.comment = comments[indexPath.item]
+        dummyCell.layoutIfNeeded()
+        
+        let targetSize = CGSize(width: width, height: 1000)
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        let height = max(40 + 8 + 8, estimatedSize.height)
+        
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
