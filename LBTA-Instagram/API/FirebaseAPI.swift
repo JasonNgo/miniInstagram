@@ -233,10 +233,11 @@ class FirebaseAPI {
                     }
                     
                     posts.append(post)
+                    
+                    // final element has been updated, can now correctly call completion
                     if dictionaries.count == posts.count {
                         completion(posts, nil)
                     }
-                    
                 }, withCancel: { (error) in
                     completion(nil, error)
                 })
@@ -474,38 +475,6 @@ class FirebaseAPI {
             completion(comments, nil)
         }) { (error) in
             completion(nil, error)
-        }
-    }
-    
-    func fetchPostLikeInformationFor(_ posts: [Post], completion: @escaping ([Post]?, Error?) -> Void) {
-        guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else {
-            // TODO: return error
-            return
-        }
-        
-        var editedPosts = [Post]()
-        
-        for (idx, post) in posts.enumerated() {
-            guard let postId = post.postId else { return }
-            
-            var editedPost = post
-            
-            let likesRef = Database.database().reference().child("likes").child(postId).child(currentUUID)
-            likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                if let value = snapshot.value as? Bool, value == true {
-                    editedPost.isLiked = true
-                } else {
-                    editedPost.isLiked = false
-                }
-                
-                editedPosts.append(editedPost)
-                
-                if idx == posts.endIndex {
-                    completion(editedPosts, nil)
-                }
-            }, withCancel: { (error) in
-                completion(nil, error)
-            })
         }
     }
     

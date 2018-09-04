@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol UserProfileHeaderDelegate {
+    func didTapGridButton()
+    func didTapListButton()
+}
+
 class UserProfileHeaderView: UICollectionViewCell {
+    
+    var delegate: UserProfileHeaderDelegate?
     
     var user: User? {
         didSet {
@@ -106,23 +113,39 @@ class UserProfileHeaderView: UICollectionViewCell {
         return button
     }()
     
-    let gridButton: UIButton = {
+    lazy var gridButton: UIButton = {
         var button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "grid"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "grid").withRenderingMode(.alwaysOriginal), for: .normal)
         button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.addTarget(self, action: #selector(handleGridButtonPressed), for: .touchUpInside)
         return button
     }()
     
-    let listButton: UIButton = {
+    @objc func handleGridButtonPressed() {
+        print("grid button pressed")
+        gridButton.tintColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
+        listButton.tintColor = UIColor.init(white: 0, alpha: 0.2)
+        delegate?.didTapGridButton()
+    }
+    
+    lazy var listButton: UIButton = {
         var button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "list"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "list").withRenderingMode(.alwaysOriginal), for: .normal)
         button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.addTarget(self, action: #selector(handleListButtonPressed), for: .touchUpInside)
         return button
     }()
+    
+    @objc func handleListButtonPressed() {
+        print("list button pressed")
+        gridButton.tintColor = UIColor(white: 0, alpha: 0.2)
+        listButton.tintColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
+        delegate?.didTapListButton()
+    }
     
     let bookmarkButton: UIButton = {
         var button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ribbon"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "ribbon").withRenderingMode(.alwaysOriginal), for: .normal)
         button.tintColor = UIColor(white: 0, alpha: 0.2)
         return button
     }()

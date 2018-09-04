@@ -8,14 +8,16 @@
 
 import UIKit
 
-class UserProfileController: UICollectionViewController {
-    
+class UserProfileController: UICollectionViewController, UserProfileHeaderDelegate {
+
     fileprivate let headerID = "headerID"
     fileprivate let cellID   = "cellID"
+    fileprivate let homePostCellID = "homePostCellID"
     
     var user: User?
     var userId: String?
     var posts = [Post]()
+    var isGridView = true
     
     // MARK: - Lifecycle Functions
     
@@ -33,6 +35,7 @@ class UserProfileController: UICollectionViewController {
     fileprivate func setupCollectionView() {
         collectionView?.backgroundColor = .white
         collectionView?.register(UserProfilePostCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView?.register(HomePostViewCell.self, forCellWithReuseIdentifier: homePostCellID)
         collectionView?.register(UserProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
     }
     
@@ -41,17 +44,43 @@ class UserProfileController: UICollectionViewController {
         navigationItem.rightBarButtonItem = gearButton
     }
     
+    // MARK: - UserProfileHeaderDelegate
+    
+    func didTapGridButton() {
+        isGridView = true
+        collectionView?.reloadData()
+    }
+    
+    func didTapListButton() {
+        isGridView = false
+        collectionView?.reloadData()
+    }
+    
     // MARK: - UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
-        cell.post = posts[indexPath.item]
-        return cell
+        if isGridView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
+            cell.post = posts[indexPath.item]
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePostCellID, for: indexPath) as! HomePostViewCell
+            cell.post = posts[indexPath.item]
+            return cell
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 2) / 3
-        return CGSize(width: width, height: width)
+        if isGridView {
+            return CGSize(width: (view.frame.width - 2) / 3, height: (view.frame.width - 2) / 3)
+        } else {
+            var height: CGFloat = 40 + 8 + 8
+            height += view.frame.width
+            height += 50
+            height += 60
+            
+            return CGSize(width: view.frame.width, height: height)
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -63,6 +92,7 @@ class UserProfileController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! UserProfileHeaderView
         header.user = self.user
+        header.delegate = self
         return header
     }
     

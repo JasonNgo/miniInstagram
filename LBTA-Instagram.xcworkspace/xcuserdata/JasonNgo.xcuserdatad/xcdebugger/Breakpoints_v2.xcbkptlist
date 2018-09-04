@@ -31,7 +31,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LBTA-Instagram/Main/HomeFeed/Comments/PostCommentsController.swift"
-            timestampString = "557782287.078146"
+            timestampString = "557794805.873257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "134"
@@ -47,7 +47,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LBTA-Instagram/Main/HomeFeed/Comments/CommentCell.swift"
-            timestampString = "557782287.078532"
+            timestampString = "557794805.8738101"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "29"
@@ -63,7 +63,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LBTA-Instagram/Main/HomeFeed/Comments/PostCommentsController.swift"
-            timestampString = "557782287.078757"
+            timestampString = "557794805.874119"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
@@ -79,44 +79,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LBTA-Instagram/Main/HomeFeed/Comments/PostCommentsController.swift"
-            timestampString = "557782287.078812"
+            timestampString = "557794805.8742011"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "159"
             endingLineNumber = "159"
             landmarkName = "collectionView(_:layout:sizeForItemAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LBTA-Instagram/API/FirebaseAPI.swift"
-            timestampString = "557782287.0788701"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
-            landmarkName = "fetchPostLikeInformationFor(_:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LBTA-Instagram/API/FirebaseAPI.swift"
-            timestampString = "557782287.079398"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "495"
-            endingLineNumber = "495"
-            landmarkName = "fetchPostLikeInformationFor(_:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
