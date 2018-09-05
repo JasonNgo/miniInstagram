@@ -27,7 +27,6 @@
 		7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA2212A0AF700583D91 /* UIColor.swift */; };
 		7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA4212A0C5700583D91 /* UIView.swift */; };
 		7DB6ABA7212A11C800583D91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */; };
-		7DBEA01C21339549003F12AD /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBEA01B21339549003F12AD /* UIBarButtonItem.swift */; };
 		7DC10D0F213DD1E10055A95A /* PostCommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC10D0E213DD1E10055A95A /* PostCommentsController.swift */; };
 		7DC10D14213DD8C30055A95A /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC10D13213DD8C30055A95A /* Comment.swift */; };
 		7DC10D16213DD9510055A95A /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC10D15213DD9510055A95A /* CommentCell.swift */; };
@@ -66,7 +65,6 @@
 		7DB6ABA2212A0AF700583D91 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		7DB6ABA4212A0C5700583D91 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		7DB6ABA6212A11C800583D91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7DBEA01B21339549003F12AD /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
 		7DC10D0E213DD1E10055A95A /* PostCommentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentsController.swift; sourceTree = "<group>"; };
 		7DC10D13213DD8C30055A95A /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		7DC10D15213DD9510055A95A /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 			children = (
 				7DB6ABA2212A0AF700583D91 /* UIColor.swift */,
 				7DB6ABA4212A0C5700583D91 /* UIView.swift */,
-				7DBEA01B21339549003F12AD /* UIBarButtonItem.swift */,
 				7D5CEBFC213C5CE9005432F4 /* Date.swift */,
 			);
 			path = Extensions;
@@ -432,7 +429,6 @@
 				7DE700672130EB5E00CA9EA1 /* CustomImageView.swift in Sources */,
 				7DC10D16213DD9510055A95A /* CommentCell.swift in Sources */,
 				7DCAB55A212E04BC009F68AB /* LoginController.swift in Sources */,
-				7DBEA01C21339549003F12AD /* UIBarButtonItem.swift in Sources */,
 				7D837A162131F3F300124E6A /* HomePostViewCell.swift in Sources */,
 				7D4376F9213308ED00CC794E /* UserSearchCell.swift in Sources */,
 				7D4376F72133030300CC794E /* UserSeachController.swift in Sources */,

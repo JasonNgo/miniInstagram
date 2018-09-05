@@ -113,9 +113,7 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
     } // setupViews
 
     fileprivate func setupInputFields() {
-        let stackView = UIStackView(arrangedSubviews: [
-            emailTextField, usernameTextField, passwordTextField, signUpButton
-        ])
+        let stackView = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, signUpButton])
 
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
@@ -172,7 +170,6 @@ class SignUpViewController: UIViewController, UINavigationControllerDelegate, UI
             mainTabBarController.setupViewControllers()
             self.dismiss(animated: true, completion: nil)
         }
-        
     }
 
     @objc func handleAddPhotoButtonPressed() {

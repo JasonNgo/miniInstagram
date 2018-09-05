@@ -140,9 +140,9 @@ class LoginController: UIViewController {
             } else {
                 loginButton.isEnabled = false
                 loginButton.backgroundColor = UIColor.colorFrom(r: 149, g: 204, b: 244)
-            } // if
-        } // if let
-    } // handleTextInputChanges
+            }
+        }
+    }
     
     @objc func handleLoginButtonPressed() {
         print("login pressed")

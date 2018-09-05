@@ -42,9 +42,7 @@ class CameraController: UIViewController {
     
     // MARK: - Properties
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+    override var prefersStatusBarHidden: Bool { return true }
     
     let output = AVCapturePhotoOutput()
     let customAnimationPresentor = CustomAnimationPresentor()
@@ -130,7 +128,6 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
 
 // MARK: - UIViewControllerTransitioningDelegate
 extension CameraController: UIViewControllerTransitioningDelegate {
-    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return customAnimationPresentor
     }
@@ -138,5 +135,4 @@ extension CameraController: UIViewControllerTransitioningDelegate {
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return customAnimationDismisser
     }
-    
 }

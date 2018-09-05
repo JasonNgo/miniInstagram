@@ -412,7 +412,7 @@ class FirebaseAPI {
         }
     }
     
-    // TODO: Order these functions
+    // MARK: - Post Actions
     
     func saveCommentToDatabaseForPost(_ post: Post, values: [String: Any], completion: @escaping (Error?) -> Void) {
         guard let postId = post.postId else { return }

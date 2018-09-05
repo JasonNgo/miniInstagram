@@ -20,10 +20,10 @@ class UserProfileHeaderView: UICollectionViewCell {
     var user: User? {
         didSet {
             usernameLabel.text = user?.username
+            determineEditProfileFollowButtonConfiguration()
+            
             guard let profileImageUrl = user?.profileImageUrl else { return }
             profileImageView.loadImageFromUrl(profileImageUrl)
-            
-            determineEditProfileFollowButtonConfiguration()
         }
     }
     
@@ -112,6 +112,33 @@ class UserProfileHeaderView: UICollectionViewCell {
         button.addTarget(self, action: #selector(handleEditProfileFollowButtonPressed), for: .touchUpInside)
         return button
     }()
+    
+    @objc func handleEditProfileFollowButtonPressed() {
+        guard let uid = self.user?.uuid else { return }
+        
+        if editProfileFollowButton.title(for: .normal)?.compare("Edit Profile") == .orderedSame {
+            // edit profile
+        } else if editProfileFollowButton.title(for: .normal)?.compare("Follow") == .orderedSame {
+            FirebaseAPI.shared.followUserWithUID(uid) { (error) in
+                if let error = error {
+                    print(error)
+                    self.setupFollowButton()
+                    return
+                }
+                
+                self.setupUnfollowButton()
+            }
+        } else {
+            FirebaseAPI.shared.unfollowUserWithUID(uid) { (error) in
+                if let error = error {
+                    print(error)
+                    self.setupUnfollowButton()
+                }
+                
+                self.setupFollowButton()
+            }
+        }
+    }
     
     lazy var gridButton: UIButton = {
         var button = UIButton(type: .system)
@@ -234,36 +261,6 @@ class UserProfileHeaderView: UICollectionViewCell {
                                        bottom: nil, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 12,
                                        width: 0, height: 34)
     }
-
-    // MARK: - Selector Functions
-    
-    @objc func handleEditProfileFollowButtonPressed() {
-        
-        guard let uid = self.user?.uuid else { return }
-        
-        if editProfileFollowButton.title(for: .normal)?.compare("Edit Profile") == .orderedSame {
-            // edit profile
-        } else if editProfileFollowButton.title(for: .normal)?.compare("Follow") == .orderedSame {
-            FirebaseAPI.shared.followUserWithUID(uid) { (error) in
-                if let error = error {
-                    print(error)
-                    self.setupFollowButton()
-                    return
-                }
-                
-                self.setupUnfollowButton()
-            }
-        } else {
-            FirebaseAPI.shared.unfollowUserWithUID(uid) { (error) in
-                if let error = error {
-                    print(error)
-                    self.setupUnfollowButton()
-                }
-                
-                self.setupFollowButton()
-            }
-        }
-    }
     
     // MARK: - Helper Functions
     
@@ -287,20 +284,20 @@ class UserProfileHeaderView: UICollectionViewCell {
                 }
             }
         }
-    }
+    } // determineEditProfileFollowButtonConfiguration
     
     fileprivate func setupFollowButton() {
         editProfileFollowButton.setTitle("Follow", for: .normal)
         editProfileFollowButton.backgroundColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
         editProfileFollowButton.setTitleColor(.white, for: .normal)
         editProfileFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
-    }
+    } // setupFollowButton
     
     fileprivate func setupUnfollowButton() {
         editProfileFollowButton.setTitle("Unfollow", for: .normal)
         editProfileFollowButton.backgroundColor = .white
         editProfileFollowButton.setTitleColor(.black, for: .normal)
-    }
+    } // setupUnfollowButton
 
 } // UserProfileHeaderView
 

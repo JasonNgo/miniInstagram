@@ -74,7 +74,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     func didTapCommentButton(post: Post) {
         print("didTapCommentButton")
-        
         guard let user = self.user else { return }
         
         let layout = UICollectionViewFlowLayout()

@@ -14,19 +14,11 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     
     // MARK: - Properties
     
-    override var inputAccessoryView: UIView? {
-        get {
-            return containerView
-        }
-    }
-    
-    override var canBecomeFirstResponder: Bool {
-        return true
-    }
+    override var inputAccessoryView: UIView? { return containerView }
+    override var canBecomeFirstResponder: Bool { return true }
 
     var post: Post?
     var user: User?
-    
     var comments = [Comment]()
 
     // MARK: - Views and Selectors
@@ -52,7 +44,6 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         guard let caption = commentTextField.text, commentTextField.text?.isEmpty == false else { return }
         guard let user = self.user else { return }
         guard let post = self.post else { return }
-        
         
         let values = [
             "comment_user_id": user.uuid,
