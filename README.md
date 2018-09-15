@@ -1,4 +1,4 @@
-# LBTA-Instagram
+InstagramFirebase
 
 An Instagram clone powered by Googles Firebase. The program was developped using the teachings of the InstagramFirebase course
 created by: Brian Voong from www.letsbuildthatapp.com.
