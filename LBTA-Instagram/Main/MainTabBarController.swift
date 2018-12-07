@@ -52,7 +52,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         // photo picker
         let photoPickerController = UIViewController()
-        let photoNavController = createNavigationController(rootViewController: photoPickerController, title: "Photo", selectedImage: #imageLiteral(resourceName: "plus_unselected"), unselectedImage: #imageLiteral(resourceName: "plus_unselected"))
+        let photoNavController = createNavigationController(rootViewController: photoPickerController, title: "Photo", selectedImage: #imageLiteral(resourceName: "home_unselected"), unselectedImage: #imageLiteral(resourceName: "home_unselected"))
         
         // like
         let likeController = UIViewController()
