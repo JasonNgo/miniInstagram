@@ -126,7 +126,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     
     fileprivate func fetchUserInfo() {
         guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
-        FirebaseAPI.shared.fetchUserWith(uid: uid) { (user, error) in
+        FirebaseAPI.shared.retrieveUserWith(uid: uid) { (user, error) in
             if let error = error {
                 print(error)
                 return
@@ -154,7 +154,7 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
             guard let following = following else { return }
             
             following.forEach({ (followingUserID) in
-                FirebaseAPI.shared.fetchUserWith(uid: followingUserID, completion: { (user, error) in
+                FirebaseAPI.shared.retrieveUserWith(uid: followingUserID, completion: { (user, error) in
                     if let error = error {
                         print(error)
                         return
@@ -168,7 +168,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     fileprivate func fetchPostsFor(user: User) {
-        FirebaseAPI.shared.fetchUserPosts(user: user) { (posts, error) in
+      posts.removeAll()
+      FirebaseAPI.shared.retrieveUserPosts(user: user) { (posts, error) in
             if let error = error {
                 print(error)
                 return

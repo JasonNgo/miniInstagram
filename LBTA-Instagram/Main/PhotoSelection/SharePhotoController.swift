@@ -96,7 +96,7 @@ class SharePhotoController: UIViewController {
             "caption": caption
         ] as [String : Any]
         
-        FirebaseAPI.shared.savePostToFirebase(postImage: photoImage, values: values) { (error) in
+        FirebaseAPI.shared.createPost(postImage: photoImage, values: values) { (error) in
             if let error = error {
                 print(error)
                 return

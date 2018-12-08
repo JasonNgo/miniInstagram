@@ -95,7 +95,7 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     // MARK: - Fetching Functions
     
     fileprivate func fetchListOfUsers() {
-        FirebaseAPI.shared.fetchListOfUsers { (users, error) in
+      FirebaseAPI.shared.retrieveListOfUsers { (users, error) in
             if let error = error {
                 print(error)
                 return

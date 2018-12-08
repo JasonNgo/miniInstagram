@@ -80,7 +80,7 @@ class CommentCell: UICollectionViewCell {
     // MARK: - Helper Functions
     
     fileprivate func fetchUserWithId(_ id: String) {
-        FirebaseAPI.shared.fetchUserWith(uid: id) { (user, error) in
+        FirebaseAPI.shared.retrieveUserWith(uid: id) { (user, error) in
             if let error = error {
                 print(error)
                 return

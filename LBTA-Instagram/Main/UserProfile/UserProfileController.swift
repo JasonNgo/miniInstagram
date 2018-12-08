@@ -27,8 +27,7 @@ class UserProfileController: UICollectionViewController {
     
     setupCollectionView()
     setupLogoutButton()
-    
-    fetchUser()
+    retrieveUser()
   }
   
   // MARK: - Set Up Functions
@@ -80,11 +79,11 @@ class UserProfileController: UICollectionViewController {
   
   // MARK: - Helper Functions
   
-  fileprivate func fetchUser() {
+  fileprivate func retrieveUser() {
     guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
     let uid = userId ?? currentUUID
     
-    FirebaseAPI.shared.fetchUserWith(uid: uid) { (user, error) in
+    FirebaseAPI.shared.retrieveUserWith(uid: uid) { (user, error) in
       if let error = error {
         print(error)
         return
@@ -92,9 +91,9 @@ class UserProfileController: UICollectionViewController {
       
       guard let user = user else { return }
       self.user = user
-      self.navigationItem.title = self.user?.username
+      self.navigationItem.title = user.username
       
-      if self.user?.uuid.compare(currentUUID) != .orderedSame {
+      if user.uuid.compare(currentUUID) != .orderedSame {
         self.navigationItem.rightBarButtonItem = nil
         self.navigationItem.title = nil
       }
@@ -103,21 +102,24 @@ class UserProfileController: UICollectionViewController {
         self.collectionView?.reloadData()
       }
       
-      self.fetchUserPosts()
+      self.retrieveUserPosts()
     }
   }
   
   /// Fetches the user information for the current logged in user
-  fileprivate func fetchUserPosts() {
+  fileprivate func retrieveUserPosts() {
     guard let user = self.user else { return }
-    FirebaseAPI.shared.fetchUserPosts(user: user) { (posts, error) in
+    
+    FirebaseAPI.shared.retrieveUserPosts(user: user) { (posts, error) in
       if let error = error {
         print(error)
         return
       }
       
       guard var posts = posts else { return }
-      posts.sort(by: { $0.creationDate.compare($1.creationDate) == .orderedDescending })
+      posts.sort(by: {
+        $0.creationDate.compare($1.creationDate) == .orderedDescending
+      })
       self.posts = posts
       
       DispatchQueue.main.async {
@@ -167,6 +169,26 @@ extension UserProfileController {
     let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! UserProfileHeaderView
     header.user = user
     header.delegate = self
+    
+    guard let uuid = user?.uuid else { return header }
+    let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+    
+    if uuid != currentUUID {
+      FirebaseAPI.shared.fetchFollowingListForCurrentUser { (following, error) in
+        if let error = error {
+          print("Error: \(error) \n Description: \(error.localizedDescription)")
+          return
+        }
+        
+        guard let following = following else { return }
+        if let _ = following.index(of: uuid) {
+          header.updateFollowButtonConfiguration(isFollowing: true)
+        } else {
+          header.updateFollowButtonConfiguration(isFollowing: false)
+        }
+      }
+    }
+    
     return header
   }
   
@@ -193,6 +215,36 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
 // MARK: - UserProfileHeaderDelegate
 
 extension UserProfileController: UserProfileHeaderDelegate {
+  
+  func userProfileHeaderEditOrFollowButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
+    guard let uid = userProfileHeaderView.user?.uuid else { return }
+    
+    if userProfileHeaderView.editProfileFollowButton.title(for: .normal)?
+      .compare("Edit Profile") == .orderedSame {
+      // edit profile
+    } else if userProfileHeaderView.editProfileFollowButton.title(for: .normal)?
+      .compare("Follow") == .orderedSame {
+      FirebaseAPI.shared.followUserWithUID(uid) { (error) in
+        if let error = error {
+          print(error)
+          userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: false)
+          return
+        }
+        
+        userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: true)
+      }
+    } else {
+      FirebaseAPI.shared.unfollowUserWithUID(uid) { (error) in
+        if let error = error {
+          print(error)
+          userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: true)
+          return
+        }
+        
+        userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: false)
+      }
+    }
+  }
   
   func userProfileHeaderGearButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
     isGridView = true

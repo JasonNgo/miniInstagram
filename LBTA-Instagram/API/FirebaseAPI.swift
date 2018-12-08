@@ -11,32 +11,30 @@ import UIKit
 
 enum FirebaseAuthError: Error {
   case errorCreatingUser(Error)
-  case errorFetchingUUID
-  case errorSigningIn(String)
-  case errorSigningOut(String)
+  case errorRetrievingUUID
 }
 
 enum FirebaseDatabaseError: Error {
   case errorCreatingUserDetails(Error)
-  case errorFetchingUserDetails(String)
-  case errorFetchingListOfUsers(String)
-  case errorFetchingUserPosts(String)
-  case errorSavingUserPostDetails(String)
+  case errorRetrievingUserDetails(Error)
+  case errorRetrievingListOfUsers(Error)
+  case errorRetrievingUserPosts(Error)
+  case errorUpdatingUserPostDetails(Error)
   case errorFollowingUser(String)
   case errorUnfollowingUser(String)
 }
 
 enum FirebaseStorageError: Error {
   case errorCreatingProfileImage(Error)
-  case errorReadingImageDownloadURL(Error)
-  case errorUpdatingPost(Error)
+  case errorCreatingPost(Error)
+  case errorCreatingPostImage(Error)
+  case errorRetrievingImageDownloadURL(Error)
 }
 
 enum DataError: Error {
-  case errorConvertingImage
+  case errorConvertingImageToData
   case errorUnwrappingDownloadURL
-  case errorUnwrappingDictionary(String)
-  case errorUnwrappingUsers(String)
+  case errorUnwrappingDictionary
 }
 
 class FirebaseAPI {
@@ -75,7 +73,7 @@ class FirebaseAPI {
         }
         
         guard let uuid = result?.user.uid else {
-          completion(FirebaseAuthError.errorFetchingUUID)
+          completion(FirebaseAuthError.errorRetrievingUUID)
           return
         }
         
@@ -105,7 +103,7 @@ class FirebaseAPI {
     let profileImagesRef = Storage.storage().reference().child("profile_images/\(fileName)")
     
     guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else {
-      completion(nil, DataError.errorConvertingImage)
+      completion(nil, DataError.errorConvertingImageToData)
       return
     }
     
@@ -117,7 +115,7 @@ class FirebaseAPI {
       
       profileImagesRef.downloadURL(completion: { (downloadURL, error) in
         if let error = error {
-          completion(nil, FirebaseStorageError.errorReadingImageDownloadURL(error))
+          completion(nil, FirebaseStorageError.errorRetrievingImageDownloadURL(error))
           return
         }
         
@@ -146,41 +144,36 @@ class FirebaseAPI {
     }
   }
   
-  
   // MARK: - Database Functions
   
-  func fetchUserWith(uid: String, completion: @escaping (User?, Error?) -> Void) {
+  func retrieveUserWith(uid: String, completion: @escaping (User?, Error?) -> Void) {
     let usersRef = Database.database().reference().child("users")
-    
     usersRef.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
       guard let values = snapshot.value as? [String: Any] else {
-        completion(nil, DataError.errorUnwrappingDictionary(""))
+        completion(nil, DataError.errorUnwrappingDictionary)
         return
       }
       
-      let user = User(dictionary: values)
-      completion(user, nil)
+      completion(User(dictionary: values), nil)
     }) { (error) in
-      print("DEBUG ERROR: /// \(error)")
-      completion(nil, FirebaseDatabaseError.errorFetchingUserDetails(""))
+      completion(nil, FirebaseDatabaseError.errorRetrievingUserDetails(error))
     }
   }
   
-  func fetchUserPosts(user: User, completion: @escaping ([Post]?, Error?) -> Void) {
+  func retrieveUserPosts(user: User, completion: @escaping ([Post]?, Error?) -> Void) {
     let uid = user.uuid
     let userPostsRef = Database.database().reference().child("posts").child(uid)
-    
     var posts = [Post]()
+    
     userPostsRef.observeSingleEvent(of: .value, with: { (snapshot) in
       guard let values = snapshot.value, let dictionaries = values as? [String: Any] else {
-        // data error
-        completion(nil, DataError.errorUnwrappingDictionary(""))
+        completion(nil, DataError.errorUnwrappingDictionary)
         return
       }
       
       dictionaries.forEach({ (key, value) in
         guard let valuesDict = value as? [String: Any] else {
-          completion(nil, DataError.errorUnwrappingDictionary(""))
+          completion(nil, DataError.errorUnwrappingDictionary)
           return
         }
         
@@ -191,6 +184,7 @@ class FirebaseAPI {
         guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
         
         let likesRef = Database.database().reference().child("likes").child(postId).child(currentUUID)
+        
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
           if let value = snapshot.value as? Bool, value == true {
             post.isLiked = true
@@ -208,32 +202,29 @@ class FirebaseAPI {
           completion(nil, error)
         })
       })
-      
     }) { (error) in
-      print(error)
-      completion(nil, FirebaseDatabaseError.errorFetchingUserPosts(""))
+      completion(nil, FirebaseDatabaseError.errorRetrievingUserPosts(error))
     }
   }
   
-  func fetchListOfUsers(completion: @escaping ([User]?, Error?) -> Void) {
+  func retrieveListOfUsers(completion: @escaping ([User]?, Error?) -> Void) {
     let usersRef = Database.database().reference().child("users")
     var users = [User]()
     
     usersRef.observeSingleEvent(of: .value, with: { (snapshot) in
       guard let values = snapshot.value, let dictionaries = values as? [String: Any] else {
-        completion(nil, DataError.errorUnwrappingDictionary(""))
+        completion(nil, DataError.errorUnwrappingDictionary)
         return
       }
       
       dictionaries.forEach({ (key, value) in
         guard let dictionary = value as? [String: Any] else {
-          completion(nil, DataError.errorUnwrappingDictionary(""))
+          completion(nil, DataError.errorUnwrappingDictionary)
           return
         }
         
         // don't include current logged user into search results
         if key == Auth.auth().currentUser?.uid { return }
-        
         let user = User(dictionary: dictionary)
         users.append(user)
       })
@@ -244,84 +235,73 @@ class FirebaseAPI {
       
       completion(users, nil)
     }) { (error) in
-      print("DEBUG ERROR: /// \(error)")
-      completion(nil, FirebaseDatabaseError.errorFetchingListOfUsers(""))
+      completion(nil, FirebaseDatabaseError.errorRetrievingListOfUsers(error))
     }
-    
-  } // fetchListOfUsers
+  }
   
-  // MARK: - Save Post Functions
+  // MARK: - Create Post Functions
   
-  func savePostToFirebase(postImage: UIImage, values: [String: Any], completion: @escaping (Error?) -> Void) {
-    
-    self.savePostImageToStorage(image: postImage) { (downloadURL, error) in
+  func createPost(postImage: UIImage, values: [String: Any], completion: @escaping (Error?) -> Void) {
+    self.createPostImage(image: postImage) { (downloadURL, error) in
       if let error = error {
-        print(error)
         completion(error)
         return
       }
       
       // attempt to save user info
-      guard let downloadURL = downloadURL else {
-        completion(FirebaseStorageError.errorReadingImageDownloadURL(""))
-        return
-      }
-      
+      guard let downloadURL = downloadURL else { return }
       guard let uid = FirebaseAPI.shared.getCurrentUserUID() else { return }
       
       var valuesDict = values
       valuesDict["post_image_url"] = downloadURL
       
-      Database.database().reference().child("posts").child(uid).childByAutoId().updateChildValues(valuesDict) { (error, reference) in
+      let postRef = Database.database().reference().child("posts").child(uid).childByAutoId()
+      postRef.updateChildValues(valuesDict) { (error, reference) in
         if let error = error {
-          print("error attempting to save post info to user: \(error)")
-          completion(FirebaseDatabaseError.errorSavingUserPostDetails(""))
+          completion(FirebaseDatabaseError.errorUpdatingUserPostDetails(error))
           return
         }
         
         print("successfully saved post information to user")
         completion(nil)
       }
-    } // savePostImageToStorage
-    
-  } // savePostToFirebase
+    }
+  }
   
-  // MARK: Save Posts Helper
+  // MARK: Create Posts Helper
   
-  fileprivate func savePostImageToStorage(image: UIImage, completion: @escaping (String?, Error?) -> Void) {
-    
+  fileprivate func createPostImage(image: UIImage, completion: @escaping (String?, Error?) -> Void) {
     let fileName = NSUUID().uuidString
     guard let uploadData = UIImageJPEGRepresentation(image, 0.5) else {
-//      completion(nil, DataError.errorConvertingImage(""))
+      completion(nil, DataError.errorConvertingImageToData)
       return
     }
     
     let postsRef = Storage.storage().reference().child("post_images/\(fileName)")
     postsRef.putData(uploadData, metadata: nil) { (metadata, error) in
       if let error = error {
-        print("DEBUG ERROR: /// \(error)")
-        completion(nil, FirebaseStorageError.errorSavingPost(""))
+        completion(nil, FirebaseStorageError.errorCreatingPostImage(error))
         return
       }
       
       postsRef.downloadURL(completion: { (downloadURL, error) in
         if let error = error {
-          print("DEBUG ERROR: /// \(error)")
-          completion(nil, FirebaseStorageError.errorFetchingImageDownloadURL(""))
+          completion(nil, FirebaseStorageError.errorRetrievingImageDownloadURL(error))
           return
         }
         
         guard let downloadURL = downloadURL else {
-          completion(nil, DataError.errorUnwrappingDownloadURL(""))
+          completion(nil, DataError.errorUnwrappingDownloadURL)
           return
         }
         
         print("successfully fetched download URL: \(downloadURL.absoluteString)")
         completion(downloadURL.absoluteString, nil)
-      }) // downloadURL
-    } // putData
-    
-  } // savePostImageToStorage
+      })
+    }
+  }
+  
+  // TODO: UPDATE API
   
   // MARK: Following/Unfollowing Functions
   
@@ -332,7 +312,7 @@ class FirebaseAPI {
     
     followingRef.observe(.value, with: { (snapshot) in
       guard let values = snapshot.value, let valuesDict = values as? [String: Any] else {
-        completion(nil, DataError.errorUnwrappingDictionary(""))
+        completion(nil, DataError.errorUnwrappingDictionary)
         return
       }
       
@@ -342,8 +322,7 @@ class FirebaseAPI {
       
       completion(following, nil)
     }) { (error) in
-      print(error)
-      completion(nil, FirebaseDatabaseError.errorFetchingListOfUsers(""))
+      completion(nil, FirebaseDatabaseError.errorRetrievingListOfUsers(error))
     }
   }
   
@@ -420,13 +399,13 @@ class FirebaseAPI {
     let commentsRef = Database.database().reference().child("comments").child(postId)
     commentsRef.observeSingleEvent(of: .value, with: { (snapshot) in
       guard let values = snapshot.value, let commentDictionaries = values as? [String: Any] else {
-        completion(nil, DataError.errorUnwrappingDictionary(""))
+        completion(nil, DataError.errorUnwrappingDictionary)
         return
       }
       
       commentDictionaries.forEach({ (key, value) in
         guard let dictionary = value as? [String: Any] else {
-          completion(nil, DataError.errorUnwrappingDictionary(""))
+          completion(nil, DataError.errorUnwrappingDictionary)
           return
         }
         
