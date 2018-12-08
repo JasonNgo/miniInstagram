@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
   
@@ -17,7 +18,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     super.viewDidLoad()
     
     // user not logged in
-    if !FirebaseAPI.shared.isUserLoggedIn() {
+    if Auth.auth().currentUser != nil {
       DispatchQueue.main.async {
         let loginController = LoginController()
         let navController = UINavigationController(rootViewController: loginController)

@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import FirebaseAuth
 
-class UserProfileController: UICollectionViewController, UserProfileHeaderDelegate {
+class UserProfileController: UICollectionViewController {
   
   fileprivate let headerID = "headerID"
   fileprivate let cellID   = "cellID"
   fileprivate let homePostCellID = "homePostCellID"
   
-  var user: User?
   var userId: String?
+  var user: User?
   var posts = [Post]()
   var isGridView = true
   
@@ -40,88 +41,41 @@ class UserProfileController: UICollectionViewController, UserProfileHeaderDelega
   }
   
   fileprivate func setupLogoutButton() {
-    let gearButton = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleGearButtonPressed))
+    let image = #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal)
+    let action = #selector(handleGearButtonPressed)
+    let gearButton = UIBarButtonItem(image: image, style: .plain, target: self, action: action)
     navigationItem.rightBarButtonItem = gearButton
   }
   
+  // MARK: - Selector Functions
+  
   @objc func handleGearButtonPressed() {
-    let alertController = UIAlertController(title: "", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
+    let alertController = UIAlertController(
+      title: "",
+      message: "Are you sure you want to logout?",
+      preferredStyle: .actionSheet
+    )
     
-    let logoutAction = UIAlertAction(title: "Logout", style: .destructive) { (action) in
-      print("logout pressed")
-      
-      FirebaseAPI.shared.logoutUser(completion: { (error) in
-        if let error = error {
-          print(error)
-          return
-        }
-        
+    let logoutHandler: (UIAlertAction) -> Void = { (_) in
+      do {
+        try Auth.auth().signOut()
         print("Successfully logged out")
         
         let loginController = LoginController()
         let navController = UINavigationController(rootViewController: loginController)
-        self.present(navController, animated: true, completion: nil)
-      })
+        self.present(navController, animated: true)
+      } catch let error {
+        print("There was an error attempting to logout: \(error.localizedDescription)")
+      }
     }
     
-    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    let logoutAction = UIAlertAction(title: "Logout", style: .destructive, handler: logoutHandler)
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
     
     alertController.addAction(logoutAction)
     alertController.addAction(cancelAction)
     
-    self.present(alertController, animated: true, completion: nil)
-  } // handleGearButtonPressed
-  
-  // MARK: - UserProfileHeaderDelegate
-  
-  func didTapGridButton() {
-    isGridView = true
-    collectionView?.reloadData()
-  }
-  
-  func didTapListButton() {
-    isGridView = false
-    collectionView?.reloadData()
-  }
-  
-  // MARK: - UICollectionViewDelegate
-  
-  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    if isGridView {
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
-      cell.post = posts[indexPath.item]
-      return cell
-    } else {
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePostCellID, for: indexPath) as! HomePostViewCell
-      cell.post = posts[indexPath.item]
-      return cell
-    }
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    if isGridView {
-      return CGSize(width: (view.frame.width - 2) / 3, height: (view.frame.width - 2) / 3)
-    } else {
-      var height: CGFloat = 40 + 8 + 8
-      height += view.frame.width
-      height += 50
-      height += 60
-      
-      return CGSize(width: view.frame.width, height: height)
-    }
-  }
-  
-  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return posts.count
-  }
-  
-  // MARK: Header Functions
-  
-  override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! UserProfileHeaderView
-    header.user = self.user
-    header.delegate = self
-    return header
+    present(alertController, animated: true, completion: nil)
   }
   
   // MARK: - Helper Functions
@@ -170,11 +124,58 @@ class UserProfileController: UICollectionViewController, UserProfileHeaderDelega
         self.collectionView?.reloadData()
       }
     }
-  } // fetchUserPosts
+  }
   
-} // UserProfileController
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension UserProfileController {
+  
+  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    if isGridView {
+      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
+      cell.post = posts[indexPath.item]
+      return cell
+    } else {
+      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePostCellID, for: indexPath) as! HomePostViewCell
+      cell.post = posts[indexPath.item]
+      return cell
+    }
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    if isGridView {
+      return CGSize(width: (view.frame.width - 2) / 3, height: (view.frame.width - 2) / 3)
+    } else {
+      var height: CGFloat = 40 + 8 + 8
+      height += view.frame.width
+      height += 50
+      height += 60
+      
+      return CGSize(width: view.frame.width, height: height)
+    }
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return posts.count
+  }
+  
+  // MARK: CollectionView Header Functions
+  
+  override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! UserProfileHeaderView
+    header.user = user
+    header.delegate = self
+    return header
+  }
+  
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension UserProfileController: UICollectionViewDelegateFlowLayout {
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
     return CGSize(width: view.frame.width, height: 200)
   }
@@ -186,4 +187,21 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
     return 1
   }
+  
+}
+
+// MARK: - UserProfileHeaderDelegate
+
+extension UserProfileController: UserProfileHeaderDelegate {
+  
+  func userProfileHeaderGearButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
+    isGridView = true
+    collectionView?.reloadData()
+  }
+  
+  func userProfileHeaderListButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
+    isGridView = false
+    collectionView?.reloadData()
+  }
+  
 }

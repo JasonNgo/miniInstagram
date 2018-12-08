@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol UserProfileHeaderDelegate {
-  func didTapGridButton()
-  func didTapListButton()
+protocol UserProfileHeaderDelegate: AnyObject {
+  func userProfileHeaderGearButtonTapped(_ userProfileHeaderView: UserProfileHeaderView)
+  func userProfileHeaderListButtonTapped(_ userProfileHeaderView: UserProfileHeaderView)
 }
 
 class UserProfileHeaderView: UICollectionViewCell {
   
-  var delegate: UserProfileHeaderDelegate?
+  weak var delegate: UserProfileHeaderDelegate?
   
   var user: User? {
     didSet {
@@ -152,7 +152,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     print("grid button pressed")
     gridButton.tintColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
     listButton.tintColor = UIColor.init(white: 0, alpha: 0.2)
-    delegate?.didTapGridButton()
+    delegate?.userProfileHeaderGearButtonTapped(self)
   }
   
   lazy var listButton: UIButton = {
@@ -167,7 +167,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     print("list button pressed")
     gridButton.tintColor = UIColor(white: 0, alpha: 0.2)
     listButton.tintColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
-    delegate?.didTapListButton()
+    delegate?.userProfileHeaderListButtonTapped(self)
   }
   
   let bookmarkButton: UIButton = {
@@ -284,20 +284,19 @@ class UserProfileHeaderView: UICollectionViewCell {
         }
       }
     }
-  } // determineEditProfileFollowButtonConfiguration
+  }
   
   fileprivate func setupFollowButton() {
     editProfileFollowButton.setTitle("Follow", for: .normal)
     editProfileFollowButton.backgroundColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
     editProfileFollowButton.setTitleColor(.white, for: .normal)
     editProfileFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
-  } // setupFollowButton
+  }
   
   fileprivate func setupUnfollowButton() {
     editProfileFollowButton.setTitle("Unfollow", for: .normal)
     editProfileFollowButton.backgroundColor = .white
     editProfileFollowButton.setTitleColor(.black, for: .normal)
-  } // setupUnfollowButton
+  }
   
-} // UserProfileHeaderView
-
+}

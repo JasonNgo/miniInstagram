@@ -105,7 +105,8 @@ class SignUpViewController: UIViewController {
     ]
     
     FirebaseAPI.shared.createUserWithValues(values) { (error) in
-      if let _ = error {
+      if let error = error {
+        print("Error: \(error), Description: \(error.localizedDescription)")
         self.showErrorAlert()
         return
       }

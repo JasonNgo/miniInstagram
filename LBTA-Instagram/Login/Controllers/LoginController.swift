@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginController: UIViewController {
   
@@ -95,14 +96,17 @@ class LoginController: UIViewController {
       let password = loginFieldsView.passwordTextField.text else {
         return
     }
-
-    FirebaseAPI.shared.loginUserWith(email: email, password: password) { (error) in
-      if let _ = error {
+    
+    Auth.auth().signIn(withEmail: email, password: password) { (_, error) in
+      if let error = error {
         self.showErrorAlert()
+        print("There was an error attempting to sign in: \(error)")
         return
       }
-
-      guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
+      
+      guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {
+        return
+      }
       mainTabBarController.setupTabBarController()
       mainTabBarController.setupViewControllers()
       self.dismiss(animated: true, completion: nil)
