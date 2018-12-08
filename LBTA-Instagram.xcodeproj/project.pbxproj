@@ -16,6 +16,7 @@
 		7D54533521BB300E0005D9C6 /* SignUpAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533421BB300E0005D9C6 /* SignUpAddPhotoView.swift */; };
 		7D54533721BB36130005D9C6 /* SignUpFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533621BB36130005D9C6 /* SignUpFieldsView.swift */; };
 		7D54533921BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533821BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift */; };
+		7D54533F21BC32090005D9C6 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533E21BC32090005D9C6 /* CameraView.swift */; };
 		7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFC213C5CE9005432F4 /* Date.swift */; };
 		7D5CEBFF213C681B005432F4 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFE213C681B005432F4 /* CameraController.swift */; };
 		7D5CEC01213CAC29005432F4 /* PreviewImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */; };
@@ -58,6 +59,7 @@
 		7D54533421BB300E0005D9C6 /* SignUpAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddPhotoView.swift; sourceTree = "<group>"; };
 		7D54533621BB36130005D9C6 /* SignUpFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFieldsView.swift; sourceTree = "<group>"; };
 		7D54533821BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAlreadyExistsView.swift; sourceTree = "<group>"; };
+		7D54533E21BC32090005D9C6 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		7D5CEBFC213C5CE9005432F4 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7D5CEBFE213C681B005432F4 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImageContainerView.swift; sourceTree = "<group>"; };
@@ -187,6 +189,23 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		7D54534021BC3CBE0005D9C6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */,
+				7D54533E21BC32090005D9C6 /* CameraView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7D54534121BC3CC50005D9C6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7D5CEBFE213C681B005432F4 /* CameraController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		7D837A0F2131DC5900124E6A /* HomeFeed */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,7 +286,6 @@
 		7DC10D11213DD8820055A95A /* HomeFeedPosts */ = {
 			isa = PBXGroup;
 			children = (
-				7D5CEC02213CB566005432F4 /* CustomAnimationTransitions.swift */,
 				7D837A152131F3F300124E6A /* HomePostViewCell.swift */,
 				7D837A132131DC8200124E6A /* HomeFeedController.swift */,
 			);
@@ -277,8 +295,8 @@
 		7DC10D12213DD8A90055A95A /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */,
-				7D5CEBFE213C681B005432F4 /* CameraController.swift */,
+				7D54534121BC3CC50005D9C6 /* Controllers */,
+				7D54534021BC3CBE0005D9C6 /* Views */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -316,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				7DE700662130EB5E00CA9EA1 /* CustomImageView.swift */,
+				7D5CEC02213CB566005432F4 /* CustomAnimationTransitions.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -470,6 +489,7 @@
 				7DB6AB612129FEE000583D91 /* SignUpViewController.swift in Sources */,
 				7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */,
 				7DA1D32C212F55740048EB53 /* SharePhotoController.swift in Sources */,
+				7D54533F21BC32090005D9C6 /* CameraView.swift in Sources */,
 				7D5CEBFF213C681B005432F4 /* CameraController.swift in Sources */,
 				7D54532B21BB03DF0005D9C6 /* LoginHeaderView.swift in Sources */,
 				7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */,
