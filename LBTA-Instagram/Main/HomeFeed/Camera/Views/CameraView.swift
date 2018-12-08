@@ -15,7 +15,6 @@ class CameraHUDView: UIView {
     let image = #imageLiteral(resourceName: "right_arrow_shadow").withRenderingMode(.alwaysOriginal)
     button.setImage(image, for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    // add target
     return button
   }()
   
@@ -24,12 +23,11 @@ class CameraHUDView: UIView {
     let image = #imageLiteral(resourceName: "capture_photo").withRenderingMode(.alwaysOriginal)
     button.setImage(image, for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    // add target
     return button
   }()
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
     
     addSubview(dismissButton)
@@ -53,6 +51,10 @@ class CameraHUDView: UIView {
       left: nil, paddingLeft: 0,
       width: 80, height: 80
     )
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

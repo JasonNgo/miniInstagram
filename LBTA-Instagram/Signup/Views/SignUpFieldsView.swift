@@ -17,7 +17,6 @@ class SignUpFieldsView: UIView {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.font = UIFont.systemFont(ofSize: 14)
     textField.translatesAutoresizingMaskIntoConstraints = false
-//    textField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
     return textField
   }()
   
@@ -28,7 +27,6 @@ class SignUpFieldsView: UIView {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.font = UIFont.systemFont(ofSize: 14)
     textField.translatesAutoresizingMaskIntoConstraints = false
-//    textField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
     return textField
   }()
   
@@ -40,7 +38,6 @@ class SignUpFieldsView: UIView {
     textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
     textField.font = UIFont.systemFont(ofSize: 14)
     textField.translatesAutoresizingMaskIntoConstraints = false
-//    textField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
     return textField
   }()
   
@@ -53,12 +50,11 @@ class SignUpFieldsView: UIView {
     button.layer.cornerRadius = 5
     button.isEnabled = false
     button.translatesAutoresizingMaskIntoConstraints = false
-    //    button.addTarget(self, action: #selector(handleSignUpButtonPressed), for: .touchUpInside)
     return button
   }()
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
     
     let stackView = UIStackView(arrangedSubviews: [
@@ -66,7 +62,7 @@ class SignUpFieldsView: UIView {
       usernameTextField,
       passwordTextField,
       signUpButton
-    ])
+      ])
     
     stackView.axis = .vertical
     stackView.distribution = .fillEqually
@@ -80,6 +76,10 @@ class SignUpFieldsView: UIView {
       left: leftAnchor, paddingLeft: 40,
       width: 0, height: 0
     )
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   func styleSignUpButton(isFormValid: Bool) {

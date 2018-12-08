@@ -38,16 +38,20 @@ class LoginSignUpView: UIView {
     return button
   }()
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
-    
+
     addSubview(signUpButton)
     signUpButton.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       signUpButton.centerXAnchor.constraint(equalTo: centerXAnchor),
       signUpButton.centerYAnchor.constraint(equalTo: centerYAnchor),
     ])
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

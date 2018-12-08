@@ -40,8 +40,8 @@ class LoginFieldsView: UIView {
     return button
   }()
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
     
     let stackView = UIStackView(arrangedSubviews: [
@@ -62,6 +62,10 @@ class LoginFieldsView: UIView {
       left: leftAnchor, paddingLeft: 40,
       width: 0, height: 0
     )
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   func updateButtonStyling(isFormValid: Bool) {

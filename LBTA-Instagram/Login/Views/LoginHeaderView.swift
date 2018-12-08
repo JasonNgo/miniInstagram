@@ -17,16 +17,20 @@ class LoginHeaderView: UIView {
     return imageView
   }()
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    backgroundColor = UIColor.colorFrom(r: 0, g: 120, b: 175)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
+    backgroundColor = UIColor.colorFrom(r: 0, g: 120, b: 175)
     
     addSubview(logoImageView)
     NSLayoutConstraint.activate([
       logoImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
       logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor)
     ])
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

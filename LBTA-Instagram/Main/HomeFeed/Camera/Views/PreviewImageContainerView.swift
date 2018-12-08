@@ -10,28 +10,31 @@ import UIKit
 
 class PreviewImageContainerView: UIView {
   
-  // MARK: - Views
-  
   var previewImage: UIImage? {
     didSet {
       previewImageView.image = previewImage
     }
   }
   
+  // MARK: - Views
+  
   let previewImageView: UIImageView = {
     var imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
     return imageView
   }()
   
   let cancelPhotoButton: UIButton = {
     var button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "cancel_shadow").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
   
   let savePhotoButton: UIButton = {
     var button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "save_shadow").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
   
@@ -44,6 +47,7 @@ class PreviewImageContainerView: UIView {
     label.numberOfLines = 0
     label.backgroundColor = UIColor(white: 0, alpha: 0.3)
     label.frame = CGRect(x: 0, y: 0, width: 150, height: 80)
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
@@ -51,6 +55,7 @@ class PreviewImageContainerView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    translatesAutoresizingMaskIntoConstraints = false
     setupViews()
   }
   
@@ -101,31 +106,17 @@ class PreviewImageContainerView: UIView {
     saveLabel.layer.transform = CATransform3DMakeScale(0, 0, 0)
     
     let completion: (Bool) -> Void = { (_) in
-      UIView.animate(
-        withDuration: 0.5,
-        delay: 1.5,
-        usingSpringWithDamping: 0.5,
-        initialSpringVelocity: 0.5,
-        options: .curveEaseOut,
-        animations: {
-          self.saveLabel.transform = .identity
-      },
-        completion: { (_) in
-          self.saveLabel.removeFromSuperview()
+      UIView.animate(withDuration: 0.5, delay: 1.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+        self.saveLabel.transform = .identity
+      }, completion: { (_) in
+        self.saveLabel.removeFromSuperview()
       })
     }
     
-    UIView.animate(
-      withDuration: 0.5,
-      delay: 0,
-      usingSpringWithDamping: 0.5,
-      initialSpringVelocity: 0.5,
-      options: .curveEaseOut,
-      animations: {
-        self.saveLabel.layer.transform = CATransform3DMakeScale(1, 1, 1)
-      },
-      completion: {
-        completion($0)
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+      self.saveLabel.layer.transform = CATransform3DMakeScale(1, 1, 1)
+    }, completion: {
+      completion($0)
     })
   }
   

@@ -18,8 +18,8 @@ class SignUpAddPhotoView: UIView {
     return button
   }()
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     translatesAutoresizingMaskIntoConstraints = false
     
     addSubview(addPhotoButton)
@@ -29,7 +29,10 @@ class SignUpAddPhotoView: UIView {
       addPhotoButton.heightAnchor.constraint(lessThanOrEqualToConstant: 150),
       addPhotoButton.widthAnchor.constraint(lessThanOrEqualToConstant: 150)
     ])
-    
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   func setImage(image: UIImage) {
