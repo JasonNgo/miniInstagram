@@ -12,9 +12,9 @@ class LoginController: UIViewController {
   
   // MARK: - Views
   
-  private var loginHeaderView = LoginHeaderView()
-  private var loginFieldsView = LoginFieldsView()
-  private var loginSignUpView = LoginSignUpView()
+  private let loginHeaderView = LoginHeaderView()
+  private let loginFieldsView = LoginFieldsView()
+  private let loginSignUpView = LoginSignUpView()
   
   // MARK: - Overrides
   
@@ -63,7 +63,7 @@ class LoginController: UIViewController {
     loginFieldsView.loginButton.addTarget(self, action: #selector(handleLoginButtonPressed), for: .touchUpInside)
   }
   
-  fileprivate func setupLoginSignUpView() {    
+  fileprivate func setupLoginSignUpView() {
     view.addSubview(loginSignUpView)
     loginSignUpView.anchor(
       top: nil, paddingTop: 0,
@@ -90,7 +90,8 @@ class LoginController: UIViewController {
   @objc func handleLoginButtonPressed() {
     print("login pressed")
 
-    guard let email = loginFieldsView.emailTextField.text,
+    guard
+      let email = loginFieldsView.emailTextField.text,
       let password = loginFieldsView.passwordTextField.text else {
         return
     }

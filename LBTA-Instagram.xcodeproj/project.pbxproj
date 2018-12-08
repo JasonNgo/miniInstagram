@@ -13,6 +13,9 @@
 		7D54532B21BB03DF0005D9C6 /* LoginHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54532A21BB03DF0005D9C6 /* LoginHeaderView.swift */; };
 		7D54532D21BB03FF0005D9C6 /* LoginFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54532C21BB03FF0005D9C6 /* LoginFieldsView.swift */; };
 		7D54533221BB0E4C0005D9C6 /* LoginSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533121BB0E4C0005D9C6 /* LoginSignUpView.swift */; };
+		7D54533521BB300E0005D9C6 /* SignUpAddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533421BB300E0005D9C6 /* SignUpAddPhotoView.swift */; };
+		7D54533721BB36130005D9C6 /* SignUpFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533621BB36130005D9C6 /* SignUpFieldsView.swift */; };
+		7D54533921BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533821BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift */; };
 		7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFC213C5CE9005432F4 /* Date.swift */; };
 		7D5CEBFF213C681B005432F4 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFE213C681B005432F4 /* CameraController.swift */; };
 		7D5CEC01213CAC29005432F4 /* PreviewImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */; };
@@ -52,6 +55,9 @@
 		7D54532A21BB03DF0005D9C6 /* LoginHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHeaderView.swift; sourceTree = "<group>"; };
 		7D54532C21BB03FF0005D9C6 /* LoginFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFieldsView.swift; sourceTree = "<group>"; };
 		7D54533121BB0E4C0005D9C6 /* LoginSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignUpView.swift; sourceTree = "<group>"; };
+		7D54533421BB300E0005D9C6 /* SignUpAddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAddPhotoView.swift; sourceTree = "<group>"; };
+		7D54533621BB36130005D9C6 /* SignUpFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFieldsView.swift; sourceTree = "<group>"; };
+		7D54533821BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAlreadyExistsView.swift; sourceTree = "<group>"; };
 		7D5CEBFC213C5CE9005432F4 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7D5CEBFE213C681B005432F4 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImageContainerView.swift; sourceTree = "<group>"; };
@@ -139,7 +145,8 @@
 		7D54532E21BB0DCB0005D9C6 /* Signup */ = {
 			isa = PBXGroup;
 			children = (
-				7DB6AB602129FEE000583D91 /* SignUpViewController.swift */,
+				7D54533321BB18700005D9C6 /* Controllers */,
+				7D54533A21BB41570005D9C6 /* Views */,
 			);
 			path = Signup;
 			sourceTree = "<group>";
@@ -160,6 +167,24 @@
 				7DCAB559212E04BC009F68AB /* LoginController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7D54533321BB18700005D9C6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7DB6AB602129FEE000583D91 /* SignUpViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		7D54533A21BB41570005D9C6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7D54533421BB300E0005D9C6 /* SignUpAddPhotoView.swift */,
+				7D54533621BB36130005D9C6 /* SignUpFieldsView.swift */,
+				7D54533821BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7D837A0F2131DC5900124E6A /* HomeFeed */ = {
@@ -458,8 +483,11 @@
 				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
 				7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */,
 				7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */,
+				7D54533721BB36130005D9C6 /* SignUpFieldsView.swift in Sources */,
 				7D837A142131DC8200124E6A /* HomeFeedController.swift in Sources */,
 				7DB6AB5F2129FEE000583D91 /* AppDelegate.swift in Sources */,
+				7D54533921BB3D9F0005D9C6 /* SignUpAlreadyExistsView.swift in Sources */,
+				7D54533521BB300E0005D9C6 /* SignUpAddPhotoView.swift in Sources */,
 				7DE700672130EB5E00CA9EA1 /* CustomImageView.swift in Sources */,
 				7DC10D16213DD9510055A95A /* CommentCell.swift in Sources */,
 				7DCAB55A212E04BC009F68AB /* LoginController.swift in Sources */,
