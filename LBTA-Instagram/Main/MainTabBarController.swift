@@ -18,7 +18,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     super.viewDidLoad()
     
     // user not logged in
-    if Auth.auth().currentUser == nil {
+//    if Auth.auth().currentUser == nil {
       DispatchQueue.main.async {
         let loginController = LoginController()
         let navController = UINavigationController(rootViewController: loginController)
@@ -26,10 +26,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
       }
       
       return
-    }
+//    }
     
-    setupTabBarController()
-    setupViewControllers()
+//    setupTabBarController()
+//    setupViewControllers()
   }
   
   // MARK: - Set Up Functions

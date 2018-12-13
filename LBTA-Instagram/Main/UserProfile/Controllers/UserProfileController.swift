@@ -22,6 +22,14 @@ class UserProfileController: UICollectionViewController {
   
   // MARK: - Lifecycle Functions
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(true)
+    
+    if user != nil {
+      retrieveUserPosts()
+    }
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     

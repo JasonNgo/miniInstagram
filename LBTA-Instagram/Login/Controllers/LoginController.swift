@@ -13,9 +13,7 @@ class LoginController: UIViewController {
   
   // MARK: - Views
   
-  private let loginHeaderView = LoginHeaderView()
-  private let loginFieldsView = LoginFieldsView()
-  private let loginSignUpView = LoginSignUpView()
+  private var loginView = LoginView()
   
   // MARK: - Overrides
   
@@ -23,77 +21,43 @@ class LoginController: UIViewController {
     return .lightContent
   }
   
+  override func loadView() {
+    view = loginView
+  }
+  
   // MARK: - Lifecycle Functions
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     navigationController?.isNavigationBarHidden = true
-    view.backgroundColor = .white
-    
-    setupLoginHeaderView()
-    setupLoginFieldsViews()
-    setupLoginSignUpView()
+    configureViews()
   }
   
-  // MARK: - Set up Functions
+  // MARK: - Configuration Functions
   
-  fileprivate func setupLoginHeaderView() {
-    view.addSubview(loginHeaderView)
-    loginHeaderView.anchor(
-      top: view.topAnchor, paddingTop: 0,
-      right: view.rightAnchor, paddingRight: 0,
-      bottom: nil, paddingBottom: 0,
-      left: view.leftAnchor, paddingLeft: 0,
-      width: 0, height: 175
-    )
-  }
-
-  fileprivate func setupLoginFieldsViews() {
-    view.addSubview(loginFieldsView)
-    loginFieldsView.anchor(
-      top: loginHeaderView.bottomAnchor, paddingTop: 0,
-      right: view.rightAnchor, paddingRight: 0,
-      bottom: nil, paddingBottom: 0,
-      left: view.leftAnchor, paddingLeft: 0,
-      width: 0, height: 200
-    )
-    
-    loginFieldsView.emailTextField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
-    loginFieldsView.passwordTextField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
-    loginFieldsView.loginButton.addTarget(self, action: #selector(handleLoginButtonPressed), for: .touchUpInside)
-  }
-  
-  fileprivate func setupLoginSignUpView() {
-    view.addSubview(loginSignUpView)
-    loginSignUpView.anchor(
-      top: nil, paddingTop: 0,
-      right: view.rightAnchor, paddingRight: 0,
-      bottom: view.bottomAnchor, paddingBottom: 0,
-      left: view.leftAnchor, paddingLeft: 0,
-      width: 0, height: 75
-    )
-    
-    loginSignUpView.signUpButton.addTarget(self, action: #selector(handleSignUpButtonPressed), for: .touchUpInside)
+  fileprivate func configureViews() {
+    loginView.emailTextField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
+    loginView.passwordTextField.addTarget(self, action: #selector(handleTextInputChanges), for: .editingChanged)
+    loginView.loginButton.addTarget(self, action: #selector(handleLoginButtonPressed), for: .touchUpInside)
+    loginView.signUpButton.addTarget(self, action: #selector(handleSignUpButtonPressed), for: .touchUpInside)
   }
   
   // MARK: - Selector Functions
   
   @objc func handleTextInputChanges() {
-    if let emailText = loginFieldsView.emailTextField.text,
-      let passwordText = loginFieldsView.passwordTextField.text {
-      
+    if let emailText = loginView.emailTextField.text,
+      let passwordText = loginView.passwordTextField.text {
+
       let isFormValid = !emailText.isEmpty && !passwordText.isEmpty
-      loginFieldsView.updateButtonStyling(isFormValid: isFormValid)
+      loginView.updateButtonStyling(isFormValid: isFormValid)
     }
   }
   
   @objc func handleLoginButtonPressed() {
     print("login pressed")
 
-    guard
-      let email = loginFieldsView.emailTextField.text,
-      let password = loginFieldsView.passwordTextField.text else {
+    guard let email = loginView.emailTextField.text,
+      let password = loginView.passwordTextField.text else {
         return
     }
     
@@ -114,11 +78,11 @@ class LoginController: UIViewController {
   }
 
   @objc func handleSignUpButtonPressed() {
-    let signUpController = SignUpViewController()
+    let signUpController = SignUpController()
     navigationController?.pushViewController(signUpController, animated: true)
   }
   
-  // MARK: - Helpers
+  // MARK: - Helper Functions
   
   fileprivate func showErrorAlert() {
     let alertController = UIAlertController(
