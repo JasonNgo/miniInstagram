@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LBTA-Instagram/Main/UserProfile/Controllers/UserProfileController.swift"
-            timestampString = "566168205.525285"
+            timestampString = "566373026.17971"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -22,33 +22,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LBTA-Instagram/Main/UserProfile/Controllers/UserProfileController.swift"
-            timestampString = "566168205.525761"
+            filePath = "LBTA-Instagram/Main/HomeFeed/HomeFeedPosts/HomeFeedController.swift"
+            timestampString = "566373026.179782"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LBTA-Instagram/Main/UserProfile/Controllers/UserProfileController.swift"
-            timestampString = "566168205.526013"
+            filePath = "LBTA-Instagram/Main/HomeFeed/HomeFeedPosts/HomeFeedController.swift"
+            timestampString = "566373026.179882"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

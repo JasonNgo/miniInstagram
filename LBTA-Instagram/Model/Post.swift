@@ -9,28 +9,22 @@
 import Foundation
 
 struct Post {
-    
-    var postId: String?
-    let caption: String
-    let imageWidth: Int
-    let imageHeight: Int
-    let postImageUrl: String
-    let creationDate: Date
-    
-    var isLiked = false
-    
-    let user: User
-    
-    init(user: User, valuesDict: [String: Any]) {
-        self.user = user
-        
-        self.caption = valuesDict["caption"] as? String ?? ""
-        self.imageWidth = valuesDict["image_width"] as? Int ?? 0
-        self.imageHeight = valuesDict["image_height"] as? Int ?? 0
-        self.postImageUrl = valuesDict["post_image_url"] as? String ?? ""
-        
-        let secondsFrom1970 = valuesDict["creation_date"] as? Double ?? 0
-        self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
-    }
-    
-} // Post
+  let user: User
+  var postId: String?
+  let caption: String
+  let imageWidth: Int
+  let imageHeight: Int
+  let postImageUrl: String
+  let creationDate: Date
+  var isLiked = false
+  
+  init(user: User, valuesDict: [String: Any]) {
+    self.user = user
+    self.caption = valuesDict["caption"] as? String ?? ""
+    self.imageWidth = valuesDict["image_width"] as? Int ?? 0
+    self.imageHeight = valuesDict["image_height"] as? Int ?? 0
+    self.postImageUrl = valuesDict["post_image_url"] as? String ?? ""
+    self.creationDate = Date(timeIntervalSince1970: valuesDict["creation_date"] as? Double ?? 0)
+  }
+  
+}

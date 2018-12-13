@@ -57,7 +57,7 @@ class UserSearchCell: UICollectionViewCell {
         userProfileImage.layer.cornerRadius = 40 / 2
         userProfileImage.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)
         
-        usernameLabel.anchor(top: nil, paddingTop: 8, right: rightAnchor, paddingRight: -8,
+        usernameLabel.anchor(top: nil, paddingTop: 8, right: rightAnchor, paddingRight: 8,
                              bottom: nil, paddingBottom: 0, left: userProfileImage.rightAnchor, paddingLeft: 8,
                              width: 0, height: 0)
         usernameLabel.center(centerX: nil, paddingCenterX: 0, centerY: centerYAnchor, paddingCenterY: 0)

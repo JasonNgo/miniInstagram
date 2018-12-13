@@ -138,7 +138,7 @@ class HomePostViewCell: UICollectionViewCell {
                              bottom: nil, paddingBottom: 0, left: profileImageView.rightAnchor, paddingLeft: 8,
                              width: 0, height: 40)
     
-        optionsButton.anchor(top: topAnchor, paddingTop: 8, right: rightAnchor, paddingRight: -8,
+        optionsButton.anchor(top: topAnchor, paddingTop: 8, right: rightAnchor, paddingRight: 8,
                              bottom: nil, paddingBottom: 0, left: nil, paddingLeft: 0,
                              width: 40, height: 40)
     }
@@ -162,14 +162,14 @@ class HomePostViewCell: UICollectionViewCell {
                          width: 120, height: 50)
         
         addSubview(ribbonButton)
-        ribbonButton.anchor(top: postImageView.bottomAnchor, paddingTop: 4, right: rightAnchor, paddingRight: -8,
+        ribbonButton.anchor(top: postImageView.bottomAnchor, paddingTop: 4, right: rightAnchor, paddingRight: 8,
                             bottom: nil, paddingBottom: 0, left: nil, paddingLeft: 0,
                             width: 40, height: 40)
     }
     
     fileprivate func setupPostDetails() {
         addSubview(captionLabel)
-        captionLabel.anchor(top: heartButton.bottomAnchor, paddingTop: 0, right: rightAnchor, paddingRight: -8,
+        captionLabel.anchor(top: heartButton.bottomAnchor, paddingTop: 0, right: rightAnchor, paddingRight: 8,
                             bottom: bottomAnchor, paddingBottom: 0, left: leftAnchor, paddingLeft: 8,
                             width: 0, height: 0)
     }

@@ -263,7 +263,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     addSubview(stackView)
     stackView.anchor(
       top: topAnchor, paddingTop: 8,
-      right: rightAnchor, paddingRight: -12,
+      right: rightAnchor, paddingRight: 12,
       bottom: nil, paddingBottom: 0,
       left: profileImageView.rightAnchor, paddingLeft: 12,
       width: 0, height: 50
@@ -274,7 +274,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     addSubview(editProfileFollowButton)
     editProfileFollowButton.anchor(
       top: postsLabel.bottomAnchor, paddingTop: 0,
-      right: rightAnchor, paddingRight: -12,
+      right: rightAnchor, paddingRight: 12,
       bottom: nil, paddingBottom: 0,
       left: profileImageView.rightAnchor, paddingLeft: 12,
       width: 0, height: 34

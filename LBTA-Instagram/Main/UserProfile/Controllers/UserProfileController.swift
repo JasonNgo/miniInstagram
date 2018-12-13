@@ -22,14 +22,6 @@ class UserProfileController: UICollectionViewController {
   
   // MARK: - Lifecycle Functions
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(true)
-    
-    if user != nil {
-      retrieveUserPosts()
-    }
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -45,6 +37,10 @@ class UserProfileController: UICollectionViewController {
     collectionView?.register(UserProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerID)
     collectionView?.register(UserProfilePostCell.self, forCellWithReuseIdentifier: cellID)
     collectionView?.register(HomePostViewCell.self, forCellWithReuseIdentifier: homePostCellID)
+    
+    let refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+    collectionView?.refreshControl = refreshControl
   }
   
   fileprivate func setupLogoutButton() {
@@ -85,6 +81,13 @@ class UserProfileController: UICollectionViewController {
     present(alertController, animated: true, completion: nil)
   }
   
+  @objc func handleRefresh() {
+    print("handling refresh")
+    posts.removeAll()
+    guard self.user != nil else { return }
+    retrieveUserPosts()
+  }
+  
   // MARK: - Helper Functions
   
   fileprivate func retrieveUser() {
@@ -101,7 +104,7 @@ class UserProfileController: UICollectionViewController {
       self.user = user
       self.navigationItem.title = user.username
       
-      if user.uuid.compare(currentUUID) != .orderedSame {
+      if user.uuid != currentUUID {
         self.navigationItem.rightBarButtonItem = nil
         self.navigationItem.title = nil
       }
@@ -131,9 +134,14 @@ class UserProfileController: UICollectionViewController {
       self.posts = posts
       
       DispatchQueue.main.async {
+        self.collectionView?.refreshControl?.endRefreshing()
         self.collectionView?.reloadData()
       }
     }
+  }
+  
+  func updateUserPosts() {
+    handleRefresh()
   }
   
 }
@@ -144,12 +152,20 @@ extension UserProfileController {
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     if isGridView {
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! UserProfilePostCell
-      cell.post = posts[indexPath.item]
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? UserProfilePostCell else {
+        fatalError("Unable to unwrap UserProfilePostCell")
+      }
+      if (0..<posts.count) ~= indexPath.item {
+        cell.post = posts[indexPath.item]
+      }
       return cell
     } else {
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePostCellID, for: indexPath) as! HomePostViewCell
-      cell.post = posts[indexPath.item]
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePostCellID, for: indexPath) as? HomePostViewCell else {
+        fatalError("Unable to unwrap HomePostViewCell")
+      }
+      if (0..<posts.count) ~= indexPath.item {
+        cell.post = posts[indexPath.item]
+      }
       return cell
     }
   }

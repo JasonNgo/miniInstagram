@@ -10,11 +10,12 @@
 		7D4376F72133030300CC794E /* UserSeachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F62133030300CC794E /* UserSeachController.swift */; };
 		7D4376F9213308ED00CC794E /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F8213308ED00CC794E /* UserSearchCell.swift */; };
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
-		7D54533F21BC32090005D9C6 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533E21BC32090005D9C6 /* CameraView.swift */; };
+		7D54533F21BC32090005D9C6 /* CameraHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D54533E21BC32090005D9C6 /* CameraHUDView.swift */; };
 		7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFC213C5CE9005432F4 /* Date.swift */; };
 		7D5CEBFF213C681B005432F4 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEBFE213C681B005432F4 /* CameraController.swift */; };
 		7D5CEC01213CAC29005432F4 /* PreviewImageContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */; };
 		7D5CEC03213CB566005432F4 /* CustomAnimationTransitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5CEC02213CB566005432F4 /* CustomAnimationTransitions.swift */; };
+		7D67E50E21C21E9400597E53 /* AppDelegate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D67E50D21C21E9400597E53 /* AppDelegate+Extension.swift */; };
 		7D837A142131DC8200124E6A /* HomeFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D837A132131DC8200124E6A /* HomeFeedController.swift */; };
 		7D837A162131F3F300124E6A /* HomePostViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D837A152131F3F300124E6A /* HomePostViewCell.swift */; };
 		7DA1D321212E78F20048EB53 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */; };
@@ -49,11 +50,12 @@
 		7D4376F62133030300CC794E /* UserSeachController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeachController.swift; sourceTree = "<group>"; };
 		7D4376F8213308ED00CC794E /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
-		7D54533E21BC32090005D9C6 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		7D54533E21BC32090005D9C6 /* CameraHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHUDView.swift; sourceTree = "<group>"; };
 		7D5CEBFC213C5CE9005432F4 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7D5CEBFE213C681B005432F4 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImageContainerView.swift; sourceTree = "<group>"; };
 		7D5CEC02213CB566005432F4 /* CustomAnimationTransitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationTransitions.swift; sourceTree = "<group>"; };
+		7D67E50D21C21E9400597E53 /* AppDelegate+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Extension.swift"; sourceTree = "<group>"; };
 		7D837A132131DC8200124E6A /* HomeFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedController.swift; sourceTree = "<group>"; };
 		7D837A152131F3F300124E6A /* HomePostViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostViewCell.swift; sourceTree = "<group>"; };
 		7DA1D320212E78F20048EB53 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
@@ -181,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				7D5CEC00213CAC29005432F4 /* PreviewImageContainerView.swift */,
-				7D54533E21BC32090005D9C6 /* CameraView.swift */,
+				7D54533E21BC32090005D9C6 /* CameraHUDView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -216,7 +218,6 @@
 			children = (
 				7DC10D12213DD8A90055A95A /* Camera */,
 				7DC10D11213DD8820055A95A /* HomeFeedPosts */,
-				7DC10D10213DD8620055A95A /* Comments */,
 			);
 			path = HomeFeed;
 			sourceTree = "<group>";
@@ -275,6 +276,7 @@
 				7DB6ABA2212A0AF700583D91 /* UIColor.swift */,
 				7DB6ABA4212A0C5700583D91 /* UIView.swift */,
 				7D5CEBFC213C5CE9005432F4 /* Date.swift */,
+				7D67E50D21C21E9400597E53 /* AppDelegate+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -293,6 +295,7 @@
 			children = (
 				7D837A152131F3F300124E6A /* HomePostViewCell.swift */,
 				7D837A132131DC8200124E6A /* HomeFeedController.swift */,
+				7DC10D10213DD8620055A95A /* Comments */,
 			);
 			path = HomeFeedPosts;
 			sourceTree = "<group>";
@@ -493,7 +496,8 @@
 				7DB6AB612129FEE000583D91 /* SignUpController.swift in Sources */,
 				7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */,
 				7DA1D32C212F55740048EB53 /* SharePhotoController.swift in Sources */,
-				7D54533F21BC32090005D9C6 /* CameraView.swift in Sources */,
+				7D67E50E21C21E9400597E53 /* AppDelegate+Extension.swift in Sources */,
+				7D54533F21BC32090005D9C6 /* CameraHUDView.swift in Sources */,
 				7D5CEBFF213C681B005432F4 /* CameraController.swift in Sources */,
 				7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */,
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,

@@ -25,20 +25,29 @@ class CameraHUDView: UIView {
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
-    translatesAutoresizingMaskIntoConstraints = false
-    
+    createDismissButtonSubview()
+    createPhotoCaptureSubview()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  fileprivate func createDismissButtonSubview() {
     addSubview(dismissButton)
     dismissButton.anchor(
       top: topAnchor, paddingTop: 12,
-      right: rightAnchor, paddingRight: -12,
+      right: rightAnchor, paddingRight: 12,
       bottom: nil, paddingBottom: 0,
       left: nil, paddingLeft: 0,
       width: 50, height: 50
     )
-    
+  }
+  
+  fileprivate func createPhotoCaptureSubview() {
     addSubview(capturePhotoButton)
     capturePhotoButton.center(
       centerX: centerXAnchor, paddingCenterX: 0,
@@ -47,14 +56,10 @@ class CameraHUDView: UIView {
     capturePhotoButton.anchor(
       top: nil, paddingTop: 0,
       right: nil, paddingRight: 0,
-      bottom: bottomAnchor, paddingBottom: -24,
+      bottom: bottomAnchor, paddingBottom: 24,
       left: nil, paddingLeft: 0,
       width: 80, height: 80
     )
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
 }

@@ -13,7 +13,7 @@ class LoginController: UIViewController {
   
   // MARK: - Views
   
-  private var loginView = LoginView()
+  private let loginView = LoginView()
   
   // MARK: - Overrides
   

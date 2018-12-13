@@ -61,8 +61,8 @@ class CommentCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = 40 / 2
         
         addSubview(captionTextView)
-        captionTextView.anchor(top: topAnchor, paddingTop: 4, right: rightAnchor, paddingRight: -4,
-                               bottom: bottomAnchor, paddingBottom: -4, left: profileImageView.rightAnchor, paddingLeft: 4,
+        captionTextView.anchor(top: topAnchor, paddingTop: 4, right: rightAnchor, paddingRight: 4,
+                               bottom: bottomAnchor, paddingBottom: 4, left: profileImageView.rightAnchor, paddingLeft: 4,
                                width: 0, height: 0)
         
         let dividerView: UIView = {

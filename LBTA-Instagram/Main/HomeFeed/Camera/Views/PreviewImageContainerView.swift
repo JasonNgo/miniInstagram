@@ -92,7 +92,7 @@ class PreviewImageContainerView: UIView {
     savePhotoButton.anchor(
       top: nil, paddingTop: 0,
       right: nil, paddingRight: 0,
-      bottom: bottomAnchor, paddingBottom: -12,
+      bottom: bottomAnchor, paddingBottom: 12,
       left: leftAnchor, paddingLeft: 12,
       width: 50, height: 50
     )

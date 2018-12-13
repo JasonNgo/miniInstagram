@@ -12,25 +12,24 @@ import Photos
 
 class CameraController: UIViewController {
   
-  // MARK: - Views and Selectors
+  // MARK: - Views
   
   private let cameraHUDView = CameraHUDView()
   private var previewImageContainerView: PreviewImageContainerView?
   
   // MARK: - Properties
   
-  override var prefersStatusBarHidden: Bool { return true }
-  
   let output = AVCapturePhotoOutput()
   let customAnimationPresentor = CustomAnimationPresentor()
   let customAnimationDismisser = CustomAnimationDismisser()
   
-  // MARK: - Lifecycle functions
+  // MARK: - Override functions
+  
+  override var prefersStatusBarHidden: Bool { return true }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     transitioningDelegate = self
-    
     setupCaptureSession()
     setupHUD()
   }
@@ -39,11 +38,7 @@ class CameraController: UIViewController {
   
   fileprivate func setupCaptureSession() {
     let captureSession = AVCaptureSession()
-    
-    // setup input
-    guard let captureDevice = AVCaptureDevice.default(for: .video) else {
-      return
-    }
+    guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
     
     do {
       let input = try AVCaptureDeviceInput(device: captureDevice)
@@ -54,16 +49,13 @@ class CameraController: UIViewController {
       print("couldn't set up camera properly: ", error)
     }
     
-    // setup output
     if captureSession.canAddOutput(output) {
       captureSession.addOutput(output)
     }
     
-    // setup output preview
     let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     previewLayer.frame = view.frame
     view.layer.addSublayer(previewLayer)
-    
     captureSession.startRunning()
   }
   

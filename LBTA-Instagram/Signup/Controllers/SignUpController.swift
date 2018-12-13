@@ -10,13 +10,12 @@ import UIKit
 
 class SignUpController: UIViewController {
   
-  // MARK: - Views
+  private let signUpView = SignUpView()
   
-  private var signUpView = SignUpView()
-  
-  let imagePicker: UIImagePickerController = {
-    var imagePicker = UIImagePickerController()
+  lazy var imagePicker: UIImagePickerController = {
+    let imagePicker = UIImagePickerController()
     imagePicker.allowsEditing = true
+    imagePicker.delegate = self
     return imagePicker
   }()
   
@@ -30,7 +29,6 @@ class SignUpController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    imagePicker.delegate = self
     configureViews()
   }
   
@@ -79,7 +77,7 @@ class SignUpController: UIViewController {
         return
       }
       
-      guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else {
+      guard let mainTabBarController = AppDelegate.shared.mainTabBarController else {
         return
       }
       
@@ -108,7 +106,6 @@ class SignUpController: UIViewController {
     
     let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
     alertController.addAction(okAction)
-    
     present(alertController, animated: true, completion: nil)
   }
   

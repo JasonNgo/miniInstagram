@@ -69,12 +69,12 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
 
         containerView.addSubview(submitButton)
-        submitButton.anchor(top: containerView.topAnchor, paddingTop: 0, right: containerView.rightAnchor, paddingRight: -12,
+        submitButton.anchor(top: containerView.topAnchor, paddingTop: 0, right: containerView.rightAnchor, paddingRight: 12,
                             bottom: containerView.bottomAnchor, paddingBottom: 0, left: nil, paddingLeft: 0,
                             width: 50, height: 0)
         
         containerView.addSubview(commentTextField)
-        commentTextField.anchor(top: containerView.topAnchor, paddingTop: 0, right: submitButton.leftAnchor, paddingRight: -12,
+        commentTextField.anchor(top: containerView.topAnchor, paddingTop: 0, right: submitButton.leftAnchor, paddingRight: 12,
                                 bottom: containerView.bottomAnchor, paddingBottom: 0, left: containerView.leftAnchor, paddingLeft: 12,
                                 width: 0, height: 0)
         
