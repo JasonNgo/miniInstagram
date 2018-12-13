@@ -110,7 +110,6 @@ class CameraController: UIViewController {
       }
 
       print("successfully saved image to library")
-
       DispatchQueue.main.async {
         self.previewImageContainerView?.displaySaveMessage()
       }

@@ -205,13 +205,13 @@ class HomePostViewCell: UICollectionViewCell {
   fileprivate func setupPostCaptionAttributedText() {
     guard let post = self.post else { return }
     
-    typealias Attributes = [NSAttributedStringKey: Any]
-    let usernameTextAttributes: Attributes = [.font: UIFont.boldSystemFont(ofSize: 14)]
-    let captionTextAttributes: Attributes = [.font: UIFont.systemFont(ofSize: 14)]
-    let spaceTextAttributes: Attributes = [.font: UIFont.systemFont(ofSize: 6)]
-    let dateTextAttributes: Attributes  = [
-      .font: UIFont.systemFont(ofSize: 14),
-      .foregroundColor: UIColor.gray
+    
+    let usernameTextAttributes = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)]
+    let captionTextAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
+    let spaceTextAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 6)]
+    let dateTextAttributes = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.gray
     ]
     
     let attributedText = NSMutableAttributedString(string: "\(post.user.username) ", attributes: usernameTextAttributes)

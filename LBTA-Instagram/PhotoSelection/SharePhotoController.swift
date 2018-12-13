@@ -46,7 +46,6 @@ class SharePhotoController: UIViewController {
   fileprivate func setupNavigationBarButtons() {
     let cancelBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButtonPressed))
     let shareBarButton = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShareButtonPressed))
-    
     navigationItem.leftBarButtonItem = cancelBarButton
     navigationItem.rightBarButtonItem = shareBarButton
   }

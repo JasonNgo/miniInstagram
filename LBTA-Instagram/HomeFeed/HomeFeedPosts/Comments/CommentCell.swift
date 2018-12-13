@@ -27,6 +27,8 @@ class CommentCell: UICollectionViewCell {
     }
   }
   
+  // MARK: Views
+  
   let profileImageView: CustomImageView = {
     let imageView = CustomImageView()
     imageView.contentMode = .scaleAspectFill
@@ -40,6 +42,8 @@ class CommentCell: UICollectionViewCell {
     textView.isScrollEnabled = false
     return textView
   }()
+  
+  // MARK: - Overrides
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -88,20 +92,6 @@ class CommentCell: UICollectionViewCell {
     )
   }
   
-  // MARK: - Helper Functions
-  
-  fileprivate func fetchUserWithId(_ id: String) {
-    FirebaseAPI.shared.retrieveUserWith(uid: id) { (user, error) in
-      if let error = error {
-        print(error)
-        return
-      }
-      
-      guard let user = user else { return }
-      self.user = user
-    }
-  }
-  
   fileprivate func setupCommentCaptionAttributedText() {
     guard let comment = self.comment else { return }
     guard let user = self.user else { return }
@@ -114,6 +104,20 @@ class CommentCell: UICollectionViewCell {
     
     attributedText.append(captionText)
     captionTextView.attributedText = attributedText
+  }
+  
+  // MARK: - Helper Functions
+  
+  fileprivate func fetchUserWithId(_ id: String) {
+    FirebaseAPI.shared.retrieveUserWith(uid: id) { (user, error) in
+      if let error = error {
+        print(error)
+        return
+      }
+      
+      guard let user = user else { return }
+      self.user = user
+    }
   }
   
 }

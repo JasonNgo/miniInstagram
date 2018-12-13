@@ -8,14 +8,14 @@
 
 import UIKit
 
-class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
+class UserSearchController: UICollectionViewController {
   
   fileprivate let cellId = "cellId"
-  
   var users = [User]()
   var filteredUsers = [User]()
-  
   let searchController = UISearchController(searchResultsController: nil)
+  
+  // MARK: Overrides
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -44,7 +44,30 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     collectionView?.register(UserSearchCell.self, forCellWithReuseIdentifier: cellId)
   }
   
-  // MARK: UICollectionViewDelegate
+  // MARK: - Fetching Functions
+  
+  fileprivate func fetchListOfUsers() {
+    FirebaseAPI.shared.retrieveListOfUsers { (users, error) in
+      if let error = error {
+        print(error)
+        return
+      }
+      
+      guard let users = users else { return }
+      self.users = users
+      self.filteredUsers = users
+      
+      DispatchQueue.main.async {
+        self.collectionView?.reloadData()
+      }
+    }
+  }
+  
+}
+
+// MARK: UICollectionViewDelegate
+
+extension UserSearchController: UICollectionViewDelegateFlowLayout {
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return filteredUsers.count
@@ -74,7 +97,11 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     navigationController?.pushViewController(userProfileController, animated: true)
   }
   
-  // MARK: UISearchBarDelegate
+}
+
+// MARK: UISearchBarDelegate
+
+extension UserSearchController: UISearchBarDelegate {
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     if searchText.isEmpty {
@@ -86,25 +113,6 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     }
     
     collectionView?.reloadData()
-  }
-  
-  // MARK: - Fetching Functions
-  
-  fileprivate func fetchListOfUsers() {
-    FirebaseAPI.shared.retrieveListOfUsers { (users, error) in
-      if let error = error {
-        print(error)
-        return
-      }
-      
-      guard let users = users else { return }
-      self.users = users
-      self.filteredUsers = users
-      
-      DispatchQueue.main.async {
-        self.collectionView?.reloadData()
-      }
-    }
   }
   
 }

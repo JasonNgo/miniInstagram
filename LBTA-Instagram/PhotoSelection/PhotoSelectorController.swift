@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class PhotoSelectorController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class PhotoSelectorController: UICollectionViewController {
   
   fileprivate let cellID = "cellID"
   fileprivate let headerID = "headerID"
@@ -38,7 +38,6 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
   fileprivate func setupNavigationButtons() {
     let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButtonPressed))
     let nextButton = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNextButtonPressed))
-    
     navigationItem.leftBarButtonItem = cancelButton
     navigationItem.rightBarButtonItem = nextButton
   }
@@ -52,7 +51,6 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
   
   fileprivate func fetchPhotos() {
     print("fetching photos")
-    
     let photos = PHAsset.fetchAssets(with: .image, options: assetsFetchOptions())
     
     DispatchQueue.global(qos: .background).async {
@@ -97,8 +95,22 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     sharePhotoController.photoImage = selectedPhoto
     navigationController?.pushViewController(sharePhotoController, animated: true)
   }
+
+  // MARK: - Helper Functions
   
-  // MARK: - UICollectionView Functions
+  fileprivate func assetsFetchOptions() -> PHFetchOptions {
+    let options = PHFetchOptions()
+    let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+    options.fetchLimit = 10
+    options.sortDescriptors = [sortDescriptor]
+    return options
+  }
+  
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension PhotoSelectorController: UICollectionViewDelegateFlowLayout {
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! PhotoSelectorCell
@@ -161,16 +173,6 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
-  }
-  
-  // MARK: - Helper Functions
-  
-  fileprivate func assetsFetchOptions() -> PHFetchOptions {
-    let options = PHFetchOptions()
-    let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-    options.fetchLimit = 10
-    options.sortDescriptors = [sortDescriptor]
-    return options
   }
   
 }

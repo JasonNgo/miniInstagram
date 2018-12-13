@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PostCommentsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class PostCommentsController: UICollectionViewController {
   
   fileprivate let cellId = "cellId"
   
@@ -38,33 +38,6 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     return button
   }()
   
-  @objc func handleSubmitPressed() {
-    print("submit pressed")
-    
-    guard
-      let caption = commentTextField.text, commentTextField.text?.isEmpty == false,
-      let user = self.user,
-      let post = self.post else {
-        return
-    }
-    
-    let values = [
-      "comment_user_id": user.uuid,
-      "comment_caption": caption,
-      "creation_date": Date().timeIntervalSince1970
-    ] as [String: Any]
-    
-    FirebaseAPI.shared.saveCommentToDatabaseForPost(post, values: values) { (error) in
-      if let error = error {
-        print(error)
-        return
-      }
-      
-      self.resignFirstResponder()
-      self.fetchComments()
-    }
-  }
-  
   lazy var containerView: UIView = {
     let containerView = UIView()
     containerView.backgroundColor = .white
@@ -90,6 +63,33 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     
     return containerView
   }()
+  
+  @objc func handleSubmitPressed() {
+    print("submit pressed")
+    
+    guard
+      let caption = commentTextField.text, commentTextField.text?.isEmpty == false,
+      let user = self.user,
+      let post = self.post else {
+        return
+    }
+    
+    let values = [
+      "comment_user_id": user.uuid,
+      "comment_caption": caption,
+      "creation_date": Date().timeIntervalSince1970
+      ] as [String: Any]
+    
+    FirebaseAPI.shared.saveCommentToDatabaseForPost(post, values: values) { (error) in
+      if let error = error {
+        print(error)
+        return
+      }
+      
+      self.resignFirstResponder()
+      self.fetchComments()
+    }
+  }
   
   // MARK: - Lifecycle Functions
   
@@ -139,7 +139,10 @@ class PostCommentsController: UICollectionViewController, UICollectionViewDelega
     }
   }
   
+}
   // MARK: UICollectionViewDelegate
+  
+extension PostCommentsController: UICollectionViewDelegateFlowLayout {
   
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentCell

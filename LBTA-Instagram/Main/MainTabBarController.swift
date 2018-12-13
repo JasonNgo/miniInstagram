@@ -10,7 +10,7 @@
 import UIKit
 import FirebaseAuth
 
-class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
+class MainTabBarController: UITabBarController {
   
   // MARK: - Overrides
   
@@ -102,17 +102,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
   }
   
-  // MARK: - UITabBarControllerDelegate
-  
-  func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-    if let index = viewControllers?.index(of: viewController), index == 2 {
-      showPhotoSelectorController()
-      return false
-    }
-    
-    return true
-  }
-  
   // MARK: - Helper Functions
   
   fileprivate func createNavigationController(rootViewController: UIViewController, title: String, selectedImage: UIImage, unselectedImage: UIImage) -> UIViewController {
@@ -132,4 +121,17 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     present(navPhotoSelector, animated: true)
   }
   
+}
+
+extension MainTabBarController: UITabBarControllerDelegate {
+
+  func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+    if let index = viewControllers?.index(of: viewController), index == 2 {
+      showPhotoSelectorController()
+      return false
+    }
+    
+    return true
+  }
+
 }
