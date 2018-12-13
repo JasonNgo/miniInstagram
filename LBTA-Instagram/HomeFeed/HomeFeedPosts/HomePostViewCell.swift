@@ -11,6 +11,7 @@ import UIKit
 protocol HomePostViewCellDelegate: class {
   func didTapCommentButton(post: Post)
   func didTapLikeButton(forCell: HomePostViewCell)
+  func didTapShareButton(forCell: HomePostViewCell)
 }
 
 class HomePostViewCell: UICollectionViewCell {
@@ -23,7 +24,6 @@ class HomePostViewCell: UICollectionViewCell {
       
       guard let profileImageUrl = post?.user.profileImageUrl else { return }
       profileImageView.loadImageFromUrl(profileImageUrl)
-      
       guard let postImageUrl = post?.postImageUrl else { return }
       postImageView.loadImageFromUrl(postImageUrl)
       
@@ -68,38 +68,23 @@ class HomePostViewCell: UICollectionViewCell {
   }()
   
   lazy var heartButton: UIButton = {
-    var button = UIButton(type: .system)
+    let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "like_unselected").withRenderingMode(.alwaysOriginal), for: .normal)
     button.addTarget(self, action: #selector(handleLikePressed), for: .touchUpInside)
     return button
   }()
   
-  @objc func handleLikePressed() {
-    print("like pressed")
-    delegate?.didTapLikeButton(forCell: self)
-  }
-  
   lazy var commentButton: UIButton = {
-    var button = UIButton(type: .system)
+    let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "comment").withRenderingMode(.alwaysOriginal), for: .normal)
     button.addTarget(self, action: #selector(handleCommentPressed), for: .touchUpInside)
     return button
   }()
   
-  @objc func handleCommentPressed() {
-    guard let post = self.post else { return }
-    delegate?.didTapCommentButton(post: post)
-  }
-  
-  let sendToButton: UIButton = {
-    var button = UIButton(type: .system)
+  lazy var sendToButton: UIButton = {
+    let button = UIButton(type: .system)
     button.setImage(#imageLiteral(resourceName: "send2").withRenderingMode(.alwaysOriginal), for: .normal)
-    return button
-  }()
-  
-  let ribbonButton: UIButton = {
-    var button = UIButton(type: .system)
-    button.setImage(#imageLiteral(resourceName: "ribbon").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.addTarget(self, action: #selector(handleSharePressed), for: .touchUpInside)
     return button
   }()
   
@@ -109,9 +94,10 @@ class HomePostViewCell: UICollectionViewCell {
     return label
   }()
   
+  // MARK: - Init Functions
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
     setupPostTopBar()
     setupPostImageView()
     setupPostActionsBar()
@@ -171,7 +157,7 @@ class HomePostViewCell: UICollectionViewCell {
     let stackView = UIStackView(arrangedSubviews: [heartButton, commentButton, sendToButton])
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
-    stackView.backgroundColor = .red
+    
     addSubview(stackView)
     stackView.anchor(
       top: postImageView.bottomAnchor, paddingTop: 4,
@@ -179,15 +165,6 @@ class HomePostViewCell: UICollectionViewCell {
       bottom: nil, paddingBottom: 0,
       left: leftAnchor, paddingLeft: 4,
       width: 120, height: 40
-    )
-    
-    addSubview(ribbonButton)
-    ribbonButton.anchor(
-      top: postImageView.bottomAnchor, paddingTop: 4,
-      right: rightAnchor, paddingRight: 8,
-      bottom: nil, paddingBottom: 0,
-      left: nil, paddingLeft: 0,
-      width: 30, height: 30
     )
   }
   
@@ -204,7 +181,6 @@ class HomePostViewCell: UICollectionViewCell {
   
   fileprivate func setupPostCaptionAttributedText() {
     guard let post = self.post else { return }
-    
     
     let usernameTextAttributes = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)]
     let captionTextAttributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
@@ -224,6 +200,23 @@ class HomePostViewCell: UICollectionViewCell {
     attributedText.append(dateText)
     
     captionLabel.attributedText = attributedText
+  }
+  
+  // MARK: - Selector Functions
+  
+  @objc func handleLikePressed() {
+    print("like pressed")
+    delegate?.didTapLikeButton(forCell: self)
+  }
+  
+  @objc func handleCommentPressed() {
+    guard let post = self.post else { return }
+    delegate?.didTapCommentButton(post: post)
+  }
+  
+  @objc func handleSharePressed() {
+    print("share pressed")
+    delegate?.didTapShareButton(forCell: self)
   }
   
 }

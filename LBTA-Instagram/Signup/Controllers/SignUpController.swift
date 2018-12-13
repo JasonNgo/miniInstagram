@@ -9,7 +9,6 @@
 import UIKit
 
 // TODO: Add activity indicator when attempting to create account
-
 class SignUpController: UIViewController {
   
   private let signUpView = SignUpView()

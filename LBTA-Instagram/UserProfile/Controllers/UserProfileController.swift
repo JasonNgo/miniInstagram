@@ -321,4 +321,10 @@ extension UserProfileController: HomePostViewCellDelegate {
     }
   }
   
+  func didTapShareButton(forCell: HomePostViewCell) {
+    let vc = UIActivityViewController(activityItems: [forCell.postImageView.image!], applicationActivities: [])
+    vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+    present(vc, animated: true)
+  }
+  
 }

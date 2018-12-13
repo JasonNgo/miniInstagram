@@ -161,9 +161,9 @@ class UserProfileHeaderView: UICollectionViewCell {
     return button
   }()
   
-  let bookmarkButton: UIButton = {
+  let likesButton: UIButton = {
     var button = UIButton(type: .system)
-    button.setImage(#imageLiteral(resourceName: "ribbon").withRenderingMode(.alwaysOriginal), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "like_selected").withRenderingMode(.alwaysOriginal), for: .normal)
     button.tintColor = UIColor(white: 0, alpha: 0.2)
     return button
   }()
@@ -202,7 +202,7 @@ class UserProfileHeaderView: UICollectionViewCell {
     let stackView = UIStackView(arrangedSubviews: [
       gridButton,
       listButton,
-      bookmarkButton
+      likesButton
     ])
     
     stackView.axis = .horizontal

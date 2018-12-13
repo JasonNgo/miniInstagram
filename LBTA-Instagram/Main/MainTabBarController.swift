@@ -71,13 +71,13 @@ class MainTabBarController: UITabBarController {
       unselectedImage: #imageLiteral(resourceName: "camera3")
     )
     
-    let likeController = UIViewController()
-    let likeNavController = createNavigationController(
-      rootViewController: likeController,
-      title: "Likes",
-      selectedImage: #imageLiteral(resourceName: "like_selected"),
-      unselectedImage: #imageLiteral(resourceName: "like_unselected")
-    )
+//    let likeController = UIViewController()
+//    let likeNavController = createNavigationController(
+//      rootViewController: likeController,
+//      title: "Likes",
+//      selectedImage: #imageLiteral(resourceName: "like_selected"),
+//      unselectedImage: #imageLiteral(resourceName: "like_unselected")
+//    )
     
     let userProfileLayout = UICollectionViewFlowLayout()
     let userProfileController = UserProfileController(collectionViewLayout: userProfileLayout)
@@ -92,7 +92,7 @@ class MainTabBarController: UITabBarController {
       homeNavController,
       searchNavController,
       photoNavController,
-      likeNavController,
+//      likeNavController,
       userProfileNavController
     ]
     

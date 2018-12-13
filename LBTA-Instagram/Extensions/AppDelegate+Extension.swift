@@ -18,8 +18,9 @@ extension AppDelegate {
     return window?.rootViewController as? MainTabBarController
   }
   
+  //TODO: Change if adding back likes controller
   var userProfileController: UserProfileController? {
-    return (mainTabBarController?.viewControllers?[4] as? UINavigationController)?.viewControllers.first as? UserProfileController
+    return (mainTabBarController?.viewControllers?[3] as? UINavigationController)?.viewControllers.first as? UserProfileController
   }
   
   var homeFeedController: HomeFeedController? {
