@@ -26,6 +26,12 @@ class UserProfileHeaderView: UICollectionViewCell {
     }
   }
   
+  enum HeaderLabelType {
+    case posts
+    case following
+    case followers
+  }
+  
   // MARK: - Views
   
   let profileImageView: CustomImageView = {
@@ -39,15 +45,19 @@ class UserProfileHeaderView: UICollectionViewCell {
   
   let postsLabel: UILabel = {
     var label = UILabel()
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
     
-    let numberTextAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: 14)]
-    let footerTextAttributes: [NSAttributedStringKey: Any] = [
-      .font: UIFont.systemFont(ofSize: 14),
-      .foregroundColor: UIColor.lightGray
+    let numberTextAttributes = [
+      NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)
     ]
-    
+    let footerTextAttributes = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.lightGray
+    ]
     let attributedText = NSMutableAttributedString(
-      string: "11\n",
+      string: "0\n",
       attributes: numberTextAttributes
     )
     let footerText = NSAttributedString(
@@ -55,63 +65,62 @@ class UserProfileHeaderView: UICollectionViewCell {
       attributes: footerTextAttributes
     )
     attributedText.append(footerText)
-    
     label.attributedText = attributedText
-    label.textAlignment = .center
-    label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
+    
     return label
   }()
   
   let followingLabel: UILabel = {
     var label = UILabel()
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
     
-    let numberTextAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: 14)]
-    let footerTextAttributes: [NSAttributedStringKey: Any] = [
-      .font: UIFont.systemFont(ofSize: 14),
-      .foregroundColor: UIColor.lightGray
+    let numberTextAttributes = [
+      NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)
     ]
-    
+    let footerTextAttributes = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.lightGray
+    ]
     let attributedText = NSMutableAttributedString(
-      string: "11\n",
+      string: "0\n",
       attributes: numberTextAttributes
     )
     let footerText = NSAttributedString(
       string: "following",
       attributes: footerTextAttributes
     )
-    attributedText.append(footerText)
     
+    attributedText.append(footerText)
     label.attributedText = attributedText
-    label.textAlignment = .center
-    label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
   let followersLabel: UILabel = {
     var label = UILabel()
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.translatesAutoresizingMaskIntoConstraints = false
     
-    let numberTextAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: 14)]
-    let footerTextAttributes: [NSAttributedStringKey: Any] = [
-      .font: UIFont.systemFont(ofSize: 14),
-      .foregroundColor: UIColor.lightGray
+    let numberTextAttributes = [
+      NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)
     ]
-    
+    let footerTextAttributes = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.lightGray
+    ]
     let attributedText = NSMutableAttributedString(
-      string: "11\n",
+      string: "0\n",
       attributes: numberTextAttributes
     )
     let footerText = NSAttributedString(
       string: "followers",
       attributes: footerTextAttributes
     )
-    attributedText.append(footerText)
     
+    attributedText.append(footerText)
     label.attributedText = attributedText
-    label.textAlignment = .center
-    label.numberOfLines = 0
-    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
   
@@ -322,6 +331,48 @@ class UserProfileHeaderView: UICollectionViewCell {
       setupUnfollowButton()
     } else {
       setupFollowButton()
+    }
+  }
+  
+  func updateLabel(of type: HeaderLabelType, with count: Int) {
+    let numberTextAttributes = [
+      NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)
+    ]
+    
+    let footerTextAttributes = [
+      NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14),
+      NSAttributedStringKey.foregroundColor: UIColor.lightGray
+    ]
+    
+    let attributedText = NSMutableAttributedString(
+      string: "\(count)\n",
+      attributes: numberTextAttributes
+    )
+    
+    let footerText: NSAttributedString
+    
+    switch type {
+    case .posts:
+      footerText = NSAttributedString(
+        string: "posts",
+        attributes: footerTextAttributes
+      )
+      
+      attributedText.append(footerText)
+      postsLabel.attributedText = attributedText
+    case .following:
+      footerText = NSAttributedString(
+        string: "following",
+        attributes: footerTextAttributes
+      )
+      attributedText.append(footerText)
+      followingLabel.attributedText = attributedText
+    case .followers:
+      footerText = NSAttributedString(
+        string: "followers",
+        attributes: footerTextAttributes
+      )
+      followersLabel.attributedText = attributedText
     }
   }
   

@@ -130,10 +130,6 @@
 			isa = PBXGroup;
 			children = (
 				7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */,
-				7D837A0F2131DC5900124E6A /* HomeFeed */,
-				7D4376F5213302E200CC794E /* Search */,
-				7DA1D31F212E78D00048EB53 /* PhotoSelection */,
-				7DCAB55D212E06D7009F68AB /* UserProfile */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -266,6 +262,10 @@
 				7D54532E21BB0DCB0005D9C6 /* Signup */,
 				7DCAB55B212E069F009F68AB /* Login */,
 				7D4B630A212A3F5000C4CB7E /* Main */,
+				7D837A0F2131DC5900124E6A /* HomeFeed */,
+				7D4376F5213302E200CC794E /* Search */,
+				7DA1D31F212E78D00048EB53 /* PhotoSelection */,
+				7DCAB55D212E06D7009F68AB /* UserProfile */,
 			);
 			path = "LBTA-Instagram";
 			sourceTree = "<group>";

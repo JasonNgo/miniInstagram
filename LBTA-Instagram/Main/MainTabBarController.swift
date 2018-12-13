@@ -12,12 +12,12 @@ import FirebaseAuth
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
   
+  // MARK: - Overrides
+  
   override func loadView() {
     super.loadView()
     view.backgroundColor = .white
   }
-  
-  // MARK: - Lifecycle Functions
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -45,10 +45,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
   }
   
   func setupViewControllers() {
-    let layout = UICollectionViewFlowLayout()
-    
-    // home
-    let homeController = HomeFeedController(collectionViewLayout: layout)
+    let homeFeedLayout = UICollectionViewFlowLayout()
+    let homeController = HomeFeedController(collectionViewLayout: homeFeedLayout)
     let homeNavController = createNavigationController(
       rootViewController: homeController,
       title: "Home",
@@ -56,8 +54,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
       unselectedImage: #imageLiteral(resourceName: "home_unselected")
     )
     
-    // search
-    let searchController = UserSearchController(collectionViewLayout: layout)
+    let searchLayout = UICollectionViewFlowLayout()
+    let searchController = UserSearchController(collectionViewLayout: searchLayout)
     let searchNavController = createNavigationController(
       rootViewController: searchController,
       title: "Search",
@@ -65,7 +63,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
       unselectedImage: #imageLiteral(resourceName: "search_unselected")
     )
     
-    // photo picker
     let photoPickerController = UIViewController()
     let photoNavController = createNavigationController(
       rootViewController: photoPickerController,
@@ -74,7 +71,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
       unselectedImage: #imageLiteral(resourceName: "camera3")
     )
     
-    // like
     let likeController = UIViewController()
     let likeNavController = createNavigationController(
       rootViewController: likeController,
@@ -83,8 +79,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
       unselectedImage: #imageLiteral(resourceName: "like_unselected")
     )
     
-    // profile
-    let userProfileController = UserProfileController(collectionViewLayout: layout)
+    let userProfileLayout = UICollectionViewFlowLayout()
+    let userProfileController = UserProfileController(collectionViewLayout: userProfileLayout)
     let userProfileNavController = createNavigationController(
       rootViewController: userProfileController,
       title: "User",

@@ -8,6 +8,8 @@
 
 import UIKit
 
+// TODO: Add activity indicator when attempting to create account
+
 class SignUpController: UIViewController {
   
   private let signUpView = SignUpView()
@@ -70,9 +72,11 @@ class SignUpController: UIViewController {
       "profile_image": image
     ]
     
+    signUpView.styleSignUpButton(isFormValid: false)
     FirebaseAPI.shared.createUserWithValues(values) { (error) in
       if let error = error {
         print("Error: \(error), Description: \(error.localizedDescription)")
+        self.signUpView.styleSignUpButton(isFormValid: true)
         self.showErrorAlert()
         return
       }

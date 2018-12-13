@@ -8,25 +8,18 @@
 
 import UIKit
 
-class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout, HomePostViewCellDelegate {
+class HomeFeedController: UICollectionViewController {
   
   fileprivate let cellId = "cellId"
-  
-  static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateFeed")
+  static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateHomeFeed")
   
   var user: User?
-  var posts = [Post]()
+  var posts: [Post] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    // setup
     setupNavigationBar()
     setupCollectionView()
-    
-    // Notifications
-    NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeFeedController.updateFeedNotificationName, object: nil)
-    
     fetchUserInfo()
   }
   
@@ -34,8 +27,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
   
   fileprivate func setupNavigationBar() {
     navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
-    
-    let cameraBarItem = UIBarButtonItem(image: #imageLiteral(resourceName: "camera3").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleCameraPressed))
+    let image = #imageLiteral(resourceName: "camera3").withRenderingMode(.alwaysOriginal)
+    let cameraBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleCameraPressed))
     navigationItem.leftBarButtonItem = cameraBarItem
   }
   
@@ -46,67 +39,8 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     collectionView?.refreshControl = refreshControl
-  }
-  
-  // MARK: UICollectionViewDelegate
-  
-  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return posts.count
-  }
-  
-  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? HomePostViewCell else {
-      fatalError("Unable to unwrap HomePostViewCell")
-    }
     
-    if (0..<posts.count) ~= indexPath.item {
-      cell.post = posts[indexPath.item]
-      cell.delegate = self
-    }
-    
-    return cell
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    var height: CGFloat = 40 + 8 + 8
-    height += view.frame.width
-    height += 50
-    height += 60
-    
-    return CGSize(width: view.frame.width, height: height)
-  }
-  
-  // MARK: - HomePostViewCellDelegate
-  
-  func didTapCommentButton(post: Post) {
-    print("didTapCommentButton")
-    guard let user = self.user else { return }
-    
-    let layout = UICollectionViewFlowLayout()
-    let commentsController = PostCommentsController(collectionViewLayout: layout)
-    commentsController.post = post
-    commentsController.user = user
-    navigationController?.pushViewController(commentsController, animated: true)
-  }
-  
-  func didTapLikeButton(forCell: HomePostViewCell) {
-    print("didTapLikeButton(forCell:)")
-    guard let indexPath = collectionView?.indexPath(for: forCell) else { return }
-    guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
-    
-    var post = self.posts[indexPath.item]
-    let values = [currentUUID: !post.isLiked]
-    
-    FirebaseAPI.shared.updateLikesForPost(post, values: values) { (error) in
-      if let error = error {
-        print(error)
-        return
-      }
-      
-      post.isLiked = !post.isLiked
-      self.posts[indexPath.item] = post
-      self.collectionView?.reloadItems(at: [indexPath])
-    }
+    NotificationCenter.default.addObserver(self, selector: #selector(handleRefresh), name: HomeFeedController.updateFeedNotificationName, object: nil)
   }
   
   // MARK: - Selector Functions
@@ -117,10 +51,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     guard let user = self.user else { return }
     fetchPostsFor(user: user)
     fetchFollowingPosts()
-  }
-  
-  @objc func handleUpdateFeed() {
-    handleRefresh()
   }
   
   @objc func handleCameraPressed() {
@@ -158,7 +88,6 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
       }
       
       guard let following = following else { return }
-      
       following.forEach({ (followingUserID) in
         FirebaseAPI.shared.retrieveUserWith(uid: followingUserID, completion: { (user, error) in
           if let error = error {
@@ -195,4 +124,73 @@ class HomeFeedController: UICollectionViewController, UICollectionViewDelegateFl
     }
   }
   
-} // HomeFeedController
+}
+
+// MARK: UICollectionViewDelegate
+
+extension HomeFeedController: UICollectionViewDelegateFlowLayout {
+  
+  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return posts.count
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? HomePostViewCell else {
+      fatalError("Unable to unwrap HomePostViewCell")
+    }
+    
+    if (0..<posts.count) ~= indexPath.item {
+      cell.post = posts[indexPath.item]
+      cell.delegate = self
+    }
+    
+    return cell
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    var height: CGFloat = 40 + 8 + 8
+    height += view.frame.width
+    height += 50
+    height += 60
+    
+    return CGSize(width: view.frame.width, height: height)
+  }
+  
+}
+
+// MARK: - HomePostViewCellDelegate
+
+extension HomeFeedController: HomePostViewCellDelegate {
+  
+  func didTapCommentButton(post: Post) {
+    print("didTapCommentButton")
+    guard let user = self.user else { return }
+    
+    let layout = UICollectionViewFlowLayout()
+    let commentsController = PostCommentsController(collectionViewLayout: layout)
+    commentsController.post = post
+    commentsController.user = user
+    navigationController?.pushViewController(commentsController, animated: true)
+  }
+  
+  func didTapLikeButton(forCell: HomePostViewCell) {
+    print("didTapLikeButton(forCell:)")
+    guard let indexPath = collectionView?.indexPath(for: forCell) else { return }
+    guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+    
+    var post = self.posts[indexPath.item]
+    let values = [currentUUID: !post.isLiked]
+    
+    FirebaseAPI.shared.updateLikesForPost(post, values: values) { (error) in
+      if let error = error {
+        print(error)
+        return
+      }
+      
+      post.isLiked = !post.isLiked
+      self.posts[indexPath.item] = post
+      self.collectionView?.reloadItems(at: [indexPath])
+    }
+  }
+  
+}

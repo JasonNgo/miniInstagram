@@ -36,10 +36,7 @@ class SharePhotoController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     view.backgroundColor = UIColor.colorFrom(r: 240, g: 240, b: 240)
-    
-    // setup
     setupNavigationBarButtons()
     setupViews()
   }
@@ -59,19 +56,31 @@ class SharePhotoController: UIViewController {
     containerView.backgroundColor = .white
     
     view.addSubview(containerView)
-    containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 0, right: view.safeAreaLayoutGuide.rightAnchor, paddingRight: 0,
-                         bottom: nil, paddingBottom: 0, left: view.safeAreaLayoutGuide.leftAnchor, paddingLeft: 0,
-                         width: 0, height: 100)
+    containerView.anchor(
+      top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 0,
+      right: view.safeAreaLayoutGuide.rightAnchor, paddingRight: 0,
+      bottom: nil, paddingBottom: 0,
+      left: view.safeAreaLayoutGuide.leftAnchor, paddingLeft: 0,
+      width: 0, height: 100
+    )
     
     containerView.addSubview(photoImageView)
-    photoImageView.anchor(top: containerView.topAnchor, paddingTop: 8, right: nil, paddingRight: 0,
-                          bottom: containerView.bottomAnchor, paddingBottom: 8, left: containerView.leftAnchor, paddingLeft: 8,
-                          width: 84, height: 0)
+    photoImageView.anchor(
+      top: containerView.topAnchor, paddingTop: 8,
+      right: nil, paddingRight: 0,
+      bottom: containerView.bottomAnchor, paddingBottom: 8,
+      left: containerView.leftAnchor, paddingLeft: 8,
+      width: 84, height: 0
+    )
     
     containerView.addSubview(descriptionTextView)
-    descriptionTextView.anchor(top: containerView.topAnchor, paddingTop: 8, right: containerView.rightAnchor, paddingRight: 8,
-                               bottom: containerView.bottomAnchor, paddingBottom: 8, left: photoImageView.rightAnchor, paddingLeft: 8,
-                               width: 0, height: 0)
+    descriptionTextView.anchor(
+      top: containerView.topAnchor, paddingTop: 8,
+      right: containerView.rightAnchor, paddingRight: 8,
+      bottom: containerView.bottomAnchor, paddingBottom: 8,
+      left: photoImageView.rightAnchor, paddingLeft: 8,
+      width: 0, height: 0
+    )
   }
   
   // MARK: - Selector Functions
@@ -104,15 +113,8 @@ class SharePhotoController: UIViewController {
       
       print("sucessfully saved post")
       NotificationCenter.default.post(name: HomeFeedController.updateFeedNotificationName, object: nil)
+      NotificationCenter.default.post(name: UserProfileController.updateFeedNotificationName, object: nil)
       self.dismiss(animated: true, completion: nil)
-      
-      if let userProfileController = AppDelegate.shared.userProfileController {
-        userProfileController.updateUserPosts()
-      }
-      
-      if let homeFeedController = AppDelegate.shared.homeFeedController {
-        homeFeedController.handleUpdateFeed()
-      }
     }
   }
   

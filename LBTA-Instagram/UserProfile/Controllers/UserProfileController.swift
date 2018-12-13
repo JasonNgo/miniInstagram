@@ -17,8 +17,10 @@ class UserProfileController: UICollectionViewController {
   
   var userId: String?
   var user: User?
-  var posts = [Post]()
+  var posts: [Post] = []
   var isGridView = true
+  
+  static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateUserFeed")
   
   // MARK: - Lifecycle Functions
   
@@ -41,6 +43,8 @@ class UserProfileController: UICollectionViewController {
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     collectionView?.refreshControl = refreshControl
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(handleRefresh), name: UserProfileController.updateFeedNotificationName, object: nil)
   }
   
   fileprivate func setupLogoutButton() {
@@ -165,6 +169,7 @@ extension UserProfileController {
       }
       if (0..<posts.count) ~= indexPath.item {
         cell.post = posts[indexPath.item]
+        cell.delegate = self
       }
       return cell
     }
@@ -193,6 +198,7 @@ extension UserProfileController {
     let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! UserProfileHeaderView
     header.user = user
     header.delegate = self
+    header.updateLabel(of: .posts, with: posts.count)
     
     guard let uuid = user?.uuid else { return header }
     let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
@@ -278,6 +284,41 @@ extension UserProfileController: UserProfileHeaderDelegate {
   func userProfileHeaderListButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
     isGridView = false
     collectionView?.reloadData()
+  }
+  
+}
+
+extension UserProfileController: HomePostViewCellDelegate {
+  
+  func didTapCommentButton(post: Post) {
+    print("didTapCommentButton")
+    guard let user = self.user else { return }
+    
+    let layout = UICollectionViewFlowLayout()
+    let commentsController = PostCommentsController(collectionViewLayout: layout)
+    commentsController.post = post
+    commentsController.user = user
+    navigationController?.pushViewController(commentsController, animated: true)
+  }
+  
+  func didTapLikeButton(forCell: HomePostViewCell) {
+    print("didTapLikeButton(forCell:)")
+    guard let indexPath = collectionView?.indexPath(for: forCell) else { return }
+    guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+    
+    var post = self.posts[indexPath.item]
+    let values = [currentUUID: !post.isLiked]
+    
+    FirebaseAPI.shared.updateLikesForPost(post, values: values) { (error) in
+      if let error = error {
+        print(error)
+        return
+      }
+      
+      post.isLiked = !post.isLiked
+      self.posts[indexPath.item] = post
+      self.collectionView?.reloadItems(at: [indexPath])
+    }
   }
   
 }
