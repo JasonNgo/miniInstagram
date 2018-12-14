@@ -80,16 +80,19 @@ class HomeFeedController: UICollectionViewController {
     }
   }
   
+  //TODO: Fix this
   fileprivate func fetchFollowingPosts() {
     FirebaseAPI.shared.fetchFollowingListForCurrentUser { (following, error) in
       if let error = error {
         print(error)
         return
       }
-      
+
       guard let following = following else { return }
-      following.forEach({ (followingUserID) in
-        FirebaseAPI.shared.retrieveUserWith(uid: followingUserID, completion: { (user, error) in
+      
+      let listOfFollowing = following.filter { (key, value) in value == true }
+      for uid in listOfFollowing.keys {
+        FirebaseAPI.shared.retrieveUserWith(uid: uid, completion: { (user, error) in
           if let error = error {
             print(error)
             return
@@ -98,7 +101,7 @@ class HomeFeedController: UICollectionViewController {
           guard let user = user else { return }
           self.fetchPostsFor(user: user)
         })
-      })
+      }
     }
   }
   
@@ -113,10 +116,7 @@ class HomeFeedController: UICollectionViewController {
       
       guard let posts = posts else { return }
       self.posts.append(contentsOf: posts)
-      
-      self.posts.sort(by: { (p1, p2) -> Bool in
-        return p1.creationDate.compare(p2.creationDate) == .orderedDescending
-      })
+      self.posts.sort { $0.creationDate > $1.creationDate }
       
       DispatchQueue.main.async {
         self.collectionView?.reloadData()

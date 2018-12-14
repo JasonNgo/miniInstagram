@@ -26,6 +26,8 @@ class UserProfileHeaderView: UICollectionViewCell {
     }
   }
   
+  var isFollowing = false
+  
   enum HeaderLabelType {
     case posts
     case following
@@ -181,7 +183,7 @@ class UserProfileHeaderView: UICollectionViewCell {
   }
   
   required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+    fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - Set up Functions
@@ -295,12 +297,14 @@ class UserProfileHeaderView: UICollectionViewCell {
     editProfileFollowButton.backgroundColor = UIColor.colorFrom(r: 17, g: 154, b: 237)
     editProfileFollowButton.setTitleColor(.white, for: .normal)
     editProfileFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+    isFollowing = false
   }
   
   fileprivate func setupUnfollowButton() {
     editProfileFollowButton.setTitle("Unfollow", for: .normal)
     editProfileFollowButton.backgroundColor = .white
     editProfileFollowButton.setTitleColor(.black, for: .normal)
+    isFollowing = true
   }
   
   // MARK: - Selector Functions
@@ -325,6 +329,13 @@ class UserProfileHeaderView: UICollectionViewCell {
   }
   
   // MARK: - Styling Functions
+  
+  func showEditProfileButton() {
+    editProfileFollowButton.setTitle("Edit Profile", for: .normal)
+    editProfileFollowButton.setTitleColor(.black, for: .normal)
+    editProfileFollowButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+    editProfileFollowButton.layer.borderColor = UIColor.lightGray.cgColor
+  }
   
   func updateFollowButtonConfiguration(isFollowing: Bool) {
     if isFollowing {

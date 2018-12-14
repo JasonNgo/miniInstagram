@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseAuth
 
+//TODO: Hide the nav bar buttons and show if the vc is the current user
+
 class UserProfileController: UICollectionViewController {
   
   fileprivate let headerID = "headerID"
@@ -18,6 +20,7 @@ class UserProfileController: UICollectionViewController {
   var userId: String?
   var user: User?
   var posts: [Post] = []
+  var following: [String: Bool] = [:]
   var isGridView = true
   
   static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateUserFeed")
@@ -26,7 +29,6 @@ class UserProfileController: UICollectionViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     setupCollectionView()
     setupLogoutButton()
     retrieveUser()
@@ -48,10 +50,11 @@ class UserProfileController: UICollectionViewController {
   }
   
   fileprivate func setupLogoutButton() {
-    let image = #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal)
-    let action = #selector(handleGearButtonPressed)
-    let gearButton = UIBarButtonItem(image: image, style: .plain, target: self, action: action)
-    navigationItem.rightBarButtonItem = gearButton
+    if let _ = userId {
+      hideGearButton()
+    } else {
+      showGearButton()
+    }
   }
   
   // MARK: - Selector Functions
@@ -144,8 +147,15 @@ class UserProfileController: UICollectionViewController {
     }
   }
   
-  func updateUserPosts() {
-    handleRefresh()
+  fileprivate func showGearButton() {
+    let image = #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal)
+    let action = #selector(handleGearButtonPressed)
+    let gearButton = UIBarButtonItem(image: image, style: .plain, target: self, action: action)
+    navigationItem.rightBarButtonItem = gearButton
+  }
+  
+  fileprivate func hideGearButton() {
+    navigationItem.rightBarButtonItem = nil
   }
   
 }
@@ -159,18 +169,15 @@ extension UserProfileController {
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? UserProfilePostCell else {
         fatalError("Unable to unwrap UserProfilePostCell")
       }
-      if (0..<posts.count) ~= indexPath.item {
-        cell.post = posts[indexPath.item]
-      }
+      cell.post = posts[indexPath.item]
       return cell
     } else {
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homePostCellID, for: indexPath) as? HomePostViewCell else {
         fatalError("Unable to unwrap HomePostViewCell")
       }
-      if (0..<posts.count) ~= indexPath.item {
-        cell.post = posts[indexPath.item]
-        cell.delegate = self
-      }
+      
+      cell.post = posts[indexPath.item]
+      cell.delegate = self
       return cell
     }
   }
@@ -195,12 +202,18 @@ extension UserProfileController {
   // MARK: CollectionView Header Functions
   
   override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as! UserProfileHeaderView
+    guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as? UserProfileHeaderView else {
+      fatalError("Unable to cast header as UserProfileHeaderView")
+    }
+    
     header.user = user
     header.delegate = self
     header.updateLabel(of: .posts, with: posts.count)
     
-    guard let uuid = user?.uuid else { return header }
+//    let following = self.following.filter { (key, value) in value == true }
+//    header.updateLabel(of: .following, with: following.count)
+    
+    guard let uuid = userId else { return header }
     let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
     
     if uuid != currentUUID {
@@ -210,13 +223,23 @@ extension UserProfileController {
           return
         }
         
-        guard let following = following else { return }
-        if let _ = following.index(of: uuid) {
-          header.updateFollowButtonConfiguration(isFollowing: true)
+        guard let following = following else {
+          header.updateFollowButtonConfiguration(isFollowing: false)
+          return
+        }
+        
+        self.following = following
+//        let filteredFollowing = self.following.filter { (key, value) in value == true }
+//        header.updateLabel(of: .following, with: filteredFollowing.count)
+        
+        if let isFollowing = following[uuid] {
+          header.updateFollowButtonConfiguration(isFollowing: isFollowing)
         } else {
           header.updateFollowButtonConfiguration(isFollowing: false)
         }
       }
+    } else {
+      header.showEditProfileButton()
     }
     
     return header
@@ -242,36 +265,23 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
   
 }
 
+
+
 // MARK: - UserProfileHeaderDelegate
 
 extension UserProfileController: UserProfileHeaderDelegate {
   
   func userProfileHeaderEditOrFollowButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
     guard let uid = userProfileHeaderView.user?.uuid else { return }
+    guard let title = userProfileHeaderView.editProfileFollowButton.title(for: .normal) else { return }
     
-    if userProfileHeaderView.editProfileFollowButton.title(for: .normal)?
-      .compare("Edit Profile") == .orderedSame {
-      // edit profile
-    } else if userProfileHeaderView.editProfileFollowButton.title(for: .normal)?
-      .compare("Follow") == .orderedSame {
-      FirebaseAPI.shared.followUserWithUID(uid) { (error) in
-        if let error = error {
-          print(error)
-          userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: false)
-          return
-        }
-        
-        userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: true)
-      }
+    if title == "Edit Profile" {
+      //TODO: Edit Profile case
     } else {
-      FirebaseAPI.shared.unfollowUserWithUID(uid) { (error) in
-        if let error = error {
-          print(error)
-          userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: true)
-          return
-        }
-        
-        userProfileHeaderView.updateFollowButtonConfiguration(isFollowing: false)
+      if userProfileHeaderView.isFollowing {
+        unfollowUser(uid: uid, header: userProfileHeaderView)
+      } else {
+        followUser(uid: uid, header: userProfileHeaderView)
       }
     }
   }
@@ -284,6 +294,30 @@ extension UserProfileController: UserProfileHeaderDelegate {
   func userProfileHeaderListButtonTapped(_ userProfileHeaderView: UserProfileHeaderView) {
     isGridView = false
     collectionView?.reloadData()
+  }
+  
+  fileprivate func unfollowUser(uid: String, header: UserProfileHeaderView) {
+    FirebaseAPI.shared.unfollowUserWithUID(uid) { (error) in
+      if let error = error {
+        header.updateFollowButtonConfiguration(isFollowing: true)
+        print(error)
+        return
+      }
+      
+      header.updateFollowButtonConfiguration(isFollowing: false)
+    }
+  }
+  
+  fileprivate func followUser(uid: String, header: UserProfileHeaderView) {
+    FirebaseAPI.shared.followUserWithUID(uid) { (error) in
+      if let error = error {
+        header.updateFollowButtonConfiguration(isFollowing: false)
+        print(error)
+        return
+      }
+      
+      header.updateFollowButtonConfiguration(isFollowing: true)
+    }
   }
   
 }
