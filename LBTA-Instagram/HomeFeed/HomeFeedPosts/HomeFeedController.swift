@@ -89,10 +89,8 @@ class HomeFeedController: UICollectionViewController {
       }
 
       guard let following = following else { return }
-      
-      let listOfFollowing = following.filter { (key, value) in value == true }
-      for uid in listOfFollowing.keys {
-        FirebaseAPI.shared.retrieveUserWith(uid: uid, completion: { (user, error) in
+      following.forEach {
+        FirebaseAPI.shared.retrieveUserWith(uid: $0, completion: { (user, error) in
           if let error = error {
             print(error)
             return

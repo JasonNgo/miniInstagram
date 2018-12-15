@@ -306,10 +306,10 @@ class FirebaseAPI {
   
   // MARK: Following/Unfollowing Functions
   
-  func fetchFollowingListForCurrentUser(completion: @escaping ([String: Bool]?, Error?) -> Void) {
+  func fetchFollowingListForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
     guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
     let followingRef = Database.database().reference().child("following").child(currentUUID)
-    var following: [String: Bool] = [:]
+    var following: [String] = []
     
     followingRef.observe(.value, with: { (snapshot) in
       guard let values = snapshot.value else {
@@ -317,15 +317,12 @@ class FirebaseAPI {
         return
       }
       
-      guard let valuesDict = values as? [String: Bool] else {
+      guard let valuesDict = values as? [String: Any] else {
         completion(nil, nil)
         return
       }
       
-      valuesDict.forEach({ (key, value) in
-        following[key] = value
-      })
-      
+      valuesDict.keys.forEach { following.append($0) }
       completion(following, nil)
     }) { (error) in
       completion(nil, FirebaseDatabaseError.errorRetrievingListOfUsers(error))
@@ -338,8 +335,7 @@ class FirebaseAPI {
     let values = [uidToFollow: true] as [String: Any]
     
     followingRef.updateChildValues(values) { (error, database) in
-      if let error = error {
-        print("DEBUG ERROR: /// \(error)")
+      if let _ = error {
         completion(FirebaseDatabaseError.errorFollowingUser("uidToFollow: \(uidToFollow)"))
         return
       }
@@ -350,9 +346,8 @@ class FirebaseAPI {
   
   func unfollowUserWithUID(_ uidToUnfollow: String, completion: @escaping (Error?) -> Void) {
     guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
-    let followingRef = Database.database().reference().child("following").child(currentUUID)
-    let values = [uidToUnfollow: false] as [String: Any]
-    followingRef.updateChildValues(values) { (error, _) in
+    let followingRef = Database.database().reference().child("following").child(currentUUID).child(uidToUnfollow)
+    followingRef.removeValue { (error, _) in
       if let _ = error {
         completion(FirebaseDatabaseError.errorUnfollowingUser("uidToUnfollow: \(uidToUnfollow)"))
         return

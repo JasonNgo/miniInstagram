@@ -9,8 +9,6 @@
 import UIKit
 import FirebaseAuth
 
-//TODO: Hide the nav bar buttons and show if the vc is the current user
-
 class UserProfileController: UICollectionViewController {
   
   fileprivate let headerID = "headerID"
@@ -20,7 +18,7 @@ class UserProfileController: UICollectionViewController {
   var userId: String?
   var user: User?
   var posts: [Post] = []
-  var following: [String: Bool] = [:]
+  var following: [String] = []
   var isGridView = true
   
   static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateUserFeed")
@@ -210,9 +208,6 @@ extension UserProfileController {
     header.delegate = self
     header.updateLabel(of: .posts, with: posts.count)
     
-//    let following = self.following.filter { (key, value) in value == true }
-//    header.updateLabel(of: .following, with: following.count)
-    
     guard let uuid = userId else { return header }
     let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
     
@@ -229,11 +224,9 @@ extension UserProfileController {
         }
         
         self.following = following
-//        let filteredFollowing = self.following.filter { (key, value) in value == true }
-//        header.updateLabel(of: .following, with: filteredFollowing.count)
-        
-        if let isFollowing = following[uuid] {
-          header.updateFollowButtonConfiguration(isFollowing: isFollowing)
+
+        if let _ = following.index(of: uuid) {
+          header.updateFollowButtonConfiguration(isFollowing: true)
         } else {
           header.updateFollowButtonConfiguration(isFollowing: false)
         }
@@ -264,8 +257,6 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
   }
   
 }
-
-
 
 // MARK: - UserProfileHeaderDelegate
 

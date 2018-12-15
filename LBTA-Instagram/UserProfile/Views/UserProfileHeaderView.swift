@@ -203,8 +203,7 @@ class UserProfileHeaderView: UICollectionViewCell {
   fileprivate func setupBottomToolbar() {
     let stackView = UIStackView(arrangedSubviews: [
       gridButton,
-      listButton,
-      likesButton
+      listButton
     ])
     
     stackView.axis = .horizontal
