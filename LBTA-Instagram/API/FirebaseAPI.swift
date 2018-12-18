@@ -306,6 +306,27 @@ class FirebaseAPI {
   
   // MARK: Following/Unfollowing Functions
   
+  func isCurrentUserFollowingUserWith(uuid: String, completion: @escaping (Bool, Error?) -> Void) {
+    guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
+    let followingRef = Database.database().reference().child("following").child(currentUUID)
+    
+    followingRef.observeSingleEvent(of: .value) { (snapshot) in
+      guard let value = snapshot.value else {
+        completion(false, FirebaseDatabaseError.errorRetrievingListOfFollowing)
+        return
+      }
+      
+      // Was able to retrieve
+      guard let castedValue = value as? Bool, castedValue == true else {
+        completion(false, nil)
+        return
+      }
+      
+    }
+    
+  }
+  
+  
   func fetchFollowingListForCurrentUser(completion: @escaping ([String]?, Error?) -> Void) {
     guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return }
     let followingRef = Database.database().reference().child("following").child(currentUUID)
