@@ -19,9 +19,11 @@ class UserProfileController: UICollectionViewController {
   var user: User?
   var posts: [Post] = []
   var following: [String] = []
+  var followers: [String] = []
   var isGridView = true
   
   static let updateFeedNotificationName = NSNotification.Name(rawValue: "updateUserFeed")
+  static let updateHeaderValuesNotificationName = NSNotification.Name("updateHeaderValues")
   
   // MARK: - Lifecycle Functions
   
@@ -45,6 +47,7 @@ class UserProfileController: UICollectionViewController {
     collectionView?.refreshControl = refreshControl
     
     NotificationCenter.default.addObserver(self, selector: #selector(handleRefresh), name: UserProfileController.updateFeedNotificationName, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateHeader), name: UserProfileController.updateHeaderValuesNotificationName, object: nil)
   }
   
   fileprivate func setupLogoutButton() {
@@ -93,6 +96,12 @@ class UserProfileController: UICollectionViewController {
     retrieveUserPosts()
   }
   
+  @objc func handleUpdateHeader() {
+    following.removeAll()
+    followers.removeAll()
+    retrieveFollowCounts()
+  }
+  
   // MARK: - Helper Functions
   
   fileprivate func retrieveUser() {
@@ -119,6 +128,7 @@ class UserProfileController: UICollectionViewController {
       }
       
       self.retrieveUserPosts()
+      self.retrieveFollowCounts()
     }
   }
   
@@ -199,6 +209,37 @@ extension UserProfileController {
   
   // MARK: CollectionView Header Functions
   
+  func retrieveFollowCounts() {
+    let uuid = userId ?? FirebaseAPI.shared.getCurrentUserUID() ?? ""
+    FirebaseAPI.shared.retrieveListOf(.following, uuid: uuid) { (following, error) in
+      if let error = error {
+        print("Error: \(error)")
+        return
+      }
+      
+      guard let following = following else { return }
+      self.following = following
+      
+      DispatchQueue.main.async {
+        self.collectionView?.reloadData()
+      }
+    }
+    
+    FirebaseAPI.shared.retrieveListOf(.followers, uuid: uuid) { (followers, error) in
+      if let error = error {
+        print("Error: \(error)")
+        return
+      }
+      
+      guard let followers = followers else { return }
+      self.followers = followers
+      
+      DispatchQueue.main.async {
+        self.collectionView?.reloadData()
+      }
+    }
+  }
+  
   override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerID, for: indexPath) as? UserProfileHeaderView else {
       fatalError("Unable to cast header as UserProfileHeaderView")
@@ -207,29 +248,20 @@ extension UserProfileController {
     header.user = user
     header.delegate = self
     header.updateLabel(of: .posts, with: posts.count)
+    header.updateLabel(of: .following, with: following.count)
+    header.updateLabel(of: .followers, with: followers.count)
     
     guard let uuid = userId else { return header }
-    let currentUUID = FirebaseAPI.shared.getCurrentUserUID()
+    guard let currentUUID = FirebaseAPI.shared.getCurrentUserUID() else { return header }
     
     if uuid != currentUUID {
-      FirebaseAPI.shared.fetchFollowingListForCurrentUser { (following, error) in
+      FirebaseAPI.shared.isCurrentUserFollowingUserWith(uuid: uuid) { (isFollowing, error) in
         if let error = error {
           print("Error: \(error) \n Description: \(error.localizedDescription)")
           return
         }
         
-        guard let following = following else {
-          header.updateFollowButtonConfiguration(isFollowing: false)
-          return
-        }
-        
-        self.following = following
-
-        if let _ = following.index(of: uuid) {
-          header.updateFollowButtonConfiguration(isFollowing: true)
-        } else {
-          header.updateFollowButtonConfiguration(isFollowing: false)
-        }
+        header.updateFollowButtonConfiguration(isFollowing: isFollowing)
       }
     } else {
       header.showEditProfileButton()
@@ -296,6 +328,7 @@ extension UserProfileController: UserProfileHeaderDelegate {
       }
       
       header.updateFollowButtonConfiguration(isFollowing: false)
+      NotificationCenter.default.post(name: UserProfileController.updateHeaderValuesNotificationName, object: nil)
     }
   }
   
@@ -308,6 +341,7 @@ extension UserProfileController: UserProfileHeaderDelegate {
       }
       
       header.updateFollowButtonConfiguration(isFollowing: true)
+      NotificationCenter.default.post(name: UserProfileController.updateHeaderValuesNotificationName, object: nil)
     }
   }
   

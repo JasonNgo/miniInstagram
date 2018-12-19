@@ -82,12 +82,13 @@ class HomeFeedController: UICollectionViewController {
   
   //TODO: Fix this
   fileprivate func fetchFollowingPosts() {
-    FirebaseAPI.shared.fetchFollowingListForCurrentUser { (following, error) in
+    guard let uuid = FirebaseAPI.shared.getCurrentUserUID() else { return }
+    FirebaseAPI.shared.retrieveListOf(.following, uuid: uuid) { (following, error) in
       if let error = error {
         print(error)
         return
       }
-
+      
       guard let following = following else { return }
       following.forEach {
         FirebaseAPI.shared.retrieveUserWith(uid: $0, completion: { (user, error) in

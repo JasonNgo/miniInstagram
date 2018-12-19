@@ -174,7 +174,6 @@ class UserProfileHeaderView: UICollectionViewCell {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
     setupProfileImageView()
     setupUserStatsView()
     setupEditProfileButton()
@@ -382,6 +381,7 @@ class UserProfileHeaderView: UICollectionViewCell {
         string: "followers",
         attributes: footerTextAttributes
       )
+      attributedText.append(footerText)
       followersLabel.attributedText = attributedText
     }
   }
