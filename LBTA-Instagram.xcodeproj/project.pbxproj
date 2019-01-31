@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D3116BE2202B77C001BD156 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3116BD2202B77C001BD156 /* Coordinator.swift */; };
 		7D4376F72133030300CC794E /* UserSeachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F62133030300CC794E /* UserSeachController.swift */; };
 		7D4376F9213308ED00CC794E /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F8213308ED00CC794E /* UserSearchCell.swift */; };
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		35ECEE7F8499DA82DB62A688 /* Pods-LBTA-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
+		7D3116BD2202B77C001BD156 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		7D4376F62133030300CC794E /* UserSeachController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeachController.swift; sourceTree = "<group>"; };
 		7D4376F8213308ED00CC794E /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 			children = (
 				7DE700662130EB5E00CA9EA1 /* CustomImageView.swift */,
 				7D5CEC02213CB566005432F4 /* CustomAnimationTransitions.swift */,
+				7D3116BD2202B77C001BD156 /* Coordinator.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				7DCAB558212DD0EC009F68AB /* User.swift in Sources */,
 				7DA1D325212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift in Sources */,
 				7DE700622130DE7F00CA9EA1 /* Post.swift in Sources */,
+				7D3116BE2202B77C001BD156 /* Coordinator.swift in Sources */,
 				7D5CEC01213CAC29005432F4 /* PreviewImageContainerView.swift in Sources */,
 				7DE700642130E56900CA9EA1 /* UserProfilePostCell.swift in Sources */,
 				7D5CEC03213CB566005432F4 /* CustomAnimationTransitions.swift in Sources */,
