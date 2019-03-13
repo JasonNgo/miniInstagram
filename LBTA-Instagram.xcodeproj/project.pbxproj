@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7D3116BE2202B77C001BD156 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3116BD2202B77C001BD156 /* Coordinator.swift */; };
+		7D12045022395282002B5149 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D12044F22395281002B5149 /* Coordinator.swift */; };
+		7D120452223952A3002B5149 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D120451223952A3002B5149 /* ApplicationCoordinator.swift */; };
+		7D12045422395493002B5149 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D12045322395493002B5149 /* SignUpCoordinator.swift */; };
+		7D1204562239563F002B5149 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1204552239563F002B5149 /* LoginCoordinator.swift */; };
 		7D4376F72133030300CC794E /* UserSeachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F62133030300CC794E /* UserSeachController.swift */; };
 		7D4376F9213308ED00CC794E /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F8213308ED00CC794E /* UserSearchCell.swift */; };
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
@@ -48,7 +51,10 @@
 
 /* Begin PBXFileReference section */
 		35ECEE7F8499DA82DB62A688 /* Pods-LBTA-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LBTA-Instagram.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LBTA-Instagram/Pods-LBTA-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
-		7D3116BD2202B77C001BD156 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		7D12044F22395281002B5149 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Coordinator.swift; path = ../../../HeartPlant/HeartPlant/Utilities/Coordinator.swift; sourceTree = "<group>"; };
+		7D120451223952A3002B5149 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
+		7D12045322395493002B5149 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
+		7D1204552239563F002B5149 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		7D4376F62133030300CC794E /* UserSeachController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeachController.swift; sourceTree = "<group>"; };
 		7D4376F8213308ED00CC794E /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
@@ -111,6 +117,25 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7D12044D22395177002B5149 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				7DCAB55B212E069F009F68AB /* Login */,
+				7D54532E21BB0DCB0005D9C6 /* Signup */,
+				7D4B630A212A3F5000C4CB7E /* MainScreen */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		7D12044E223951B9002B5149 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
+				7D120451223952A3002B5149 /* ApplicationCoordinator.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
 		7D4376F5213302E200CC794E /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,53 +153,26 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		7D4B630A212A3F5000C4CB7E /* Main */ = {
+		7D4B630A212A3F5000C4CB7E /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
 				7DCAB54E212B5F2D009F68AB /* MainTabBarController.swift */,
+				7D837A0F2131DC5900124E6A /* HomeFeed */,
+				7D4376F5213302E200CC794E /* Search */,
+				7DA1D31F212E78D00048EB53 /* PhotoSelection */,
+				7DCAB55D212E06D7009F68AB /* UserProfile */,
 			);
-			path = Main;
+			path = MainScreen;
 			sourceTree = "<group>";
 		};
 		7D54532E21BB0DCB0005D9C6 /* Signup */ = {
 			isa = PBXGroup;
 			children = (
-				7D54533321BB18700005D9C6 /* Controllers */,
-				7D54533A21BB41570005D9C6 /* Views */,
-			);
-			path = Signup;
-			sourceTree = "<group>";
-		};
-		7D54532F21BB0E030005D9C6 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				7DC286EF21C1BABD008F5FA6 /* LoginView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		7D54533021BB0E1A0005D9C6 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				7DCAB559212E04BC009F68AB /* LoginController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		7D54533321BB18700005D9C6 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
 				7DB6AB602129FEE000583D91 /* SignUpController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		7D54533A21BB41570005D9C6 /* Views */ = {
-			isa = PBXGroup;
-			children = (
+				7D12045322395493002B5149 /* SignUpCoordinator.swift */,
 				7DC286F121C1EC57008F5FA6 /* SignUpView.swift */,
 			);
-			path = Views;
+			path = Signup;
 			sourceTree = "<group>";
 		};
 		7D54534021BC3CBE0005D9C6 /* Views */ = {
@@ -256,18 +254,12 @@
 				7DC286ED21C1BA75008F5FA6 /* GoogleService-Info.plist */,
 				7DB6AB672129FEE200583D91 /* LaunchScreen.storyboard */,
 				7DB6AB652129FEE200583D91 /* Assets.xcassets */,
-				7DB6AB5E2129FEE000583D91 /* AppDelegate.swift */,
-				7D4B6309212A36DE00C4CB7E /* API */,
 				7DB6ABA1212A0AE900583D91 /* Extensions */,
 				7DE700682130EE2700CA9EA1 /* Util */,
+				7D12044E223951B9002B5149 /* Application */,
+				7D4B6309212A36DE00C4CB7E /* API */,
 				7DCAB556212DD0DE009F68AB /* Model */,
-				7D54532E21BB0DCB0005D9C6 /* Signup */,
-				7DCAB55B212E069F009F68AB /* Login */,
-				7D4B630A212A3F5000C4CB7E /* Main */,
-				7D837A0F2131DC5900124E6A /* HomeFeed */,
-				7D4376F5213302E200CC794E /* Search */,
-				7DA1D31F212E78D00048EB53 /* PhotoSelection */,
-				7DCAB55D212E06D7009F68AB /* UserProfile */,
+				7D12044D22395177002B5149 /* Screens */,
 			);
 			path = "LBTA-Instagram";
 			sourceTree = "<group>";
@@ -324,8 +316,9 @@
 		7DCAB55B212E069F009F68AB /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				7D54533021BB0E1A0005D9C6 /* Controllers */,
-				7D54532F21BB0E030005D9C6 /* Views */,
+				7DCAB559212E04BC009F68AB /* LoginController.swift */,
+				7D1204552239563F002B5149 /* LoginCoordinator.swift */,
+				7DC286EF21C1BABD008F5FA6 /* LoginView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -342,9 +335,9 @@
 		7DE700682130EE2700CA9EA1 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				7D12044F22395281002B5149 /* Coordinator.swift */,
 				7DE700662130EB5E00CA9EA1 /* CustomImageView.swift */,
 				7D5CEC02213CB566005432F4 /* CustomAnimationTransitions.swift */,
-				7D3116BD2202B77C001BD156 /* Coordinator.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -492,15 +485,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */,
+				7D12045422395493002B5149 /* SignUpCoordinator.swift in Sources */,
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
 				7DC10D0F213DD1E10055A95A /* PostCommentsController.swift in Sources */,
 				7DC10D14213DD8C30055A95A /* Comment.swift in Sources */,
 				7DA1D323212F481E0048EB53 /* PhotoSelectorCell.swift in Sources */,
+				7D1204562239563F002B5149 /* LoginCoordinator.swift in Sources */,
 				7DB6AB612129FEE000583D91 /* SignUpController.swift in Sources */,
 				7DCAB554212B80D3009F68AB /* UserProfileHeaderView.swift in Sources */,
 				7DA1D32C212F55740048EB53 /* SharePhotoController.swift in Sources */,
 				7D67E50E21C21E9400597E53 /* AppDelegate+Extension.swift in Sources */,
 				7D54533F21BC32090005D9C6 /* CameraHUDView.swift in Sources */,
+				7D12045022395282002B5149 /* Coordinator.swift in Sources */,
 				7D5CEBFF213C681B005432F4 /* CameraController.swift in Sources */,
 				7DCAB54F212B5F2D009F68AB /* MainTabBarController.swift in Sources */,
 				7DB6ABA3212A0AF700583D91 /* UIColor.swift in Sources */,
@@ -508,8 +504,8 @@
 				7DCAB558212DD0EC009F68AB /* User.swift in Sources */,
 				7DA1D325212F4ABF0048EB53 /* PhotoSelectorHeaderView.swift in Sources */,
 				7DE700622130DE7F00CA9EA1 /* Post.swift in Sources */,
-				7D3116BE2202B77C001BD156 /* Coordinator.swift in Sources */,
 				7D5CEC01213CAC29005432F4 /* PreviewImageContainerView.swift in Sources */,
+				7D120452223952A3002B5149 /* ApplicationCoordinator.swift in Sources */,
 				7DE700642130E56900CA9EA1 /* UserProfilePostCell.swift in Sources */,
 				7D5CEC03213CB566005432F4 /* CustomAnimationTransitions.swift in Sources */,
 				7DCAB551212B6009009F68AB /* UserProfileController.swift in Sources */,
