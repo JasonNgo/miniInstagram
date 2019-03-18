@@ -36,13 +36,16 @@ class ApplicationCoordinator: Coordinator {
     private func showLoginScreen() {
         window.rootViewController = navigationController
         let loginCoordinator = LoginCoordinator(navigationController: navigationController)
+        
         loginCoordinator.stop = { [weak self] in
             self?.loginCoordinator = nil
         }
+        
         loginCoordinator.successfullyLoggedIn = { [weak self] in
             self?.navigationController.popViewController(animated: true)
             self?.showMainScreen()
         }
+        
         loginCoordinator.start()
         self.loginCoordinator = loginCoordinator
     }
