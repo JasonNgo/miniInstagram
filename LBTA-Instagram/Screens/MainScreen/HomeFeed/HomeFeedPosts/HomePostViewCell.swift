@@ -10,8 +10,8 @@ import UIKit
 
 protocol HomePostViewCellDelegate: class {
   func didTapCommentButton(post: Post)
-  func didTapLikeButton(forCell: HomePostViewCell)
-  func didTapShareButton(forCell: HomePostViewCell)
+  func didTapLikeButton(for cell: HomePostViewCell)
+  func didTapShareButton(for cell: HomePostViewCell)
 }
 
 class HomePostViewCell: UICollectionViewCell {

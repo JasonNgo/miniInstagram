@@ -11,6 +11,7 @@
 		7D120452223952A3002B5149 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D120451223952A3002B5149 /* ApplicationCoordinator.swift */; };
 		7D12045422395493002B5149 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D12045322395493002B5149 /* SignUpCoordinator.swift */; };
 		7D1204562239563F002B5149 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1204552239563F002B5149 /* LoginCoordinator.swift */; };
+		7D3894392241645000465E21 /* HomeFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3894382241645000465E21 /* HomeFeedDataSource.swift */; };
 		7D4376F72133030300CC794E /* UserSeachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F62133030300CC794E /* UserSeachController.swift */; };
 		7D4376F9213308ED00CC794E /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4376F8213308ED00CC794E /* UserSearchCell.swift */; };
 		7D4B6308212A360500C4CB7E /* FirebaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */; };
@@ -59,6 +60,7 @@
 		7D120451223952A3002B5149 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
 		7D12045322395493002B5149 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
 		7D1204552239563F002B5149 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		7D3894382241645000465E21 /* HomeFeedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedDataSource.swift; sourceTree = "<group>"; };
 		7D4376F62133030300CC794E /* UserSeachController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeachController.swift; sourceTree = "<group>"; };
 		7D4376F8213308ED00CC794E /* UserSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		7D4B6307212A360500C4CB7E /* FirebaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAPI.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				7DC10D12213DD8A90055A95A /* Camera */,
 				7DC10D11213DD8820055A95A /* HomeFeedPosts */,
 				7DA16A5522405695003D7302 /* HomeFeedCoordinator.swift */,
+				7D3894382241645000465E21 /* HomeFeedDataSource.swift */,
 			);
 			path = HomeFeed;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D3894392241645000465E21 /* HomeFeedDataSource.swift in Sources */,
 				7D5CEBFD213C5CE9005432F4 /* Date.swift in Sources */,
 				7D12045422395493002B5149 /* SignUpCoordinator.swift in Sources */,
 				7DB6ABA5212A0C5700583D91 /* UIView.swift in Sources */,
